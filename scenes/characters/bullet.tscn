@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://bj5ieasrb3u4b"]
+[gd_scene load_steps=4 format=3 uid="uid://bj5ieasrb3u4b"]
 
-[ext_resource type="Script" path="res://scripts/characters/bullet.gd" id="1_nn7ax"]
+[ext_resource type="Script" path="res://scripts/characters/Bullet.gd" id="1_2rjgs"]
+[ext_resource type="Texture2D" uid="uid://dwwcjsbu4swxq" path="res://assets/art/props/1461908.png" id="2_7apbw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mo5d"]
 
 [node name="Bullet" type="Area2D"]
-script = ExtResource("1_nn7ax")
+script = ExtResource("1_2rjgs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0314437, 0.0412051)
+texture = ExtResource("2_7apbw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_5mo5d")
