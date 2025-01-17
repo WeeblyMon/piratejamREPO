@@ -3,9 +3,9 @@ extends Node2D
 @export var speed: float = 500.0  # Bullet speed
 @export var lifetime: float = 5.0  # Bullet lifetime in seconds
 
-var time_alive = 0.0
+var time_alive: float = 0.0
 
-func _process(delta):
+func _process(delta: float) -> void:
 	# Increment the time the bullet has been alive
 	time_alive += delta
 	if time_alive >= lifetime:

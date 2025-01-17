@@ -3,26 +3,21 @@ extends Node2D
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.5  # Time between shots in seconds
 
-var time_since_last_shot = 0.0
+var time_since_last_shot: float = 0.0
 
 # Reference to the RayCast2D node
-@onready var barrel = $RayCast2D
+@onready var barrel: RayCast2D = $RayCast2D
 
-func _process(delta):
+func _process(delta: float) -> void:
 	time_since_last_shot += delta
-
-	# Fire bullets when the "fire" input is pressed
 	if Input.is_action_just_pressed("fire") and time_since_last_shot >= fire_rate:
 		fire_bullet()
 		time_since_last_shot = 0.0
 
-func fire_bullet():
+func fire_bullet() -> void:
 	if bullet_scene:
-		var bullet = bullet_scene.instantiate()
-
-		# Convert the barrel's local position to the global position
+		var bullet: Node2D = bullet_scene.instantiate() as Node2D
 		bullet.position = to_global(barrel.position)
-		bullet.rotation = barrel.global_rotation  # Use global rotation
-
-		get_tree().root.add_child(bullet)  # Ensure the bullet is added globally to the scene tree
+		bullet.rotation = barrel.global_rotation 
+		get_tree().root.add_child(bullet)
 		print("Bullet fired at:", bullet.position)
