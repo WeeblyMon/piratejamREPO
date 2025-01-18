@@ -11,7 +11,6 @@ func _process(delta: float) -> void:
 	if time_alive >= lifetime:
 		queue_free()  
 		return
-
 	if is_controlled:
 		control_bullet(delta)
 	else:
@@ -26,3 +25,6 @@ func control_bullet(delta: float) -> void:
 	if Input.is_action_pressed("rotate_right"):
 		rotation += deg_to_rad(120 * delta)
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta * 0.5
+	
+
+	

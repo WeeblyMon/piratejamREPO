@@ -24,7 +24,6 @@ func fire_bullet() -> void:
 
 		get_tree().current_scene.add_child(bullet)  
 		last_bullet = bullet
-
 		print("Bullet spawned at:", bullet.global_position)
 
 
