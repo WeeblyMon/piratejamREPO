@@ -12,7 +12,6 @@ script = ExtResource("1_jplbh")
 gun = NodePath("Gun")
 
 [node name="Gun" parent="." instance=ExtResource("3_thj8m")]
-fire_rate = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -49)
