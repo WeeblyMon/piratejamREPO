@@ -12,5 +12,5 @@ bullet_scene = ExtResource("2_0cyij")
 texture = ExtResource("2_51jjl")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(55, 0)
-target_position = Vector2(54, 0)
+position = Vector2(110, 0)
+target_position = Vector2(14, 0)
