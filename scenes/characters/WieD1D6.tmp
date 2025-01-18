@@ -22,6 +22,9 @@ texture = ExtResource("2_3cim3")
 scale = Vector2(10.9383, 9.27131)
 shape = SubResource("CircleShape2D_ntrfv")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.64, 0.64)
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="PathDebug" type="Node2D" parent="."]

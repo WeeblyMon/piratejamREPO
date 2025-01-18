@@ -1,25 +1,43 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var speed: float = 150.0  # Movement speed
 @export var fire_rate: float = 1.0  # Time between shots
 @export var gun: Node2D  # Reference to the gun node
 
-var direction: Vector2 = Vector2.ZERO  # Current movement direction
+@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D  # Reference to NavigationAgent2D
+@onready var path_debug: Node2D = $PathDebug  # Reference to the debug node
+
 var time_since_last_shot: float = 0.0  # Timer for shooting
-var is_paused: bool = false  # Flag to pause shooting
+var is_paused: bool = false  # Flag to pause movement/shooting
 
 func _ready() -> void:
-	# Set an initial random direction
-	direction = Vector2(randf() - 0.5, randf() - 0.5).normalized()
-
-func _process(delta: float) -> void:
-	if is_paused:
+	if not navigation_agent:
+		print("NavigationAgent2D node not found!")
 		return
-	position += direction * speed * delta
 
-	if randi() % 100 == 0:
-		direction = Vector2(randf() - 0.5, randf() - 0.5).normalized()
+	# Assign the NavigationAgent2D to the PathDebug node for visualization
+	if path_debug and path_debug.has_method("set"):
+		path_debug.navigation_agent = navigation_agent
 
+	# Connect velocity_computed signal
+	navigation_agent.velocity_computed.connect(_on_velocity_computed)
+
+func _physics_process(delta: float) -> void:
+	if is_paused:
+		velocity = Vector2.ZERO  # Stop movement if paused
+		move_and_slide()
+		return
+
+	# Update velocity using NavigationAgent2D
+	var next_position = navigation_agent.get_next_path_position()
+	if next_position != Vector2.ZERO:
+		velocity = (next_position - global_position).normalized() * speed
+	else:
+		velocity = Vector2.ZERO  # Stop if there's no target
+
+	move_and_slide()
+
+	# Shooting logic
 	time_since_last_shot += delta
 	if time_since_last_shot >= fire_rate:
 		shoot()
@@ -31,6 +49,15 @@ func shoot() -> void:
 
 func pause_shooting() -> void:
 	is_paused = true
+	navigation_agent.set_target_position(global_position)  # Pause by setting target to current position
 
 func resume_shooting() -> void:
 	is_paused = false
+
+func set_target(target: Vector2) -> void:
+	navigation_agent.set_target_position(target)
+	print("Target set to:", target)
+
+func _on_velocity_computed(velocity: Vector2) -> void:
+	# Optional: Handle velocity changes dynamically
+	pass

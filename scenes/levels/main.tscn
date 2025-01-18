@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxx8l5vgqoic3"]
+[gd_scene load_steps=4 format=3 uid="uid://bxx8l5vgqoic3"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_2htwu"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_sbymi"]
+vertices = PackedVector2Array(1428.65, 728.93, -248.094, 720.047, -180.797, -49.3438, 1323.22, -105.656)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-190, -59, -259, 730, 1440, 739, 1332, -116)])
 
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_2htwu")
@@ -9,3 +14,13 @@ script = ExtResource("1_2htwu")
 [node name="Wielder" parent="." instance=ExtResource("2_580be")]
 position = Vector2(559, 302)
 fire_rate = 0.2
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_sbymi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+offset_left = -409.0
+offset_top = -62.0
+offset_right = 1505.0
+offset_bottom = 677.0
