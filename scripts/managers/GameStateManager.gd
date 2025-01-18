@@ -19,23 +19,31 @@ var current_save: Dictionary = {
 	"health": 1
 }
 
+@onready var sanity_bar
+@onready var health_bar
+
 func set_sanity(sanity_amount: int, operation) -> void:
-	current_save = _update_dict_int_value("sanity", sanity_amount, operation)
+	current_save = _update_dict_int_value(Constants.SANITY, sanity_amount, operation)
+	sanity_bar.update_bar(operation, sanity_amount)
 	print(JSON.stringify(current_save))
 
-func set_morality(morality_amount: int, operation) -> void:
-	current_save = _update_dict_int_value("morality", morality_amount, operation)
+
+func set_health(health_amount: int, operation) -> void:
+	current_save = _update_dict_int_value(Constants.HEALTH, health_amount, operation)
+	health_bar.update_bar(operation, health_amount)
 	print(JSON.stringify(current_save))
+
 
 func _update_dict_int_value(key: String, value, operation) -> Dictionary:
 	var new_save = current_save.duplicate()
-	if operation == "add":
+	if operation == Constants.OPERATIONS.ADD:
 		new_save[key] = new_save[key] + value
-	elif operation == "subtract":
+	elif operation == Constants.OPERATIONS.SUB:
 		new_save[key] = new_save[key] - value
 	else:
-		assert(operation not in ["add", "subtract"], "Not an implemented method")
+		assert(operation in Constants.OPERATIONS, "Not an implemented method")
 	return new_save
+	
 	
 func switch_scene(new_scene_path: String) -> void:
 	assert(new_scene_path != "", "Scene path cannot be empty.")
@@ -52,6 +60,7 @@ func switch_scene(new_scene_path: String) -> void:
 
 	current_scene = new_scene_instance
 	print("Switched to new scene: %s".format(new_scene_path))
+
 
 # Gonna comment this out because i'm not certain we'll be able to use this
 # for the web exported version

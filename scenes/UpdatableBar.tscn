@@ -16,7 +16,7 @@ border_width_right = 1
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[node name="ProgressBar" type="ProgressBar"]
+[node name="UpdatableBar" type="ProgressBar"]
 offset_right = 251.0
 offset_bottom = 19.0
 theme_override_styles/background = SubResource("StyleBoxFlat_8w0aa")

@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://cjsuhc85tnxcg"]
+
+[ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UpdatableBar.tscn" id="1_7pai4"]
+[ext_resource type="Script" path="res://scripts/SanityBar.gd" id="2_3163p"]
+[ext_resource type="Script" path="res://scripts/HealthBar.gd" id="3_0avjk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxqga"]
+bg_color = Color(1, 0.054902, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fp0x4"]
+bg_color = Color(0, 0.728552, 9.06783e-05, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[node name="Hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sanity" parent="." instance=ExtResource("1_7pai4")]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 584.0
+offset_right = 208.0
+offset_bottom = 603.0
+script = ExtResource("2_3163p")
+
+[node name="Health" parent="." instance=ExtResource("1_7pai4")]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 584.0
+offset_right = 755.0
+offset_bottom = 603.0
+theme_override_styles/background = SubResource("StyleBoxFlat_nxqga")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fp0x4")
+value = 100.0
+script = ExtResource("3_0avjk")
