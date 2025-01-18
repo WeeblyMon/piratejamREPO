@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_2htwu"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
-[ext_resource type="PackedScene" path="res://scenes/characters/HUD.tscn" id="3_0b38m"]
+[ext_resource type="PackedScene" uid="uid://b3n50h3s6bshv" path="res://scenes/characters/HUD.tscn" id="3_0b38m"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sbymi"]
 vertices = PackedVector2Array(1428.65, 728.93, -248.094, 720.047, -180.797, -49.3438, 1323.22, -105.656)

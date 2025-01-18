@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var speed: float = 150.0  # Movement speed
 @export var fire_rate: float = 1.0  # Time between shots
 @export var gun: Node2D  # Reference to the gun node
-
+@export var stop_distance: float = 5.0
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D  # Reference to NavigationAgent2D
 @onready var path_debug: Node2D = $PathDebug  # Reference to the debug node
 
@@ -24,16 +24,22 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if is_paused:
-		velocity = Vector2.ZERO  # Stop movement if paused
+		velocity = Vector2.ZERO
 		move_and_slide()
 		return
 
 	# Update velocity using NavigationAgent2D
 	var next_position = navigation_agent.get_next_path_position()
-	if next_position != Vector2.ZERO:
+	var distance_to_target = global_position.distance_to(next_position)
+
+	if distance_to_target > stop_distance and next_position != Vector2.ZERO:
 		velocity = (next_position - global_position).normalized() * speed
+
+		# Smooth rotation to face the direction of movement
+		var direction = next_position - global_position
+		rotation = lerp_angle(rotation, direction.angle(), 10 * delta)  # Adjust 10 for speed
 	else:
-		velocity = Vector2.ZERO  # Stop if there's no target
+		velocity = Vector2.ZERO  # Stop moving
 
 	move_and_slide()
 
