@@ -15,9 +15,9 @@ func _process(delta: float) -> void:
 		fire_bullet()
 		time_since_last_shot = 0.0
 	if Input.is_action_just_pressed("addSanity"):
-		GameStateManager.set_sanity(2, "add")
+		GameStateManager.set_sanity(2, Constants.OPERATIONS.ADD)
 	if Input.is_action_just_pressed("removeSanity"):
-		GameStateManager.set_sanity(2, "subtract")
+		GameStateManager.set_sanity(2, Constants.OPERATIONS.SUB)
 
 
 func fire_bullet() -> void:
