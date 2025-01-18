@@ -32,8 +32,8 @@ func _draw() -> void:
 
 	if navigation_agent and navigation_region:
 		# Get the start and target positions
-		var start = navigation_agent.get_parent().global_position
-		var target = navigation_agent.get_target_position()
+		var start = to_local(navigation_agent.get_parent().global_position)
+		var target = to_local(navigation_agent.get_target_position())
 
 		# Get the navigation map from NavigationRegion2D
 		var nav_map = navigation_region.get_world_2d().navigation_map
@@ -44,18 +44,21 @@ func _draw() -> void:
 		# Calculate the path using the navigation map
 		var path = NavigationServer2D.map_get_path(
 			nav_map,
-			start,
-			target,
+			navigation_agent.get_parent().global_position,  # Keep these in global space for pathfinding
+			navigation_agent.get_target_position(),
 			false  # Do not allow partial paths
 		)
 		print("Drawing path:", path)
 
-		# Draw the calculated path
+		# Draw the calculated path, converting each point to local space
 		if path.size() > 1:
 			for i in range(path.size() - 1):
-				draw_line(path[i], path[i + 1], Color(0, 1, 0), 5)  # Bright green with thickness 5
+				var local_start = to_local(path[i])
+				var local_end = to_local(path[i + 1])
+				draw_line(local_start, local_end, Color(0, 0, 1), 1)  # Bright green with thickness 5
 		else:
 			print("Path is empty or invalid.")
+
 
 func _on_navigation_agent_path_changed() -> void:
 	if is_map_ready:
