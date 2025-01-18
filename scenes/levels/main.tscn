@@ -4,6 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
 [ext_resource type="PackedScene" uid="uid://cjsuhc85tnxcg" path="res://scenes/characters/HUD.tscn" id="3_0b38m"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_sbymi"]
+vertices = PackedVector2Array(1428.65, 728.93, -248.094, 720.047, -180.797, -49.3438, 1323.22, -105.656)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-190, -59, -259, 730, 1440, 739, 1332, -116)])
+
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_2htwu")
 
@@ -16,3 +21,20 @@ fire_rate = 0.2
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("3_0b38m")]
+
+[node name="PathDebug" parent="Wielder" index="4" node_paths=PackedStringArray("navigation_region")]
+
+navigation_region = NodePath("../NavigationRegion2D")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+
+navigation_polygon = SubResource("NavigationPolygon_sbymi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+
+visible = false
+z_index = 1
+offset_left = -409.0
+offset_top = -620.0
+offset_right = 1505.0
+offset_bottom = 677.0

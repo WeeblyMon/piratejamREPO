@@ -1,14 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://vkatmye03xqt"]
+[gd_scene load_steps=5 format=3 uid="uid://vkatmye03xqt"]
 
 [ext_resource type="Script" path="res://scripts/characters/WielderAI.gd" id="1_jplbh"]
 [ext_resource type="Texture2D" uid="uid://c8ei7xc5335b2" path="res://assets/art/characters/survivor-idle_rifle_0.png" id="2_3cim3"]
 [ext_resource type="PackedScene" uid="uid://c3tvkwosjnu8" path="res://scenes/characters/PlayerGun.tscn" id="3_thj8m"]
-[ext_resource type="Script" path="res://scripts/utilities/path_debug.gd" id="4_vj520"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntrfv"]
 
 [node name="Wielder" type="CharacterBody2D" node_paths=PackedStringArray("gun")]
 script = ExtResource("1_jplbh")
+speed = null
+fire_rate = null
 gun = NodePath("Gun")
 
 [node name="Gun" parent="." instance=ExtResource("3_thj8m")]
@@ -22,10 +23,7 @@ texture = ExtResource("2_3cim3")
 scale = Vector2(10.9383, 9.27131)
 shape = SubResource("CircleShape2D_ntrfv")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.64, 0.64)
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[node name="PathDebug" type="Node2D" parent="." node_paths=PackedStringArray("navigation_agent")]
-script = ExtResource("4_vj520")
-navigation_agent = NodePath("../NavigationAgent2D")
-
-[connection signal="path_changed" from="NavigationAgent2D" to="PathDebug" method="_on_navigation_agent_2d_path_changed"]
