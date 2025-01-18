@@ -8,11 +8,17 @@ var last_bullet: Node2D = null
 
 @onready var barrel: RayCast2D = $RayCast2D
 
+
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
 	if Input.is_action_just_pressed("fire") and time_since_last_shot >= fire_rate:
 		fire_bullet()
 		time_since_last_shot = 0.0
+	if Input.is_action_just_pressed("addSanity"):
+		GameStateManager.set_sanity(2, "add")
+	if Input.is_action_just_pressed("removeSanity"):
+		GameStateManager.set_sanity(2, "subtract")
+
 
 func fire_bullet() -> void:
 	if bullet_scene:

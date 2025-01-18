@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwblgv22g0tt7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w0aa"]
+bg_color = Color(0.722947, 0.576703, 0.278853, 0.337255)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruka2"]
+bg_color = Color(0.824506, 0.521644, 0.169998, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[node name="ProgressBar" type="ProgressBar"]
+offset_right = 251.0
+offset_bottom = 19.0
+theme_override_styles/background = SubResource("StyleBoxFlat_8w0aa")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ruka2")
+step = 1.0
+value = 50.0
+rounded = true
+show_percentage = false
