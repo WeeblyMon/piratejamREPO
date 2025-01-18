@@ -15,12 +15,18 @@ script = ExtResource("1_2htwu")
 position = Vector2(559, 302)
 fire_rate = 0.2
 
+[node name="PathDebug" parent="Wielder" index="4" node_paths=PackedStringArray("navigation_region")]
+navigation_region = NodePath("../../NavigationRegion2D")
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 z_index = -1
 offset_left = -409.0
 offset_top = -62.0
 offset_right = 1505.0
 offset_bottom = 677.0
+
+[editable path="Wielder"]

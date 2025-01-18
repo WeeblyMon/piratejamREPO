@@ -24,5 +24,8 @@ shape = SubResource("CircleShape2D_ntrfv")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
-[node name="PathDebug" type="Node2D" parent="."]
+[node name="PathDebug" type="Node2D" parent="." node_paths=PackedStringArray("navigation_agent")]
 script = ExtResource("4_vj520")
+navigation_agent = NodePath("../NavigationAgent2D")
+
+[connection signal="path_changed" from="NavigationAgent2D" to="PathDebug" method="_on_navigation_agent_2d_path_changed"]
