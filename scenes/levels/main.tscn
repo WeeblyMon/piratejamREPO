@@ -8,3 +8,4 @@ script = ExtResource("1_2htwu")
 
 [node name="Wielder" parent="." instance=ExtResource("2_580be")]
 position = Vector2(559, 302)
+fire_rate = 0.2
