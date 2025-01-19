@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var wielder: CharacterBody2D = $Wielder  # Reference the wielder
+@export var wielder: CharacterBody2D   # Reference the wielder
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
