@@ -8,7 +8,7 @@ extends CharacterBody2D
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D  # Reference to NavigationAgent2D
 @onready var path_debug: Node2D = $PathDebug  # Reference to PathDebug node
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D  # Reference to AnimatedSprite2D
-
+var is_playing_animation: bool = false
 var time_since_last_shot: float = 0.0  # Timer for shooting
 var is_paused: bool = false  # Pause flag for movement/shooting
 
@@ -23,7 +23,6 @@ func _ready() -> void:
 
 	# Connect velocity_computed signal
 	navigation_agent.velocity_computed.connect(_on_velocity_computed)
-
 	# Notify the gun about the initial weapon from GameStateManager
 	if gun and gun.has_method("switch_weapon"):
 		gun.switch_weapon(GameStateManager.get_weapon())
@@ -68,9 +67,12 @@ func _physics_process(delta: float) -> void:
 		time_since_last_shot = 0.0
 
 func shoot() -> void:
+	if is_playing_animation:
+		return  # Skip shooting if the fire animation hasn't finished
+
 	if gun and gun.has_method("fire_bullet"):
 		gun.fire_bullet()
-		play_animation("shoot")  # Play shoot animation
+		play_animation("shoot")  # Play the shooting animation
 
 func reload() -> void:
 	# Play reload animation and disable shooting temporarily
@@ -96,12 +98,17 @@ func _on_velocity_computed(velocity: Vector2) -> void:
 	pass
 
 func play_animation(state: String) -> void:
-	# Dynamically build the animation name
 	var animation_name = state + "_" + GameStateManager.get_weapon()
-	
-	# Check if the SpriteFrames resource contains the animation before playing it
+
 	if animated_sprite.sprite_frames.has_animation(animation_name):
 		if animated_sprite.animation != animation_name:  # Avoid restarting the same animation
 			animated_sprite.play(animation_name)
+			is_playing_animation = (state == "shoot")  # Only set the flag for "shoot" animation
 	else:
 		print("Animation not found:", animation_name)
+
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if animated_sprite.animation == "shoot_" + GameStateManager.get_weapon():
+		is_playing_animation = false  # Reset the flag if the shooting animation finishes

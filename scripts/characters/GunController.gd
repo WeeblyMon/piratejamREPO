@@ -6,9 +6,9 @@ extends Node2D
 @onready var raycast: RayCast2D = $RayCast2D  
 
 var weapon_raycast_positions = {
-	"handgun": {"position": Vector2(10, 0), "direction": Vector2(1, 0)},
-	"rifle": {"position": Vector2(20, 0), "direction": Vector2(1, 0)},
-	"shotgun": {"position": Vector2(15, 0), "direction": Vector2(1, 0)}
+	"handgun": {"position": Vector2(163, 44), "direction": Vector2(1, 0)},
+	"rifle": {"position": Vector2(181, 36), "direction": Vector2(1, 0)},
+	"shotgun": {"position": Vector2(186, 37), "direction": Vector2(1, 0)}
 }
 
 var time_since_last_shot: float = 0.0
