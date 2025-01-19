@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cjsuhc85tnxcg"]
+[gd_scene load_steps=6 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UpdatableBar.tscn" id="1_7pai4"]
 [ext_resource type="Script" path="res://scripts/SanityBar.gd" id="2_3163p"]
