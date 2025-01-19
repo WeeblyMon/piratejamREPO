@@ -38,7 +38,7 @@ func switch_weapon(new_weapon: String) -> void:
 	# Play idle animation for the new weapon
 	play_animation("idle")
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	if is_paused:
 		velocity = Vector2.ZERO
 		play_animation("idle")  # Play idle animation while paused
@@ -65,6 +65,15 @@ func _physics_process(delta: float) -> void:
 	if time_since_last_shot >= fire_rate:
 		shoot()
 		time_since_last_shot = 0.0
+
+	# Debugging: Weapon Swapping
+	if Input.is_action_just_pressed("swap_to_handgun"):
+		switch_weapon("handgun")
+	elif Input.is_action_just_pressed("swap_to_rifle"):
+		switch_weapon("rifle")
+	elif Input.is_action_just_pressed("swap_to_shotgun"):
+		switch_weapon("shotgun")
+
 
 func shoot() -> void:
 	if is_playing_animation:
