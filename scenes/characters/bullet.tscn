@@ -11,6 +11,7 @@ speed = 1000.0
 lifetime = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.57079
 scale = Vector2(0.0314437, 0.0412051)
 texture = ExtResource("2_7apbw")
 

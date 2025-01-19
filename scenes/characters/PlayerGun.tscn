@@ -19,5 +19,5 @@ offset_bottom = 1.0
 color = Color(0.996933, 0.000126969, 6.98858e-05, 1)
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(110, 0)
-target_position = Vector2(14, 0)
+position = Vector2(139, 0)
+target_position = Vector2(72, 0)
