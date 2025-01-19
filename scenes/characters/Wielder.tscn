@@ -1,9 +1,8 @@
-[gd_scene load_steps=191 format=3 uid="uid://vkatmye03xqt"]
+[gd_scene load_steps=190 format=3 uid="uid://vkatmye03xqt"]
 
 [ext_resource type="Script" path="res://scripts/characters/WielderAI.gd" id="1_jplbh"]
 [ext_resource type="Texture2D" uid="uid://c8ei7xc5335b2" path="res://assets/art/characters/survivor-idle_rifle_0.png" id="2_3cim3"]
 [ext_resource type="PackedScene" uid="uid://c3tvkwosjnu8" path="res://scenes/characters/PlayerGun.tscn" id="3_thj8m"]
-[ext_resource type="Script" path="res://scripts/utilities/path_debug.gd" id="4_vj520"]
 [ext_resource type="Texture2D" uid="uid://bpvkkg5v4dj31" path="res://resources/animations/Top_Down_Survivor/handgun/idle/survivor-idle_handgun_0.png" id="5_cw62o"]
 [ext_resource type="Texture2D" uid="uid://b3vul7nwqnsxn" path="res://resources/animations/Top_Down_Survivor/handgun/idle/survivor-idle_handgun_1.png" id="6_a771q"]
 [ext_resource type="Texture2D" uid="uid://cgu3aq7ypng7x" path="res://resources/animations/Top_Down_Survivor/handgun/idle/survivor-idle_handgun_2.png" id="7_5fg1q"]
@@ -826,17 +825,13 @@ scale = Vector2(10.9383, 9.27131)
 shape = SubResource("CircleShape2D_ntrfv")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[node name="PathDebug" type="Node2D" parent="." node_paths=PackedStringArray("navigation_agent")]
-script = ExtResource("4_vj520")
-navigation_agent = NodePath("../NavigationAgent2D")
+path_max_distance = 2080.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(46, -11)
 sprite_frames = SubResource("SpriteFrames_vo71q")
 animation = &"move_shotgun"
 
-[connection signal="path_changed" from="NavigationAgent2D" to="PathDebug" method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 
 [editable path="Gun"]
