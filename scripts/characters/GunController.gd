@@ -1,49 +1,54 @@
 extends Node2D
 
-@export var bullet_scene: PackedScene
+@export var bullet_scene: PackedScene 
 @export var fire_rate: float = 0.5  
 
+@onready var raycast: RayCast2D = $RayCast2D  
+
+var weapon_raycast_positions = {
+	"handgun": {"position": Vector2(10, 0), "direction": Vector2(1, 0)},
+	"rifle": {"position": Vector2(20, 0), "direction": Vector2(1, 0)},
+	"shotgun": {"position": Vector2(15, 0), "direction": Vector2(1, 0)}
+}
+
 var time_since_last_shot: float = 0.0
-var last_bullet: Node2D = null
 
-@onready var barrel: RayCast2D = $RayCast2D
+func _ready() -> void:
 
+	var current_weapon = GameStateManager.get_weapon()
+	update_raycast(current_weapon)
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
-	if Input.is_action_just_pressed("fire") and time_since_last_shot >= fire_rate:
-		fire_bullet()
-		time_since_last_shot = 0.0
-	if Input.is_action_just_pressed("addSanity"):
-		GameStateManager.set_sanity(2, Constants.OPERATIONS.ADD)
-	if Input.is_action_just_pressed("removeSanity"):
-		GameStateManager.set_sanity(2, Constants.OPERATIONS.SUB)
-
 
 func fire_bullet() -> void:
-	if bullet_scene:
-		var bullet: Node2D = bullet_scene.instantiate()
+	if bullet_scene and time_since_last_shot >= fire_rate:
+		# Instantiate the bullet
+		var bullet = bullet_scene.instantiate()
+		bullet.global_position = raycast.global_position  # Bullet spawns at the raycast position
+		bullet.rotation = raycast.global_rotation         # Bullet uses the raycast's rotation
 
-		var global_transform: Transform2D = barrel.get_global_transform()
-		bullet.global_position = global_transform.origin 
-		bullet.rotation = global_transform.get_rotation() 
+		# Add the bullet to the current scene
+		get_tree().current_scene.add_child(bullet)
 
-		get_tree().current_scene.add_child(bullet)  
-		last_bullet = bullet
-		print("Bullet spawned at:", bullet.global_position)
+		# Reset the timer
+		time_since_last_shot = 0.0
+		print("Bullet fired from", GameStateManager.get_weapon())
 
+func switch_weapon(new_weapon: String) -> void:
+	# Update the weapon in the GameStateManager
+	GameStateManager.set_weapon(new_weapon)
 
-func control_last_bullet() -> void:
-	if last_bullet and last_bullet.has_method("set"):
-		last_bullet.is_controlled = true
-		print("Player now controls the last bullet!")
+	# Update the RayCast2D for the new weapon
+	update_raycast(new_weapon)
 
-func _input(event: InputEvent) -> void:
-	var wielder = get_parent() as Node2D  
-	if event.is_action_pressed("control_bullet"):
-		control_last_bullet()
-		if wielder.has_method("pause_shooting"):
-			wielder.pause_shooting()
-	elif event.is_action_released("control_bullet"):
-		if wielder.has_method("resume_shooting"):
-			wielder.resume_shooting()
+func update_raycast(current_weapon: String) -> void:
+	# Dynamically adjust the RayCast2D position and direction for the current weapon
+	if weapon_raycast_positions.has(current_weapon):
+		var weapon_data = weapon_raycast_positions[current_weapon]
+		raycast.position = weapon_data["position"]
+		raycast.target_position = weapon_data["direction"] * 100  # Adjust the length of the ray
+		raycast.enabled = true
+		print("RayCast2D updated for weapon:", current_weapon)
+	else:
+		print("No raycast data found for weapon:", current_weapon)
