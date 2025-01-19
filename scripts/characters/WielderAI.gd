@@ -17,7 +17,6 @@ func _ready() -> void:
 		print("NavigationAgent2D node not found!")
 		return
 
-	# Assign the NavigationAgent2D to the PathDebug node for visualization
 	if path_debug and path_debug.has_method("set"):
 		path_debug.navigation_agent = navigation_agent
 
