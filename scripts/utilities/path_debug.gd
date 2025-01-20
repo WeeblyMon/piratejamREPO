@@ -15,5 +15,11 @@ func set_path(points: Array[Vector2]) -> void:
 
 func _draw() -> void:
 	if path_points.size() > 1:
+		# Draw path using global positions
 		for i in range(path_points.size() - 1):
-			draw_line(path_points[i], path_points[i + 1], path_color, path_thickness)
+			draw_line(
+				to_local(path_points[i]), 
+				to_local(path_points[i + 1]), 
+				path_color, 
+				path_thickness
+			)

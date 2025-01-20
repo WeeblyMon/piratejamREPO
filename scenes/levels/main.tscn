@@ -14,12 +14,11 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-363, -285, -259, 730, 
 script = ExtResource("1_2htwu")
 wielder = NodePath("Wielder")
 
-[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("2_580be")]
+[node name="Wielder" parent="." instance=ExtResource("2_580be")]
 position = Vector2(559, 302)
 floor_stop_on_slope = false
 floor_block_on_wall = false
 fire_rate = 0.2
-path_debug = NodePath("../PathDebug")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
@@ -36,8 +35,7 @@ offset_top = -620.0
 offset_right = 1505.0
 offset_bottom = 677.0
 
-[node name="PathDebug" parent="." node_paths=PackedStringArray("navigation_region") instance=ExtResource("4_ah6nj")]
-navigation_region = NodePath("../NavigationRegion2D")
+[node name="PathDebug" parent="." instance=ExtResource("4_ah6nj")]
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
