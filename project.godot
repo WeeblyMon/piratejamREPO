@@ -24,6 +24,7 @@ Constants="*res://scripts/utilities/Constants.gd"
 [global_group]
 
 enemy=""
+checkpoints=""
 
 [input]
 
@@ -75,5 +76,4 @@ swap_to_rifle={
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+occlusion_culling/bvh_build_quality=1
