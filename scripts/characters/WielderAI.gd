@@ -105,7 +105,6 @@ func _process_movement_phase(delta: float) -> void:
 func _check_if_reached_checkpoint() -> void:
 	var cp_pos = GameStateManager.get_current_checkpoint_position()
 	if cp_pos == Vector2.ZERO:
-		print("No valid checkpoint available or all checkpoints visited.")
 		return
 
 	# Check distance to the current checkpoint
@@ -152,7 +151,6 @@ func _process_combat_phase(delta: float) -> void:
 			var dir = (nearest.global_position - global_position).normalized()
 			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
 
-		# Actually shoot if the AI is supposed to auto-fire in combat
 		time_since_last_shot += delta
 		if time_since_last_shot >= fire_rate:
 			shoot()
