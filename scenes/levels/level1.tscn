@@ -12,9 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://no2kjs32iev3" path="res://scenes/props/path_debug.tscn" id="10_sstb6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1lkl0"]
-vertices = PackedVector2Array(1429.3, 728.938, -249.961, 720.039, -351.93, -275.117, 1360.65, -293.891)
+vertices = PackedVector2Array(4197, -8441.03, 4197, 878.961, -4811.95, 846.031, -4767.04, -8474.96)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-363, -285, -259, 730, 1440, 739, 1370, -304)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-4822, 856, -4777, -8485, 4207, -8451, 4207, 889)])
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6twwb"]
 texture = ExtResource("3_x6eni")
@@ -31839,13 +31839,26 @@ sources/5 = SubResource("TileSetAtlasSource_tpxf2")
 script = ExtResource("1_7l1m2")
 wielder = NodePath("Wielder")
 
-[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("9_tj2ga")]
+[node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 position = Vector2(502, 370)
-path_debug = NodePath("../PathDebug")
+stop_distance = 1.0
+
+[node name="NavigationAgent2D" parent="Wielder" index="3"]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+
+[node name="Camera2D" type="Camera2D" parent="Wielder"]
+zoom = Vector2(0.29, 0.29)
+
+[node name="PathDebug" parent="." node_paths=PackedStringArray("navigation_region") instance=ExtResource("10_sstb6")]
+z_index = 4
+position = Vector2(498, 378)
+navigation_region = NodePath("../NavigationRegion2D")
+path_thickness = 5.0
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 z_index = 6
-position = Vector2(61, 30)
+position = Vector2(17, 226)
 navigation_polygon = SubResource("NavigationPolygon_1lkl0")
 
 [node name="Image" type="Sprite2D" parent="."]
@@ -31882,10 +31895,6 @@ z_index = -2
 tile_set = SubResource("TileSet_g5esx")
 collision_enabled = false
 navigation_enabled = false
-
-[node name="PathDebug" parent="." node_paths=PackedStringArray("navigation_region") instance=ExtResource("10_sstb6")]
-position = Vector2(-815, -3836)
-navigation_region = NodePath("../NavigationRegion2D")
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

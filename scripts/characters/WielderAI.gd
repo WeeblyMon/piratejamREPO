@@ -6,7 +6,7 @@ extends CharacterBody2D
 @export var gun: Node2D  # Reference to the gun node
 
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-@export var path_debug: Node2D 
+@export var path_debug: Node2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 var is_playing_animation: bool = false
