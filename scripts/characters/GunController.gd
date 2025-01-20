@@ -21,7 +21,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
 
-func fire_bullet() -> void:
+func fire_bullet():
 	if bullet_scene and time_since_last_shot >= fire_rate:
 		# Instantiate the bullet
 		var bullet = bullet_scene.instantiate()
@@ -34,6 +34,10 @@ func fire_bullet() -> void:
 		# Reset the timer
 		time_since_last_shot = 0.0
 		print("Bullet fired from", GameStateManager.get_weapon())
+		
+		return bullet
+			# If we couldn't fire (cooldown not done, etc.), return null
+	return null
 
 func switch_weapon(new_weapon: String) -> void:
 	# Update the weapon in the GameStateManager
