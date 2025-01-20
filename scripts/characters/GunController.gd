@@ -14,14 +14,16 @@ var weapon_raycast_positions = {
 var time_since_last_shot: float = 0.0
 
 func _ready() -> void:
-
+	# Set the initial weapon raycast position and direction
 	var current_weapon = GameStateManager.get_weapon()
 	update_raycast(current_weapon)
 
 func _process(delta: float) -> void:
+	# Increment the cooldown timer every frame
 	time_since_last_shot += delta
 
-func fire_bullet():
+func fire_bullet() -> Node:
+	# Check if we can fire based on the cooldown
 	if bullet_scene and time_since_last_shot >= fire_rate:
 		# Instantiate the bullet
 		var bullet = bullet_scene.instantiate()
@@ -34,10 +36,12 @@ func fire_bullet():
 		# Reset the timer
 		time_since_last_shot = 0.0
 		print("Bullet fired from", GameStateManager.get_weapon())
-		
 		return bullet
-			# If we couldn't fire (cooldown not done, etc.), return null
-	return null
+	else:
+		# Debug output for cooldown
+		if time_since_last_shot < fire_rate:
+			print("Cannot fire: cooldown active (remaining:", fire_rate - time_since_last_shot, "s)")
+		return null
 
 func switch_weapon(new_weapon: String) -> void:
 	# Update the weapon in the GameStateManager
