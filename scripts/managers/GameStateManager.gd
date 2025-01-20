@@ -110,12 +110,67 @@ func init_checkpoints() -> void:
 		for cp in all_cp:
 			if cp.path_label == chosen_path_label:
 				path_checkpoints.append(cp)
-
-		path_checkpoints.sort_custom(Callable(self, "_compare_cp_by_id"))
-
-		# --- Debug print the final order ---
 		for cp in path_checkpoints:
 			print("Sorted checkpoint -> ID:", cp.checkpoint_id, "pos:", cp.global_position)
+
+func init_checkpoints_for_ai(ai_position: Vector2) -> void:
+	# Clear any previously stored checkpoints
+	path_checkpoints.clear()
+	current_checkpoint_index = 0
+
+	# Get all nodes in the 'checkpoints' group
+	var all_cp = get_tree().get_nodes_in_group("checkpoints")
+	if all_cp.is_empty():
+		print("No checkpoints found in the 'checkpoints' group!")
+		return
+
+	# Debugging: Log all checkpoints
+	print("Found checkpoints:")
+	for cp in all_cp:
+		print("- Label:", cp.path_label, "ID:", cp.checkpoint_id, "Position:", cp.global_position)
+
+	# Get unique path labels
+	var unique_labels = []
+	for cp in all_cp:
+		if cp.path_label not in unique_labels:
+			unique_labels.append(cp.path_label)
+
+	# Debugging: Log unique labels
+	print("Unique path labels found:", unique_labels)
+
+	# Select a random path label and filter checkpoints by it
+	if unique_labels.size() > 0:
+		var random_index = randi() % unique_labels.size()
+		chosen_path_label = unique_labels[random_index]
+		print("Chosen path label:", chosen_path_label)
+
+		for cp in all_cp:
+			if cp.path_label == chosen_path_label:
+				path_checkpoints.append(cp)
+
+	# Debugging: Log unsorted checkpoints
+	print("Unsorted checkpoints for label", chosen_path_label, ":")
+	for cp in path_checkpoints:
+		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
+
+	# Debugging: Log sorted checkpoints
+	print("Sorted checkpoints for label", chosen_path_label, ":")
+	for cp in path_checkpoints:
+		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
+
+	# Find the nearest checkpoint to the AI
+	var nearest_index = 0
+	var nearest_dist = INF
+	for i in range(path_checkpoints.size()):
+		var dist = ai_position.distance_to(path_checkpoints[i].global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest_index = i
+
+	current_checkpoint_index = nearest_index
+	print("Nearest checkpoint is index =", nearest_index,
+		  "ID =", path_checkpoints[nearest_index].checkpoint_id,
+		  "dist =", nearest_dist)
 
 func get_current_checkpoint_position() -> Vector2:
 	if current_checkpoint_index >= path_checkpoints.size():
@@ -124,18 +179,16 @@ func get_current_checkpoint_position() -> Vector2:
 	return cp.global_position
 
 func next_checkpoint() -> void:
+	# Increment the checkpoint index
 	current_checkpoint_index += 1
-	if current_checkpoint_index >= path_checkpoints.size():
-		print("GameStateManager: All path checkpoints done.")
 
-func _compare_cp_by_id(a, b) -> int:
-	# We want ID=1 to appear before ID=2, etc. => ascending order.
-	if a.checkpoint_id < b.checkpoint_id:
-		return -1   # "a" is smaller => put a first
-	elif a.checkpoint_id > b.checkpoint_id:
-		return 1    # "a" is bigger => put a after b
+	# Check if there are more checkpoints
+	if current_checkpoint_index >= path_checkpoints.size():
+		print("GameStateManager: All checkpoints visited.")
 	else:
-		return 0    # same ID
+		print("GameStateManager: Moving to checkpoint index =", current_checkpoint_index,
+			  "Position =", path_checkpoints[current_checkpoint_index].global_position)
+
 
 # ---------------------------------------
 # COMBAT HELPERS (stubs)

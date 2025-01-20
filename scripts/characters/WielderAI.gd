@@ -29,8 +29,8 @@ func _ready() -> void:
 		gun.switch_weapon(GameStateManager.get_weapon())
 
 	# 1) Initialize checkpoints in the manager
-	GameStateManager.init_checkpoints()
-
+	GameStateManager.init_checkpoints_for_ai(global_position)
+	
 	# 2) Set initial target to the first checkpoint
 	var first_cp_pos = GameStateManager.get_current_checkpoint_position()
 	if first_cp_pos != Vector2.ZERO:
@@ -105,24 +105,25 @@ func _process_movement_phase(delta: float) -> void:
 func _check_if_reached_checkpoint() -> void:
 	var cp_pos = GameStateManager.get_current_checkpoint_position()
 	if cp_pos == Vector2.ZERO:
-		return  # No valid checkpoint or we are done
+		print("No valid checkpoint available or all checkpoints visited.")
+		return
+
+	# Check distance to the current checkpoint
 	var dist = global_position.distance_to(cp_pos)
 
-	# Debug: see which checkpoint index & distance
-	print("MovementPhase: Current index=", GameStateManager.current_checkpoint_index,
-		"pos=", cp_pos,
-		"dist=", dist)
-
+	# If the AI has reached the current checkpoint
 	if dist <= GameStateManager.stop_distance:
-		print("Reached checkpoint index=", GameStateManager.current_checkpoint_index)
+		print("Reached checkpoint index =", GameStateManager.current_checkpoint_index)
 		GameStateManager.next_checkpoint()
+
+		# Set the next checkpoint as the target
 		var next_cp = GameStateManager.get_current_checkpoint_position()
 		if next_cp != Vector2.ZERO:
-			print("Now heading to checkpoint index=", GameStateManager.current_checkpoint_index,
-				"pos=", next_cp)
+			print("Heading to next checkpoint:", next_cp)
 			navigation_agent.set_target_position(next_cp)
 		else:
-			print("Reached all checkpoints in manager.")
+			print("No more checkpoints to visit.")
+
 
 
 # ---------------------------------------------

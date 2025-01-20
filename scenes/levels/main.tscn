@@ -49,5 +49,8 @@ position = Vector2(995, -481)
 checkpoint_id = 3
 is_final = true
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(-0.19, -0.19)
+
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

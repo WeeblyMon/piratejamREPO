@@ -31898,11 +31898,16 @@ collision_enabled = false
 navigation_enabled = false
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
-position = Vector2(481, 310)
+position = Vector2(429, 78)
 
-[node name="RouteB" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
-position = Vector2(903, 14)
-path_label = "beta"
+[node name="RouteA-1" parent="RouteA" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-231, -371)
+checkpoint_id = 2
+
+[node name="RouteA-2" parent="RouteA/RouteA-1" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-555, -18)
+checkpoint_id = 3
+is_final = true
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
