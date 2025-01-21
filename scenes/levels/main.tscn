@@ -54,7 +54,7 @@ is_final = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1165, 48)
-zoom = Vector2(0.715, 0.715)
+zoom = Vector2(0.925, 0.925)
 
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
