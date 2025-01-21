@@ -60,6 +60,7 @@ position = Vector2(1338, -194)
 
 [node name="Cover" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1134, 73)
+max_health = null
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

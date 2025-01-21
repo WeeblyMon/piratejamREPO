@@ -48,18 +48,15 @@ func _process(delta: float) -> void:
 		else:
 			_disable_bullet_control()
 
-	# If bullet is controlled, skip normal logic
 	if bullet_controlled:
 		return
 
-	# B) If paused (e.g. reloading or special logic), idle
 	if is_paused:
 		velocity = Vector2.ZERO
 		play_animation("idle")
 		move_and_slide()
 		return
-
-	# C) Check the phase from GameStateManager
+		
 	match GameStateManager.get_wielder_phase():
 		GameStateManager.WielderPhase.MOVEMENT:
 			_process_movement_phase(delta)
@@ -75,10 +72,6 @@ func _process(delta: float) -> void:
 				var cp_pos = GameStateManager.get_current_checkpoint_position()
 				if cp_pos != Vector2.ZERO:
 					navigation_agent.set_target_position(cp_pos)
-
-
-	# D) No automatic shooting here. We only shoot in COMBAT phase now.
-
 
 # ---------------------------------------------
 #           MOVEMENT PHASE

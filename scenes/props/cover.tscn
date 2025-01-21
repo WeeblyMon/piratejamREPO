@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://do1w35vjf874s"]
+
+[ext_resource type="Script" path="res://scripts/levels/cover.gd" id="1_e5aqx"]
+[ext_resource type="Texture2D" uid="uid://c0w7bpvecaqn5" path="res://assets/art/props/barrel.png" id="2_1jt22"]
+[ext_resource type="PackedScene" uid="uid://bd51mkvfe5l4" path="res://scenes/UI/Explosion.tscn" id="2_ijvvp"]
+[ext_resource type="Texture2D" uid="uid://b02m3e8c0ia1l" path="res://assets/art/props/crate.png" id="3_deve5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rtbjk"]
+size = Vector2(30, 44)
+
+[node name="Cover" type="StaticBody2D" node_paths=PackedStringArray("health_bar")]
+scale = Vector2(1.51, 1.51)
+script = ExtResource("1_e5aqx")
+sprite_frames = Array[Texture2D]([ExtResource("2_1jt22"), ExtResource("3_deve5")])
+explosion_scene = ExtResource("2_ijvvp")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
