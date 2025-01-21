@@ -104,8 +104,8 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_16h32")
 }],
-"loop": true,
-"name": &"Explosion",
+"loop": false,
+"name": &"explode",
 "speed": 24.0
 }]
 
@@ -114,7 +114,8 @@ script = ExtResource("1_qokhl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8m1ju")
-animation = &"Explosion"
-frame_progress = 0.921862
+animation = &"explode"
+frame = 13
+frame_progress = 1.0
 
 [node name="Timer" type="Timer" parent="."]

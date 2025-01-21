@@ -122,47 +122,51 @@ func _check_if_reached_checkpoint() -> void:
 #           COMBAT PHASE
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
-	# Move to nearest cover if not already at cover
-	var cover_pos = GameStateManager.find_nearest_cover(global_position)
-	if cover_pos.distance_to(global_position) > 30:
-		navigation_agent.set_target_position(cover_pos)
-		var next_pos = navigation_agent.get_next_path_position()
-		if next_pos != Vector2.ZERO:
-			var direction = (next_pos - global_position).normalized()
-			velocity = direction * speed
-			rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
-			play_animation("move")
+	var enemies = get_tree().get_nodes_in_group("enemies")
+
+	# Find the nearest enemy
+	if enemies.size() > 0:
+		var nearest_enemy = enemies[0]
+		var min_dist = global_position.distance_to(nearest_enemy.global_position)
+		for e in enemies:
+			var dist = global_position.distance_to(e.global_position)
+			if dist < min_dist:
+				nearest_enemy = e
+				min_dist = dist
+
+		# Find the best cover relative to the enemy
+		var cover_position = find_best_cover_position(global_position, nearest_enemy.global_position)
+		if cover_position.distance_to(global_position) > 30:
+			# Move towards the cover
+			navigation_agent.set_target_position(cover_position)
+			var next_pos = navigation_agent.get_next_path_position()
+			if next_pos != Vector2.ZERO:
+				var direction = (next_pos - global_position).normalized()
+				velocity = direction * speed
+				rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
+				play_animation("move")
+			else:
+				velocity = Vector2.ZERO
+				play_animation("idle")
 		else:
+			# At cover, aim and shoot
 			velocity = Vector2.ZERO
-			play_animation("idle")
-	else:
-		# At cover, aim and shoot
-		velocity = Vector2.ZERO
-		var enemies = get_tree().get_nodes_in_group("enemies")
-
-		# Find the nearest enemy
-		if enemies.size() > 0:
-			var nearest = enemies[0]
-			var min_dist = global_position.distance_to(nearest.global_position)
-			for e in enemies:
-				var dist = global_position.distance_to(e.global_position)
-				if dist < min_dist:
-					nearest = e
-					min_dist = dist
-
-			# Aim at the nearest enemy
-			var dir = (nearest.global_position - global_position).normalized()
+			var dir = (nearest_enemy.global_position - global_position).normalized()
 			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
 
 			# Continuously shoot at the enemy
 			time_since_last_shot += delta
 			if time_since_last_shot >= fire_rate:
-				var bullet = gun.fire_bullet()  # Use guncontroller.gd to fire bullets
+				var bullet = gun.fire_bullet()
 				if bullet:
-					print("Shooting at:", nearest.name, "Enemy Health:", nearest.health)
+					print("Shooting at:", nearest_enemy.name)
 				time_since_last_shot = 0.0
+	else:
+		velocity = Vector2.ZERO
+		play_animation("idle")
 
 	move_and_slide()
+
 
 
 # ---------------------------------------------
@@ -234,3 +238,32 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 func _on_velocity_computed(agent_velocity: Vector2) -> void:
 	# optional
 	pass
+
+# ---------------------------------------------
+#           Cover System
+# ---------------------------------------------
+
+func find_best_cover_position(ai_position: Vector2, enemy_position: Vector2) -> Vector2:
+	var covers = get_tree().get_nodes_in_group("cover")
+	if covers.is_empty():
+		return ai_position  # No cover available, fallback to current position.
+
+	var best_cover = null
+	var best_dist = INF
+
+	# Find the nearest cover
+	for cover in covers:
+		var cover_position = cover.global_position
+		var dist = ai_position.distance_to(cover_position)
+		if dist < best_dist:
+			best_cover = cover
+			best_dist = dist
+
+	if best_cover:
+		# Calculate the safe position on the opposite side of the cover
+		var cover_position = best_cover.global_position
+		var direction_away_from_enemy = (cover_position - enemy_position).normalized()
+		var safe_position = cover_position + direction_away_from_enemy * best_cover.get_radius()
+		return safe_position
+
+	return ai_position  # Fallback if no valid cover is found.

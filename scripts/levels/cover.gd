@@ -4,7 +4,7 @@ extends Node2D
 @export var sprite_frames: Array[Texture2D] = []  # Different cover sprites
 @export var explosion_scene: PackedScene  # Explosion effect to spawn on destruction
 @export var sprite_index: int = 0  # Index for the current sprite
-
+@export var radius: float = 50.0  # Default radius for safe positioning
 @onready var sprite: Sprite2D = $Sprite2D
 @export var health_bar: ProgressBar
 
@@ -19,6 +19,9 @@ func _ready() -> void:
 	
 	# Set the initial sprite
 	update_sprite()
+	
+func get_radius() -> float:
+	return radius
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
