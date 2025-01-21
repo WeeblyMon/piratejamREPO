@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://bo787ao6qyh0d"]
+[gd_scene load_steps=21 format=4 uid="uid://bo787ao6qyh0d"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_7l1m2"]
 [ext_resource type="Texture2D" uid="uid://e8855e7qbbow" path="res://assets/art/enviroments/image.png" id="2_g3ag4"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="9_tj2ga"]
 [ext_resource type="PackedScene" uid="uid://no2kjs32iev3" path="res://scenes/props/path_debug.tscn" id="10_sstb6"]
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="11_r2sgb"]
+[ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="12_0ugyk"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1lkl0"]
 vertices = PackedVector2Array(-1839, -8465.03, -1839, -5362.94, -4799.89, -5346.05, -4767.1, -8474.96)
@@ -31842,8 +31843,7 @@ wielder = NodePath("Wielder")
 
 [node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("9_tj2ga")]
 z_index = 1
-position = Vector2(502, 370)
-scale = Vector2(0.3, 0.3)
+position = Vector2(404, 217)
 path_debug = NodePath("../PathDebug")
 
 [node name="NavigationAgent2D" parent="Wielder" index="3"]
@@ -31908,6 +31908,11 @@ checkpoint_id = 2
 position = Vector2(-555, -18)
 checkpoint_id = 3
 is_final = true
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="PoliceMen" parent="Enemies" groups=["enemy"] instance=ExtResource("12_0ugyk")]
+position = Vector2(259, 14)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

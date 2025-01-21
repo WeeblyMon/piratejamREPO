@@ -806,6 +806,7 @@ animations = [{
 }]
 
 [node name="Wielder" type="CharacterBody2D" node_paths=PackedStringArray("gun")]
+scale = Vector2(0.3, 0.3)
 script = ExtResource("1_jplbh")
 gun = NodePath("Gun")
 

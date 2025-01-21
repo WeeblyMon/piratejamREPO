@@ -105,7 +105,6 @@ func _process_movement_phase(delta: float) -> void:
 func _check_if_reached_checkpoint() -> void:
 	var cp_pos = GameStateManager.get_current_checkpoint_position()
 	if cp_pos == Vector2.ZERO:
-		print("No valid checkpoint available or all checkpoints visited.")
 		return
 
 	# Check distance to the current checkpoint
@@ -130,7 +129,7 @@ func _check_if_reached_checkpoint() -> void:
 #           COMBAT PHASE
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
-	# Example: move to nearest cover
+	# Move to nearest cover if not already at cover
 	var cover_pos = GameStateManager.find_nearest_cover(global_position)
 	if cover_pos.distance_to(global_position) > 30:
 		navigation_agent.set_target_position(cover_pos)
@@ -144,19 +143,31 @@ func _process_combat_phase(delta: float) -> void:
 			velocity = Vector2.ZERO
 			play_animation("idle")
 	else:
-		# At cover => aim or shoot if desired
+		# At cover, aim and shoot
 		velocity = Vector2.ZERO
 		var enemies = get_tree().get_nodes_in_group("enemies")
+
+		# Find the nearest enemy
 		if enemies.size() > 0:
-			var nearest = enemies[0]  # or find nearest
+			var nearest = enemies[0]
+			var min_dist = global_position.distance_to(nearest.global_position)
+			for e in enemies:
+				var dist = global_position.distance_to(e.global_position)
+				if dist < min_dist:
+					nearest = e
+					min_dist = dist
+
+			# Aim at the nearest enemy
 			var dir = (nearest.global_position - global_position).normalized()
 			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
 
-		# Actually shoot if the AI is supposed to auto-fire in combat
-		time_since_last_shot += delta
-		if time_since_last_shot >= fire_rate:
-			shoot()
-			time_since_last_shot = 0.0
+			# Continuously shoot at the enemy
+			time_since_last_shot += delta
+			if time_since_last_shot >= fire_rate:
+				var bullet = gun.fire_bullet()  # Use guncontroller.gd to fire bullets
+				if bullet:
+					print("Shooting at:", nearest.name, "Enemy Health:", nearest.health)
+				time_since_last_shot = 0.0
 
 	move_and_slide()
 
@@ -164,14 +175,20 @@ func _process_combat_phase(delta: float) -> void:
 # ---------------------------------------------
 #           SHOOTING & WEAPON
 # ---------------------------------------------
-func shoot() -> void:
+func shoot(target: Node) -> void:
 	if is_playing_animation:
 		return
 	if gun and gun.has_method("fire_bullet"):
 		var bullet = gun.fire_bullet()
 		if bullet:
 			last_fired_bullet = bullet
+
+	# Reduce target's health if it has a `take_damage` method
+	if target and target.has_method("take_damage"):
+		target.take_damage(1)
+
 	play_animation("shoot")
+
 
 func switch_weapon(new_weapon: String) -> void:
 	GameStateManager.set_weapon(new_weapon)

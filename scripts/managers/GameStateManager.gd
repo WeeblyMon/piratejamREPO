@@ -7,7 +7,7 @@ var wielder
 var current_level: int = 1
 var current_scene: Node
 
-var current_weapon: String = "shotgun"
+var current_weapon: String = "handgun"
 
 var current_save: Dictionary = {
 	"current_scene_path": "",

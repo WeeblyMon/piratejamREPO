@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxx8l5vgqoic3"]
+[gd_scene load_steps=8 format=3 uid="uid://bxx8l5vgqoic3"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_2htwu"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
 [ext_resource type="PackedScene" uid="uid://b3n50h3s6bshv" path="res://scenes/UI/HUD.tscn" id="3_0b38m"]
 [ext_resource type="PackedScene" uid="uid://no2kjs32iev3" path="res://scenes/props/path_debug.tscn" id="4_ah6nj"]
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="5_n2e8c"]
+[ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_sbymi"]
 vertices = PackedVector2Array(2837.63, 725.969, -249.813, 720.008, -414.211, -1214.2, 2753.4, -1586.8)
@@ -38,19 +39,23 @@ offset_bottom = 677.0
 [node name="PathDebug" parent="." instance=ExtResource("4_ah6nj")]
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(689, -171)
+position = Vector2(845, 162)
 
 [node name="RouteA-1" parent="RouteA" groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(656, -691)
+position = Vector2(396, -348)
 checkpoint_id = 2
 
 [node name="RouteA-2" parent="RouteA/RouteA-1" groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(995, -481)
+position = Vector2(474, 306)
 checkpoint_id = 3
 is_final = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(-0.19, -0.19)
+position = Vector2(1165, 48)
+zoom = Vector2(0.715, 0.715)
+
+[node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(1338, -194)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
