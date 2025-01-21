@@ -7,7 +7,7 @@ extends Node2D
 
 # Updated to include fire rate along with position and direction
 var weapon_data = {
-	"handgun": {"position": Vector2(163, 44), "direction": Vector2(1, 0), "fire_rate": 0.5},
+	"handgun": {"position": Vector2(163, 44), "direction": Vector2(1, 0), "fire_rate": 2.0},
 	"rifle": {"position": Vector2(181, 36), "direction": Vector2(1, 0), "fire_rate": 0.2},
 	"shotgun": {"position": Vector2(186, 37), "direction": Vector2(1, 0), "fire_rate": 1.0}
 }

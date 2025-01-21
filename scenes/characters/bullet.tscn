@@ -1,18 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://bj5ieasrb3u4b"]
+[gd_scene load_steps=6 format=3 uid="uid://bj5ieasrb3u4b"]
 
 [ext_resource type="Script" path="res://scripts/characters/Bullet.gd" id="1_2rjgs"]
-[ext_resource type="Texture2D" uid="uid://dwwcjsbu4swxq" path="res://assets/art/props/1461908.png" id="2_7apbw"]
+[ext_resource type="Texture2D" uid="uid://3u71teacyipk" path="res://assets/art/props/blue1.png" id="2_80fba"]
+
+[sub_resource type="Curve" id="Curve_retox"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.582888, 0.428571), -0.895745, -0.895745, 0, 0, Vector2(1, 0.835165), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_kys51"]
+offsets = PackedFloat32Array(0.136054, 0.557823)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mo5d"]
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" node_paths=PackedStringArray("line2d")]
 script = ExtResource("1_2rjgs")
-damage = 100
+speed = 1500.0
+line2d = NodePath("Line2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 0.00872665
+scale = Vector2(0.505, 0.669)
+texture = ExtResource("2_80fba")
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(-15, 0)
 rotation = 1.57079
-scale = Vector2(0.0314437, 0.0412051)
-texture = ExtResource("2_7apbw")
+scale = Vector2(0.487832, 0.0412051)
+points = PackedVector2Array(-0.00259406, 315.495, 0.0013968, -169.882, 0.00299315, -364.033)
+width_curve = SubResource("Curve_retox")
+gradient = SubResource("Gradient_kys51")
+antialiased = true
 
 [node name="Area2D" type="Area2D" parent="."]
 
