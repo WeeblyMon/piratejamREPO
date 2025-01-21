@@ -40,9 +40,12 @@ func control_bullet(delta: float) -> void:
 
 func enable_player_control() -> void:
 	is_controlled = true
+	time_alive = 0  # Reset lifetime to allow prolonged control
+	Engine.time_scale = 0.2  # Slow-motion effect
 
 func disable_player_control() -> void:
 	is_controlled = false
+	Engine.time_scale = 1.0  # Reset time scale
 
 # Handle collisions with other objects
 func _on_body_entered(body: Node) -> void:

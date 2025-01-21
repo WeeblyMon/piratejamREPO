@@ -14,36 +14,41 @@ var weapon_data = {
 
 var current_fire_rate: float = 0.5
 var time_since_last_shot: float = 0.0
+var last_fired_bullet: Node = null
 
 func _ready() -> void:
 	# Set the initial weapon raycast position and direction
 	var current_weapon = GameStateManager.get_weapon()
 	update_raycast(current_weapon)
 	update_weapon(current_weapon)
-
+	
 func _process(delta: float) -> void:
-	# Increment the cooldown timer every frame
 	time_since_last_shot += delta
 
-func fire_bullet() -> Node:
-	# Check if we can fire based on the cooldown
-	if bullet_scene and time_since_last_shot >= current_fire_rate:
-		# Instantiate the bullet
-		var bullet = bullet_scene.instantiate()
-		bullet.global_position = raycast.global_position  # Bullet spawns at the raycast position
-		bullet.rotation = raycast.global_rotation         # Bullet uses the raycast's rotation
+	# Safely check if the last fired bullet still exists
+	if is_instance_valid(last_fired_bullet):
+		# Check if the player wants to control the last bullet
+		if Input.is_action_pressed("control_bullet"):
+			last_fired_bullet.enable_player_control()
+		elif not Input.is_action_pressed("control_bullet"):
+			last_fired_bullet.disable_player_control()
+	else:
+		# Clear the reference if the bullet is no longer valid
+		last_fired_bullet = null
 
-		# Add the bullet to the current scene
+		
+func fire_bullet() -> Node:
+	if bullet_scene and time_since_last_shot >= current_fire_rate:
+		var bullet = bullet_scene.instantiate()
+		bullet.global_position = raycast.global_position
+		bullet.rotation = raycast.global_rotation
 		get_tree().current_scene.add_child(bullet)
 
-		# Reset the timer
+		last_fired_bullet = bullet  # Track the last bullet
 		time_since_last_shot = 0.0
 		print("Bullet fired from", GameStateManager.get_weapon())
 		return bullet
 	else:
-		# Debug output for cooldown
-		if time_since_last_shot < current_fire_rate:
-			print("Cannot fire: cooldown active (remaining:", current_fire_rate - time_since_last_shot, "s)")
 		return null
 
 func switch_weapon(new_weapon: String) -> void:
@@ -55,13 +60,11 @@ func switch_weapon(new_weapon: String) -> void:
 	update_weapon(new_weapon)
 
 func update_raycast(current_weapon: String) -> void:
-	# Dynamically adjust the RayCast2D position and direction for the current weapon
 	if weapon_data.has(current_weapon):
 		var weapon = weapon_data[current_weapon]
 		raycast.position = weapon["position"]
-		raycast.target_position = weapon["direction"] * 100  # Adjust the length of the ray
+		raycast.target_position = weapon["direction"] * 100
 		raycast.enabled = true
-		print("RayCast2D updated for weapon:", current_weapon)
 	else:
 		print("No raycast data found for weapon:", current_weapon)
 
