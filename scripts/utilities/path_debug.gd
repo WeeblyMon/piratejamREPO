@@ -3,6 +3,7 @@ extends Node2D
 @export var navigation_region: NavigationRegion2D  # Reference to NavigationRegion2D
 @export var path_color: Color = Color(0, 1, 0)  # Path line color
 @export var path_thickness: float = 2.0
+@export var navigation_agent: NavigationAgent2D
 
 var path_points: Array[Vector2] = []  # Stores the path for debugging
 
