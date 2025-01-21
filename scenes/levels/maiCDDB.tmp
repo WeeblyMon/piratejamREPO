@@ -17,11 +17,10 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-425, -1223, -259, 730,
 script = ExtResource("1_2htwu")
 wielder = NodePath("Wielder")
 
-[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("2_580be")]
+[node name="Wielder" parent="." instance=ExtResource("2_580be")]
 position = Vector2(559, 302)
 floor_stop_on_slope = false
 floor_block_on_wall = false
-path_debug = NodePath("../PathDebug")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
@@ -54,13 +53,14 @@ is_final = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1165, 48)
-zoom = Vector2(0.925, 0.925)
+zoom = Vector2(0.715, 0.715)
 
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
 
 [node name="Cover" parent="." instance=ExtResource("7_hca71")]
-position = Vector2(1216, -72)
+position = Vector2(1134, 73)
+max_health = null
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

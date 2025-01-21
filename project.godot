@@ -25,6 +25,7 @@ Constants="*res://scripts/utilities/Constants.gd"
 
 enemy=""
 checkpoints=""
+cover=""
 
 [input]
 
