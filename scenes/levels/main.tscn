@@ -22,6 +22,7 @@ floor_stop_on_slope = false
 floor_block_on_wall = false
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
