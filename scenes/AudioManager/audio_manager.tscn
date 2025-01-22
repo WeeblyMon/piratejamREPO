@@ -1,0 +1,110 @@
+[gd_scene load_steps=28 format=3 uid="uid://b4hxhxetxxosh"]
+
+[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="1_ghkg2"]
+[ext_resource type="AudioStream" uid="uid://dr8n8kuumi4cq" path="res://assets/audio/sfx/Scream_2.mp3" id="2_ugn3a"]
+[ext_resource type="AudioStream" uid="uid://lo3sl1peohvc" path="res://assets/audio/sfx/Scream_1.mp3" id="3_smcg1"]
+[ext_resource type="AudioStream" uid="uid://dtgb2rtb76xvd" path="res://assets/audio/sfx/Reload_1.mp3" id="4_2pu7h"]
+[ext_resource type="AudioStream" uid="uid://bj47ef1focvby" path="res://assets/audio/sfx/Pain_2.mp3" id="5_h8n4t"]
+[ext_resource type="AudioStream" uid="uid://duv6xn84crye3" path="res://assets/audio/sfx/Pain_1.mp3" id="6_fpvs1"]
+[ext_resource type="AudioStream" uid="uid://blxrp3ugutxi1" path="res://assets/audio/sfx/Mission_Failed_1.mp3" id="7_c40n3"]
+[ext_resource type="AudioStream" uid="uid://bfq0cyi2mr4sa" path="res://assets/audio/sfx/Mission_Complete_1.mp3" id="8_rfgu7"]
+[ext_resource type="AudioStream" uid="uid://f8yhbvwp0s26" path="res://assets/audio/sfx/Menu_Navigation_Ding_1.mp3" id="9_gi2fk"]
+[ext_resource type="AudioStream" uid="uid://brxv7rs07bf8t" path="res://assets/audio/sfx/Menu_Navigation_Confirm_1.mp3" id="10_63f23"]
+[ext_resource type="AudioStream" uid="uid://gj7dj03neuks" path="res://assets/audio/sfx/Gun_Jam_1.mp3" id="11_h4iwj"]
+[ext_resource type="AudioStream" uid="uid://c7wcb4cblm037" path="res://assets/audio/sfx/Gunshot_1.mp3" id="12_v3khj"]
+[ext_resource type="AudioStream" uid="uid://clk6xlrlmq8kb" path="res://assets/audio/sfx/Grunt_2.mp3" id="13_gs7fr"]
+[ext_resource type="AudioStream" uid="uid://bffpyfaol0eww" path="res://assets/audio/sfx/Grunt_1.mp3" id="14_4sm1j"]
+[ext_resource type="AudioStream" uid="uid://c1cdedhdhh7q2" path="res://assets/audio/sfx/Footsteps_Wood_1.2.mp3" id="15_1h17i"]
+[ext_resource type="AudioStream" uid="uid://0s5h51mxbwx4" path="res://assets/audio/sfx/Footsteps_Wood_1.1.mp3" id="16_bgamo"]
+[ext_resource type="AudioStream" uid="uid://c1pmqmh57tw8s" path="res://assets/audio/sfx/Footsteps_Asphalt_1.2.mp3" id="17_5kyc5"]
+[ext_resource type="AudioStream" uid="uid://g05bs5eu3v8l" path="res://assets/audio/sfx/Footsteps_Asphalt_1.1.mp3" id="18_pn7vb"]
+[ext_resource type="AudioStream" uid="uid://dv7uuodidc304" path="res://assets/audio/sfx/Enemy_Hit_And_Blood_1.mp3" id="19_bex4e"]
+[ext_resource type="AudioStream" uid="uid://ck2wmehtqedcm" path="res://assets/audio/sfx/Enemy_Hit_1.mp3" id="20_ylkxn"]
+[ext_resource type="AudioStream" uid="uid://ds3rdalsa6uv2" path="res://assets/audio/sfx/Enemy_Hit_1.1.mp3" id="21_5uuu7"]
+[ext_resource type="AudioStream" uid="uid://b4nn1dtjev535" path="res://assets/audio/sfx/Enemy_Hit_1.2.mp3" id="22_w61bi"]
+[ext_resource type="AudioStream" uid="uid://hd31wye50brx" path="res://assets/audio/sfx/Death_1.mp3" id="23_iu2b8"]
+[ext_resource type="AudioStream" uid="uid://cftg6vq3tligy" path="res://assets/audio/sfx/Collision_Ping_1.mp3" id="24_wsdty"]
+[ext_resource type="AudioStream" uid="uid://bshfek3qf3xp2" path="res://assets/audio/sfx/Casing_Drop_1.mp3" id="25_gh4mv"]
+[ext_resource type="AudioStream" uid="uid://bpuu75umopcnl" path="res://assets/audio/sfx/Bullet_Slow_Mo_1.mp3" id="26_gcfnv"]
+[ext_resource type="AudioStream" uid="uid://6ghcnelh3urs" path="res://assets/audio/sfx/Bullet_Impact_1.mp3" id="27_dtvnx"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_ghkg2")
+
+[node name="Scream_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ugn3a")
+
+[node name="Scream_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_smcg1")
+
+[node name="Reload_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_2pu7h")
+
+[node name="Pain_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_h8n4t")
+
+[node name="Pain_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fpvs1")
+
+[node name="Mission_Failed_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_c40n3")
+
+[node name="Mission_Complete_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_rfgu7")
+
+[node name="Menu_Navigation_Ding_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_gi2fk")
+
+[node name="Menu_Navigation_Confirm_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_63f23")
+
+[node name="Gun_Jam_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_h4iwj")
+
+[node name="Gunshot_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_v3khj")
+
+[node name="Grunt_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_gs7fr")
+
+[node name="Grunt_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_4sm1j")
+
+[node name="Footsteps_Wood_1_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_1h17i")
+
+[node name="Footsteps_Wood_1_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_bgamo")
+
+[node name="Footsteps_Asphalt_1_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_5kyc5")
+
+[node name="Footsteps_Asphalt_1_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_pn7vb")
+
+[node name="Enemy_Hit_And_Blood_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("19_bex4e")
+
+[node name="Enemy_Hit_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_ylkxn")
+
+[node name="Enemy_Hit_1_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_5uuu7")
+
+[node name="Enemy_Hit_1_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("22_w61bi")
+
+[node name="Death_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_iu2b8")
+
+[node name="Collision_Ping_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_wsdty")
+
+[node name="Casing_Drop_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("25_gh4mv")
+
+[node name="Bullet_Slow_Mo_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("26_gcfnv")
+
+[node name="Bullet_Impact_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_dtvnx")
