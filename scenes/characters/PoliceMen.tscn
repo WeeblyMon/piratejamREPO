@@ -9,10 +9,11 @@
 script = ExtResource("1_d7r8j")
 
 [node name="PoliceEnemy" type="Sprite2D" parent="."]
+position = Vector2(12.95, -6.95)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_66yhi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-13, 6)
+position = Vector2(-0.0499992, -0.949999)
 scale = Vector2(2.155, 2.155)
 shape = SubResource("CircleShape2D_svv8h")

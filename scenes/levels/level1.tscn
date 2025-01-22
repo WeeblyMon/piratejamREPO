@@ -31900,20 +31900,20 @@ collision_enabled = false
 navigation_enabled = false
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
-position = Vector2(429, 78)
+position = Vector2(326, 98)
 
 [node name="RouteA-1" parent="RouteA" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
-position = Vector2(-231, -371)
+position = Vector2(-168, -90)
 checkpoint_id = 2
 
 [node name="RouteA-2" parent="RouteA/RouteA-1" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
-position = Vector2(-555, -18)
+position = Vector2(31, -383)
 checkpoint_id = 3
 is_final = true
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="PoliceMen" parent="Enemies" groups=["enemy"] instance=ExtResource("12_0ugyk")]
+[node name="PoliceMen" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(259, 14)
 
 [editable path="Wielder"]
