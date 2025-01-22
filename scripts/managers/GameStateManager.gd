@@ -6,8 +6,10 @@ signal game_saved
 var wielder
 var current_level: int = 1
 var current_scene: Node
-
-var current_weapon: String = "handgun"
+var max_resource: float = 100.0
+var resource_regen_rate: float = 10.0  # Resource regenerated per second
+var current_resource: float = max_resource
+var current_weapon: String = "rifle"
 
 var current_save: Dictionary = {
 	"current_scene_path": "",
@@ -18,6 +20,9 @@ var current_save: Dictionary = {
 
 @onready var sanity_bar
 @onready var health_bar
+
+func _process(delta: float) -> void:
+	current_resource = min(max_resource, current_resource + resource_regen_rate * delta)
 
 # ---------------------------------------
 # WEAPON GET/SET
@@ -49,7 +54,7 @@ func switch_scene(new_scene_path: String) -> void:
 	print("Switched to new scene: %s".format(new_scene_path))
 
 # ---------------------------------------
-# SANITY / HEALTH (unchanged)
+# SANITY / HEALTH 
 # ---------------------------------------
 func set_sanity(sanity_amount: int, operation) -> void:
 	current_save = _update_dict_int_value(Constants.SANITY, sanity_amount, operation)
@@ -70,6 +75,12 @@ func _update_dict_int_value(key: String, value, operation) -> Dictionary:
 	else:
 		assert(operation in Constants.OPERATIONS, "Not an implemented method")
 	return new_save
+	
+func consume_resource(amount: float) -> bool:
+	if current_resource >= amount:
+		current_resource -= amount
+		return true
+	return false
 
 # ---------------------------------------
 # AI PHASE & CHECKPOINT SYSTEM

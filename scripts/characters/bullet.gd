@@ -3,12 +3,14 @@ extends Node2D
 @export var speed: float = 500.0
 @export var lifetime: float = 5.0
 @export var damage: int = 1
-@export var max_points: int = 20
+@export var max_points: int = 5
 @export var point_spacing: float = 20.0
 
-@onready var sprite: Sprite2D = $Sprite2D
 @onready var area: Area2D = $Area2D
 @onready var local_line2d: Line2D = $Line2D
+@onready var pistol_sprite: Sprite2D = $PistolP
+@onready var rifle_sprite: Sprite2D = $RifleP
+@onready var shotgun_sprite: Sprite2D = $ShotgunP
 
 var time_alive: float = 0.0
 var distance_accum: float = 0.0
@@ -23,8 +25,21 @@ func _ready() -> void:
 		local_line2d.global_transform = Transform2D()
 	else:
 		push_warning("No child Line2D found")
+	
+	update_bullet_visibility()
+
+func update_bullet_visibility() -> void:
+	# Directly access the global GameStateController
+	var current_weapon = GameStateManager.get_weapon()
+	
+	# Set visibility based on the current weapon
+	pistol_sprite.visible = current_weapon == "pistol"
+	rifle_sprite.visible = current_weapon == "rifle"
+	shotgun_sprite.visible = current_weapon == "shotgun"
 
 func _process(delta: float) -> void:
+
+	
 	time_alive += delta
 	if time_alive >= lifetime:
 		queue_free()

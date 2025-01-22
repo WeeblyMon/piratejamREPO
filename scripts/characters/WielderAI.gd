@@ -11,27 +11,21 @@ extends CharacterBody2D
 var is_playing_animation: bool = false
 var time_since_last_shot: float = 0.0
 var is_paused: bool = false
-
 var last_fired_bullet: Node = null
 var bullet_controlled: bool = false
-
 
 func _ready() -> void:
 	if not navigation_agent:
 		push_warning("NavigationAgent2D node not found!")
 		return
-
-	# Optional: link navigation_agent to your path_debug script
 	if path_debug and path_debug.has_method("set"):
 		path_debug.navigation_agent = navigation_agent
 
 	if gun and gun.has_method("switch_weapon"):
 		gun.switch_weapon(GameStateManager.get_weapon())
 
-	# 1) Initialize checkpoints in the manager
 	GameStateManager.init_checkpoints_for_ai(global_position)
-	
-	# 2) Set initial target to the first checkpoint
+
 	var first_cp_pos = GameStateManager.get_current_checkpoint_position()
 	if first_cp_pos != Vector2.ZERO:
 		print("Initial checkpoint pos:", first_cp_pos)
@@ -40,13 +34,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# A) Bullet control check
-	var is_control_button_down = Input.is_action_pressed("control_bullet") and last_fired_bullet != null
-	if is_control_button_down != bullet_controlled:
-		bullet_controlled = is_control_button_down
-		if bullet_controlled:
+	if Input.is_action_pressed("control_bullet"):
+		if GameStateManager.consume_resource(20 * delta):  # Consumes 20 units/second
 			_enable_bullet_control()
 		else:
-			_disable_bullet_control()
+			_disable_bullet_control()  # Exit slow motion when resource is depleted
+	else:
+		_disable_bullet_control()
 
 	if bullet_controlled:
 		return
@@ -123,49 +117,59 @@ func _check_if_reached_checkpoint() -> void:
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
 	var enemies = get_tree().get_nodes_in_group("enemies")
-
-	# Find the nearest enemy
-	if enemies.size() > 0:
-		var nearest_enemy = enemies[0]
-		var min_dist = global_position.distance_to(nearest_enemy.global_position)
-		for e in enemies:
-			var dist = global_position.distance_to(e.global_position)
-			if dist < min_dist:
-				nearest_enemy = e
-				min_dist = dist
-
-		# Find the best cover relative to the enemy
-		var cover_position = find_best_cover_position(global_position, nearest_enemy.global_position)
-		if cover_position.distance_to(global_position) > 30:
-			# Move towards the cover
-			navigation_agent.set_target_position(cover_position)
-			var next_pos = navigation_agent.get_next_path_position()
-			if next_pos != Vector2.ZERO:
-				var direction = (next_pos - global_position).normalized()
-				velocity = direction * speed
-				rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
-				play_animation("move")
-			else:
-				velocity = Vector2.ZERO
-				play_animation("idle")
-		else:
-			# At cover, aim and shoot
-			velocity = Vector2.ZERO
-			var dir = (nearest_enemy.global_position - global_position).normalized()
-			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
-
-			# Continuously shoot at the enemy
-			time_since_last_shot += delta
-			if time_since_last_shot >= fire_rate:
-				var bullet = gun.fire_bullet()
-				if bullet:
-					print("Shooting at:", nearest_enemy.name)
-				time_since_last_shot = 0.0
-	else:
+	if enemies.size() == 0:
 		velocity = Vector2.ZERO
 		play_animation("idle")
+		return
+
+	# Find the nearest enemy
+	var nearest_enemy = enemies[0]
+	var min_dist = global_position.distance_to(nearest_enemy.global_position)
+	for e in enemies:
+		var d = global_position.distance_to(e.global_position)
+		if d < min_dist:
+			nearest_enemy = e
+			min_dist = d
+
+	# Find best cover relative to that enemy
+	var cover_pos = find_best_cover_position(global_position, nearest_enemy.global_position)
+	var dist_to_cover = cover_pos.distance_to(global_position)
+
+	# CHANGED: If cover is too far, skip cover and just shoot
+	var max_cover_dist = 400.0
+	if dist_to_cover <= max_cover_dist:
+		_go_to_cover_and_shoot(cover_pos, nearest_enemy, delta)
+	else:
+		_shoot_enemy_direct(nearest_enemy, delta)
 
 	move_and_slide()
+
+
+func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
+	if cover_pos.distance_to(global_position) > 30:
+		# Move towards cover
+		navigation_agent.set_target_position(cover_pos)
+		var next_pos = navigation_agent.get_next_path_position()
+		if next_pos != Vector2.ZERO:
+			var dir = (next_pos - global_position).normalized()
+			velocity = dir * speed
+			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
+			play_animation("move")
+		else:
+			velocity = Vector2.ZERO
+			play_animation("idle")
+	else:
+		# Once near cover, shoot at the enemy
+		velocity = Vector2.ZERO
+		var dir2 = (enemy.global_position - global_position).normalized()
+		rotation = lerp_angle(rotation, dir2.angle(), 10.0 * delta)
+		time_since_last_shot += delta
+		if time_since_last_shot >= fire_rate:
+			var b = gun.fire_bullet()
+			if b:
+				print("Shooting at:", enemy.name)
+			time_since_last_shot = 0.0
+		play_animation("idle")
 
 
 
@@ -185,6 +189,20 @@ func shoot(target: Node) -> void:
 		target.take_damage(1)
 
 	play_animation("shoot")
+	
+func _shoot_enemy_direct(enemy: Node, delta: float) -> void:
+	velocity = Vector2.ZERO
+	var dir = (enemy.global_position - global_position).normalized()
+	rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
+
+	time_since_last_shot += delta
+	if time_since_last_shot >= fire_rate:
+		var b = gun.fire_bullet()
+		if b:
+			print("Shooting directly at:", enemy.name)
+		time_since_last_shot = 0.0
+
+	play_animation("idle")
 
 
 func switch_weapon(new_weapon: String) -> void:
@@ -235,35 +253,23 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "shoot_" + GameStateManager.get_weapon():
 		is_playing_animation = false
 
-func _on_velocity_computed(agent_velocity: Vector2) -> void:
-	# optional
-	pass
 
 # ---------------------------------------------
 #           Cover System
 # ---------------------------------------------
 
-func find_best_cover_position(ai_position: Vector2, enemy_position: Vector2) -> Vector2:
+func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	var covers = get_tree().get_nodes_in_group("cover")
 	if covers.is_empty():
-		return ai_position  # No cover available, fallback to current position.
+		return ai_pos
 
-	var best_cover = null
-	var best_dist = INF
+	var best_cover = covers[0]
+	var best_dist = ai_pos.distance_to(best_cover.global_position)
+	for c in covers:
+		var d = ai_pos.distance_to(c.global_position)
+		if d < best_dist:
+			best_cover = c
+			best_dist = d
 
-	# Find the nearest cover
-	for cover in covers:
-		var cover_position = cover.global_position
-		var dist = ai_position.distance_to(cover_position)
-		if dist < best_dist:
-			best_cover = cover
-			best_dist = dist
-
-	if best_cover:
-		# Calculate the safe position on the opposite side of the cover
-		var cover_position = best_cover.global_position
-		var direction_away_from_enemy = (cover_position - enemy_position).normalized()
-		var safe_position = cover_position + direction_away_from_enemy * best_cover.get_radius()
-		return safe_position
-
-	return ai_position  # Fallback if no valid cover is found.
+	var dir_away = (best_cover.global_position - enemy_pos).normalized()
+	return best_cover.global_position + dir_away * best_cover.get_radius()
