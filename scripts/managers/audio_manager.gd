@@ -1,62 +1,59 @@
 extends Node
 
+var sfx_sounds: Dictionary = {}
+var music_tracks: Dictionary = {}
 
-#-----------
-#to use this, here are examples:
-# Play an SFX
-#AudioManager.play_sfx("gunshot_1")
-#play music track
-#AudioManager.play_music("music_track_1", volume_db=-5.0, loop=true)
-#stop music
-#AudioManager.stop_music("music_track_1")
-
-var sfx_sounds: Dictionary
-var music_tracks: Dictionary
-
-@onready var music_track_1: AudioStreamPlayer = $Music_Track_1  # Placeholder music track
+@export var audio_files: Dictionary = {
+	"sfx": {
+		"scream_2": "res://assets/audio/sfx/Scream_2.mp3",
+		"scream_1": "res://assets/audio/sfx/Scream_1.mp3",
+		"reload_1": "res://assets/audio/sfx/Reload_1.mp3",
+		"pain_2": "res://assets/audio/sfx/Pain_2.mp3",
+		"pain_1": "res://assets/audio/sfx/Pain_1.mp3",
+		"mission_failed_1": "res://assets/audio/sfx/Mission_Failed_1.mp3",
+		"mission_complete_1": "res://assets/audio/sfx/Mission_Complete_1.mp3",
+		"menu_navigation_ding_1": "res://assets/audio/sfx/Menu_Navigation_Ding_1.mp3",
+		"menu_navigation_confirm_1": "res://assets/audio/sfx/Menu_Navigation_Confirm_1.mp3",
+		"gun_jam_1": "res://assets/audio/sfx/Gun_Jam_1.mp3",
+		"gunshot_1": "res://assets/audio/sfx/Gunshot_1.mp3",
+		"grunt_2": "res://assets/audio/sfx/Grunt_2.mp3",
+		"grunt_1": "res://assets/audio/sfx/Grunt_1.mp3",
+		"footsteps_wood_1_2": "res://assets/audio/sfx/Footsteps_Wood_1.2.mp3",
+		"footsteps_wood_1_1": "res://assets/audio/sfx/Footsteps_Wood_1.1.mp3",
+		"footsteps_asphalt_1_2": "res://assets/audio/sfx/Footsteps_Asphalt_1.2.mp3",
+		"footsteps_asphalt_1_1": "res://assets/audio/sfx/Footsteps_Asphalt_1.1.mp3",
+		"enemy_hit_and_blood_1": "res://assets/audio/sfx/Enemy_Hit_And_Blood_1.mp3",
+		"enemy_hit_1": "res://assets/audio/sfx/Enemy_Hit_1.mp3",
+		"enemy_hit_1_1": "res://assets/audio/sfx/Enemy_Hit_1.1.mp3",
+		"enemy_hit_1_2": "res://assets/audio/sfx/Enemy_Hit_1.2.mp3",
+		"death_1": "res://assets/audio/sfx/Death_1.mp3",
+		"collision_ping_1": "res://assets/audio/sfx/Collision_Ping_1.mp3",
+		"casing_drop_1": "res://assets/audio/sfx/Casing_Drop_1.mp3",
+		"bullet_slow_mo_1": "res://assets/audio/sfx/Bullet_Slow_Mo_1.mp3",
+		"bullet_impact_1": "res://assets/audio/sfx/Bullet_Impact_1.mp3",
+	},
+	"music": {
+		"music_track_1": "res://audio/music/music_track_1.ogg",
+		# Add more Music file paths here...
+	}
+}
 
 func _ready() -> void:
-	sfx_sounds = {
-		"scream_2": $Scream_2,
-		"scream_1": $Scream_1,
-		"reload_1": $Reload_1,
-		"pain_2": $Pain_2,
-		"pain_1": $Pain_1,
-		"mission_failed_1": $Mission_Failed_1,
-		"mission_complete_1": $Mission_Complete_1,
-		"menu_navigation_ding_1": $Menu_Navigation_Ding_1,
-		"menu_navigation_confirm_1": $Menu_Navigation_Confirm_1,
-		"gun_jam_1": $Gun_Jam_1,
-		"gunshot_1": $Gunshot_1,
-		"grunt_2": $Grunt_2,
-		"grunt_1": $Grunt_1,
-		"footsteps_wood_1_2": $Footsteps_Wood_1_2,
-		"footsteps_wood_1_1": $Footsteps_Wood_1_1,
-		"footsteps_asphalt_1_2": $Footsteps_Asphalt_1_2,
-		"footsteps_asphalt_1_1": $Footsteps_Asphalt_1_1,
-		"enemy_hit_and_blood_1": $Enemy_Hit_And_Blood_1,
-		"enemy_hit_1": $Enemy_Hit_1,
-		"enemy_hit_1_1": $Enemy_Hit_1_1,
-		"enemy_hit_1_2": $Enemy_Hit_1_2,
-		"death_1": $Death_1,
-		"collision_ping_1": $Collision_Ping_1,
-		"casing_drop_1": $Casing_Drop_1,
-		"bullet_slow_mo_1": $Bullet_Slow_Mo_1,
-		"bullet_impact_1": $Bullet_Impact_1,
-	}
+	for sfx_name in audio_files["sfx"].keys():
+		var player = AudioStreamPlayer.new()
+		player.stream = load(audio_files["sfx"][sfx_name])
+		player.bus = "SFX"
+		add_child(player)
+		sfx_sounds[sfx_name] = player
 
-	music_tracks = {
-		"music_track_1": $Music_Track_1,
-	}
+	for music_name in audio_files["music"].keys():
+		var player = AudioStreamPlayer.new()
+		player.stream = load(audio_files["music"][music_name])
+		player.bus = "Music"
+		add_child(player)
+		music_tracks[music_name] = player
 
-
-	for sound in sfx_sounds.values():
-		sound.bus = "SFX"  
-		sound.stop()
-
-	for music in music_tracks.values():
-		music.bus = "Music"  
-		music.stop()
+	print("AudioManager initialized with", sfx_sounds.size(), "SFX and", music_tracks.size(), "Music tracks.")
 
 func play_sfx(sound_name: String, volume_db: float = 0.0, loop: bool = false) -> void:
 	if sfx_sounds.has(sound_name):
@@ -67,7 +64,6 @@ func play_sfx(sound_name: String, volume_db: float = 0.0, loop: bool = false) ->
 	else:
 		push_warning("SFX sound not found: %s" % sound_name)
 
-
 func play_music(track_name: String, volume_db: float = 0.0, loop: bool = true) -> void:
 	if music_tracks.has(track_name):
 		var player = music_tracks[track_name]
@@ -77,17 +73,15 @@ func play_music(track_name: String, volume_db: float = 0.0, loop: bool = true) -
 	else:
 		push_warning("Music track not found: %s" % track_name)
 
-
 func stop_sfx(sound_name: String) -> void:
 	if sfx_sounds.has(sound_name):
 		sfx_sounds[sound_name].stop()
 	else:
 		push_warning("SFX sound not found: %s" % sound_name)
 
-
 func stop_all_sfx() -> void:
-	for sound in sfx_sounds.values():
-		sound.stop()
+	for player in sfx_sounds.values():
+		player.stop()
 
 func stop_music(track_name: String) -> void:
 	if music_tracks.has(track_name):
@@ -96,8 +90,8 @@ func stop_music(track_name: String) -> void:
 		push_warning("Music track not found: %s" % track_name)
 
 func stop_all_music() -> void:
-	for music in music_tracks.values():
-		music.stop()
+	for player in music_tracks.values():
+		player.stop()
 
 func set_sfx_volume(volume_db: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), volume_db)
