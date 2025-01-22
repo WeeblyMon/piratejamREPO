@@ -3,7 +3,7 @@ extends Node2D
 @export var speed: float = 500.0
 @export var lifetime: float = 5.0
 @export var damage: int = 1
-@export var max_points: int = 20
+@export var max_points: int = 5
 @export var point_spacing: float = 20.0
 
 @onready var sprite: Sprite2D = $Sprite2D

@@ -24,6 +24,7 @@ floor_block_on_wall = false
 path_debug = NodePath("../PathDebug")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(83, 100)
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -60,7 +61,7 @@ zoom = Vector2(0.925, 0.925)
 position = Vector2(1338, -194)
 
 [node name="Cover" parent="." instance=ExtResource("7_hca71")]
-position = Vector2(1200, -45)
+position = Vector2(1711, 201)
 max_health = 1
 
 [editable path="Wielder"]
