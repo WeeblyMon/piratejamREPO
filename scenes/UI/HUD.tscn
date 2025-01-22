@@ -1,9 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=16 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UI/UpdatableBar.tscn" id="1_7pai4"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
 [ext_resource type="Script" path="res://scenes/UI/ResourceBar.gd" id="4_yp0bx"]
+[ext_resource type="Texture2D" uid="uid://bwdgsw310lcch" path="res://assets/art/UI/Sanity Effects/Lines/1.png" id="5_74qrj"]
+[ext_resource type="Script" path="res://scripts/UI_scripts/sanity_effects.gd" id="5_eyva2"]
+[ext_resource type="Texture2D" uid="uid://u2u1b0t1k8i8" path="res://assets/art/UI/Sanity Effects/Noise/1.png" id="5_gssd2"]
+[ext_resource type="Texture2D" uid="uid://bk6mfnyfqo5v6" path="res://assets/art/UI/Sanity Effects/Lines/2.png" id="6_a64qx"]
+[ext_resource type="Texture2D" uid="uid://bopejkrn2a4g7" path="res://assets/art/UI/Sanity Effects/Noise/2.png" id="6_qb3ms"]
+[ext_resource type="Texture2D" uid="uid://ri86b0fqxvyy" path="res://assets/art/UI/Sanity Effects/Lines/3.png" id="7_re2fp"]
+[ext_resource type="Texture2D" uid="uid://b5ph388v6cmbj" path="res://assets/art/UI/Sanity Effects/Noise/3.png" id="7_tot2g"]
+[ext_resource type="Texture2D" uid="uid://bjj4iit3xx66r" path="res://assets/art/UI/Sanity Effects/Noise/4.png" id="8_q8pxu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxqga"]
 bg_color = Color(1, 0.054902, 0, 1)
@@ -20,6 +28,40 @@ border_width_top = 2
 border_width_right = 1
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_74qrj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_a64qx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_re2fp")
+}],
+"loop": true,
+"name": &"lines",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_gssd2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qb3ms")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_tot2g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_q8pxu")
+}],
+"loop": true,
+"name": &"noise",
+"speed": 5.0
+}]
 
 [node name="Hud" type="Control"]
 layout_mode = 3
@@ -55,3 +97,19 @@ offset_top = 580.0
 offset_right = 1144.0
 offset_bottom = 607.0
 script = ExtResource("4_yp0bx")
+
+[node name="Sanity Effects" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(577, 324)
+scale = Vector2(0.598958, 0.6)
+script = ExtResource("5_eyva2")
+
+[node name="Lines" type="AnimatedSprite2D" parent="Sanity Effects"]
+sprite_frames = SubResource("SpriteFrames_2mng4")
+animation = &"noise"
+frame_progress = 0.585624
+
+[node name="Noise" type="AnimatedSprite2D" parent="Sanity Effects"]
+sprite_frames = SubResource("SpriteFrames_2mng4")
+animation = &"lines"
+frame_progress = 0.806797

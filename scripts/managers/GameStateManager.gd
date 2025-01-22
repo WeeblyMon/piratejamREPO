@@ -2,6 +2,8 @@ extends Node
 
 signal game_loaded
 signal game_saved
+signal sanity_changed(sanity: int)
+
 
 var wielder
 var current_level: int = 1
@@ -10,6 +12,8 @@ var max_resource: float = 100.0
 var resource_regen_rate: float = 10.0  # Resource regenerated per second
 var current_resource: float = max_resource
 var current_weapon: String = "rifle"
+var max_sanity: int = 100
+var current_sanity: int = max_sanity
 
 var current_save: Dictionary = {
 	"current_scene_path": "",
@@ -20,6 +24,8 @@ var current_save: Dictionary = {
 
 @onready var sanity_bar
 @onready var health_bar
+
+
 
 func _process(delta: float) -> void:
 	current_resource = min(max_resource, current_resource + resource_regen_rate * delta)
@@ -65,6 +71,10 @@ func set_health(health_amount: int, operation) -> void:
 	current_save = _update_dict_int_value(Constants.HEALTH, health_amount, operation)
 	health_bar.update_bar(operation, health_amount)
 	print(JSON.stringify(current_save))
+	
+func adjust_sanity(amount: int) -> void:
+	current_sanity = clamp(current_sanity + amount, 0, max_sanity)
+	emit_signal("sanity_changed", current_sanity)
 
 func _update_dict_int_value(key: String, value, operation) -> Dictionary:
 	var new_save = current_save.duplicate()
