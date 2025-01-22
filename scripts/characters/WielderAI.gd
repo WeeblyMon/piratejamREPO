@@ -253,9 +253,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "shoot_" + GameStateManager.get_weapon():
 		is_playing_animation = false
 
-func _on_velocity_computed(agent_velocity: Vector2) -> void:
-	# optional
-	pass
 
 # ---------------------------------------------
 #           Cover System

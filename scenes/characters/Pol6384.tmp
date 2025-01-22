@@ -7,6 +7,8 @@
 
 [node name="PoliceMen" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_d7r8j")
+health = null
+detection_radius = null
 
 [node name="PoliceEnemy" type="Sprite2D" parent="."]
 scale = Vector2(0.3, 0.3)
@@ -16,3 +18,9 @@ texture = ExtResource("1_66yhi")
 position = Vector2(-13, 6)
 scale = Vector2(2.155, 2.155)
 shape = SubResource("CircleShape2D_svv8h")
+
+[node name="FlashTimer" type="Timer" parent="."]
+wait_time = 0.244
+one_shot = true
+
+[connection signal="timeout" from="FlashTimer" to="." method="_on_flash_timer_timeout"]
