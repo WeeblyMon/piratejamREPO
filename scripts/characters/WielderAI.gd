@@ -34,13 +34,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# A) Bullet control check
-	var is_control_button_down = Input.is_action_pressed("control_bullet") and last_fired_bullet != null
-	if is_control_button_down != bullet_controlled:
-		bullet_controlled = is_control_button_down
-		if bullet_controlled:
+	if Input.is_action_pressed("control_bullet"):
+		if GameStateManager.consume_resource(20 * delta):  # Consumes 20 units/second
 			_enable_bullet_control()
 		else:
-			_disable_bullet_control()
+			_disable_bullet_control()  # Exit slow motion when resource is depleted
+	else:
+		_disable_bullet_control()
 
 	if bullet_controlled:
 		return

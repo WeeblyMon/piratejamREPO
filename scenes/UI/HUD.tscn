@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=7 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UI/UpdatableBar.tscn" id="1_7pai4"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
+[ext_resource type="Script" path="res://scenes/UI/ResourceBar.gd" id="4_yp0bx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxqga"]
 bg_color = Color(1, 0.054902, 0, 1)
@@ -46,3 +47,11 @@ theme_override_styles/background = SubResource("StyleBoxFlat_nxqga")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fp0x4")
 value = 100.0
 script = ExtResource("3_0avjk")
+
+[node name="BulletControlBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 846.0
+offset_top = 580.0
+offset_right = 1144.0
+offset_bottom = 607.0
+script = ExtResource("4_yp0bx")

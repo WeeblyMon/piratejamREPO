@@ -38,6 +38,8 @@ func update_bullet_visibility() -> void:
 	shotgun_sprite.visible = current_weapon == "shotgun"
 
 func _process(delta: float) -> void:
+
+	
 	time_alive += delta
 	if time_alive >= lifetime:
 		queue_free()
