@@ -33,7 +33,7 @@ var music_tracks: Dictionary = {}
 		"bullet_impact_1": "res://assets/audio/sfx/Bullet_Impact_1.mp3",
 	},
 	"music": {
-		"music_track_1": "res://audio/music/music_track_1.ogg",
+		"music_track_1": "res://assets/audio/music/Normal_Theme_Sketch_1.1.mp3",
 		# Add more Music file paths here...
 	}
 }

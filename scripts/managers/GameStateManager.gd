@@ -15,6 +15,7 @@ var current_weapon: String = "rifle"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 
+
 var current_save: Dictionary = {
 	"current_scene_path": "",
 	"sanity": 1,
@@ -62,10 +63,20 @@ func switch_scene(new_scene_path: String) -> void:
 # ---------------------------------------
 # SANITY / HEALTH 
 # ---------------------------------------
-func set_sanity(sanity_amount: int, operation) -> void:
-	current_save = _update_dict_int_value(Constants.SANITY, sanity_amount, operation)
-	sanity_bar.update_bar(operation, sanity_amount)
-	print(JSON.stringify(current_save))
+func set_sanity(sanity_amount: int, operation: String) -> void:
+	var new_sanity = current_sanity
+	if operation == "add":
+		new_sanity = clamp(current_sanity + sanity_amount, 0, max_sanity)
+	elif operation == "sub":
+		new_sanity = clamp(current_sanity - sanity_amount, 0, max_sanity)
+	else:
+		push_warning("Invalid operation for set_sanity: %s".format(operation))
+	if new_sanity != current_sanity:
+		current_sanity = new_sanity
+		emit_signal("sanity_changed", current_sanity)
+		if sanity_bar:
+			sanity_bar.update_sanity_bar(current_sanity, max_sanity)
+
 
 func set_health(health_amount: int, operation) -> void:
 	current_save = _update_dict_int_value(Constants.HEALTH, health_amount, operation)

@@ -77,6 +77,7 @@ offset_left = 40.0
 offset_top = 584.0
 offset_right = 208.0
 offset_bottom = 603.0
+value = 100.0
 script = ExtResource("2_3163p")
 
 [node name="Health" parent="." instance=ExtResource("1_7pai4")]
@@ -99,7 +100,6 @@ offset_bottom = 607.0
 script = ExtResource("4_yp0bx")
 
 [node name="Sanity Effects" type="Node2D" parent="."]
-modulate = Color(1, 1, 1, 0)
 position = Vector2(577, 324)
 scale = Vector2(0.598958, 0.6)
 script = ExtResource("5_eyva2")
@@ -107,9 +107,9 @@ script = ExtResource("5_eyva2")
 [node name="Lines" type="AnimatedSprite2D" parent="Sanity Effects"]
 sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"noise"
-frame_progress = 0.585624
+frame_progress = 0.50464
 
 [node name="Noise" type="AnimatedSprite2D" parent="Sanity Effects"]
 sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"lines"
-frame_progress = 0.806797
+frame_progress = 0.725813
