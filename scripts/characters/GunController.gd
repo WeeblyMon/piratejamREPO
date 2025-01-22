@@ -1,5 +1,5 @@
 extends Node2D
-#hello
+
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.5
 
