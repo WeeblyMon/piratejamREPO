@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bj5ieasrb3u4b"]
+[gd_scene load_steps=8 format=3 uid="uid://bj5ieasrb3u4b"]
 
 [ext_resource type="Script" path="res://scripts/characters/Bullet.gd" id="1_2rjgs"]
 [ext_resource type="Texture2D" uid="uid://3u71teacyipk" path="res://assets/art/props/blue1.png" id="2_80fba"]
+[ext_resource type="Texture2D" uid="uid://bo8260rw2hpg5" path="res://assets/art/props/yellow1.png" id="3_gdtgq"]
+[ext_resource type="Texture2D" uid="uid://crhlbmq1fykj8" path="res://assets/art/props/red1.png" id="4_cgy6a"]
 
 [sub_resource type="Curve" id="Curve_retox"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.582888, 0.428571), -0.895745, -0.895745, 0, 0, Vector2(1, 0.835165), 0.0, 0.0, 0, 0]
@@ -18,7 +20,7 @@ script = ExtResource("1_2rjgs")
 speed = 1000.0
 point_spacing = 10.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="PistolP" type="Sprite2D" parent="."]
 z_index = 1
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
@@ -37,3 +39,15 @@ antialiased = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_5mo5d")
+
+[node name="RifleP" type="Sprite2D" parent="."]
+visible = false
+rotation = 0.00872665
+scale = Vector2(0.505, 0.669)
+texture = ExtResource("3_gdtgq")
+
+[node name="ShotgunP" type="Sprite2D" parent="."]
+visible = false
+rotation = 0.00872665
+scale = Vector2(0.505, 0.669)
+texture = ExtResource("4_cgy6a")
