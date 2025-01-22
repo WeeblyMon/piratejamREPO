@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://b4hxhxetxxosh"]
 
-[ext_resource type="Script" path="res://scripts/audio_manager.gd" id="1_ghkg2"]
+[ext_resource type="Script" path="res://scripts/managers/audio_manager.gd" id="1_ghkg2"]
 [ext_resource type="AudioStream" uid="uid://dr8n8kuumi4cq" path="res://assets/audio/sfx/Scream_2.mp3" id="2_ugn3a"]
 [ext_resource type="AudioStream" uid="uid://lo3sl1peohvc" path="res://assets/audio/sfx/Scream_1.mp3" id="3_smcg1"]
 [ext_resource type="AudioStream" uid="uid://dtgb2rtb76xvd" path="res://assets/audio/sfx/Reload_1.mp3" id="4_2pu7h"]
