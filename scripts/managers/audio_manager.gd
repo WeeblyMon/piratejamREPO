@@ -55,15 +55,13 @@ func _ready() -> void:
 		player.bus = "SFX"
 		add_child(player)
 		sfx_sounds[sfx_name] = player
-
+		
 	for music_name in audio_files["music"].keys():
 		var player = AudioStreamPlayer.new()
 		player.stream = load(audio_files["music"][music_name])
 		player.bus = "Music"
 		add_child(player)
 		music_tracks[music_name] = player
-
-	print("AudioManager initialized with", sfx_sounds.size(), "SFX and", music_tracks.size(), "Music tracks.")
 
 func play_sfx(sound_name: String, volume_db: float = 0.0, loop: bool = false) -> void:
 	if sfx_sounds.has(sound_name):

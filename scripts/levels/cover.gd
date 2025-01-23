@@ -16,8 +16,6 @@ func _ready() -> void:
 	current_health = max_health
 	health_bar.value = current_health
 	health_bar.max_value = max_health
-	
-	# Set the initial sprite
 	update_sprite()
 	
 func get_radius() -> float:
@@ -25,7 +23,7 @@ func get_radius() -> float:
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
-	current_health = max(0, current_health)  # Ensure health doesn't go below 0
+	current_health = max(0, current_health)  
 	health_bar.value = current_health
 
 	if current_health <= 0:
