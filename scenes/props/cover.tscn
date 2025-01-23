@@ -18,6 +18,12 @@ health_bar = NodePath("HealthBar")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+scale = Vector2(1, 1)
+vertices = PackedVector2Array(-19.8675, -23.8411, -20.5298, 26.4901, 17.8808, 27.1523, 21.1921, -25.1656)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_rtbjk")
 
@@ -27,3 +33,27 @@ offset_top = 5.0
 offset_right = 78.0
 offset_bottom = 32.0
 scale = Vector2(0.345, 0.345)
+
+[node name="Position1" type="Node2D" parent="."]
+position = Vector2(0, 86.755)
+
+[node name="Position2" type="Node2D" parent="."]
+position = Vector2(-84.7682, 7.10543e-15)
+
+[node name="Position3" type="Node2D" parent="."]
+position = Vector2(89.404, 6.46235e-27)
+
+[node name="Position4" type="Node2D" parent="."]
+position = Vector2(6.46235e-27, -88.0795)
+
+[node name="Position5" type="Node2D" parent="."]
+position = Vector2(72.1854, -67.5497)
+
+[node name="Position6" type="Node2D" parent="."]
+position = Vector2(-68.8742, -66.2252)
+
+[node name="Position7" type="Node2D" parent="."]
+position = Vector2(-60.9272, 66.2252)
+
+[node name="Position8" type="Node2D" parent="."]
+position = Vector2(69.5364, 60.9272)

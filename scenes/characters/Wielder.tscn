@@ -809,6 +809,7 @@ animations = [{
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_jplbh")
 gun = NodePath("Gun")
+max_cover_distance = 600.0
 
 [node name="Gun" parent="." instance=ExtResource("3_thj8m")]
 
@@ -827,6 +828,8 @@ shape = SubResource("CircleShape2D_ntrfv")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_max_distance = 2080.0
+avoidance_enabled = true
+radius = 44.03
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(46, -11)

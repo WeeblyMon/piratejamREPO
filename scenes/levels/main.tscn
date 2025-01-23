@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bxx8l5vgqoic3"]
+[gd_scene load_steps=10 format=3 uid="uid://bxx8l5vgqoic3"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_2htwu"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
@@ -7,17 +7,19 @@
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="5_n2e8c"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="7_hca71"]
+[ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scripts/characters/Civilian.tscn" id="8_v41f2"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_sbymi"]
-vertices = PackedVector2Array(2837.63, 725.969, -249.813, 720.008, -414.211, -1214.2, 2753.4, -1586.8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-425, -1223, -259, 730, 2848, 736, 2763, -1598)])
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
+vertices = PackedVector2Array(1861.79, 483.047, -41.9531, -243.656, -134.523, -494.641, 1073.04, -465.703, 1843.19, -447.219, -61.7188, 493.938)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(0, 5, 1)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-52, -242, -72, 504, 1872, 493, 1853, -457, 1073.28, -475.695, -149, -505)])
 
 [node name="TestLevel" type="Node2D" node_paths=PackedStringArray("wielder")]
 script = ExtResource("1_2htwu")
 wielder = NodePath("Wielder")
 
 [node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("2_580be")]
+z_index = 1
 position = Vector2(559, 302)
 floor_stop_on_slope = false
 floor_block_on_wall = false
@@ -32,9 +34,8 @@ zoom = Vector2(0.925, 0.925)
 
 [node name="Hud" parent="Wielder/Camera2D/CanvasLayer" instance=ExtResource("3_0b38m")]
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-position = Vector2(83, 100)
-navigation_polygon = SubResource("NavigationPolygon_sbymi")
+[node name="Cover" parent="." instance=ExtResource("7_hca71")]
+position = Vector2(1657, 409)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -61,14 +62,24 @@ is_final = true
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
 
-[node name="Cover" parent="." instance=ExtResource("7_hca71")]
-position = Vector2(1711, 201)
-max_health = 1
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(-97, 255)
+navigation_polygon = SubResource("NavigationPolygon_j7ll7")
+
+[node name="Cover3" parent="." instance=ExtResource("7_hca71")]
+position = Vector2(1457, 34)
+collision_layer = 2
+sprite_index = 0
+radius = 100.0
 
 [node name="Cover2" parent="." instance=ExtResource("7_hca71")]
-position = Vector2(1137, 60)
-max_health = 1
+position = Vector2(1157, -53)
+collision_layer = 2
+max_health = 2
 sprite_index = 0
+
+[node name="Civilian" parent="." instance=ExtResource("8_v41f2")]
+position = Vector2(1290, -141)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

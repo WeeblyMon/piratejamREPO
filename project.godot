@@ -31,6 +31,7 @@ window/stretch/mode="viewport"
 enemy=""
 checkpoints=""
 cover=""
+civilian=""
 
 [input]
 

@@ -7,12 +7,16 @@ var fire_rate = GameStateManager.get_fire_rate()
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 @export var path_debug: Node2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-
+@export var max_cover_distance: float = 400.0
 var is_playing_animation: bool = false
 var time_since_last_shot: float = 0.0
 var is_paused: bool = false
 var last_fired_bullet: Node = null
 var bullet_controlled: bool = false
+var last_known_enemy: Node = null
+var cover_locked: bool = false
+var locked_cover_node: Node2D = null
+var cover_locked_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	if not navigation_agent:
@@ -23,9 +27,7 @@ func _ready() -> void:
 
 	if gun and gun.has_method("switch_weapon"):
 		gun.switch_weapon(GameStateManager.get_weapon())
-
 	GameStateManager.init_checkpoints_for_ai(global_position)
-
 	var first_cp_pos = GameStateManager.get_current_checkpoint_position()
 	if first_cp_pos != Vector2.ZERO:
 		print("Initial checkpoint pos:", first_cp_pos)
@@ -33,15 +35,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	# A) Bullet control check
 	if Input.is_action_pressed("control_bullet"):
-		if GameStateManager.consume_resource(20 * delta):  # Consumes 20 units/second
+		if GameStateManager.consume_resource(20 * delta): 
 			_enable_bullet_control()
 		else:
-			_disable_bullet_control()  # Exit slow motion when resource is depleted
+			_disable_bullet_control()  
 	else:
 		_disable_bullet_control()
-
 	if bullet_controlled:
 		return
 
@@ -54,13 +54,11 @@ func _process(delta: float) -> void:
 	match GameStateManager.get_wielder_phase():
 		GameStateManager.WielderPhase.MOVEMENT:
 			_process_movement_phase(delta)
-			# If we detect enemies, switch to combat
 			if GameStateManager.is_enemy_in_range(global_position):
 				GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.COMBAT)
 
 		GameStateManager.WielderPhase.COMBAT:
 			_process_combat_phase(delta)
-			# If enemies are cleared, return to movement
 			if GameStateManager.all_enemies_cleared():
 				GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 				var cp_pos = GameStateManager.get_current_checkpoint_position()
@@ -77,7 +75,6 @@ func _process_movement_phase(delta: float) -> void:
 		play_animation("idle")
 		move_and_slide()
 		return
-
 	var direction = (next_pos - global_position).normalized()
 	velocity = direction * speed
 	rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
@@ -93,16 +90,10 @@ func _check_if_reached_checkpoint() -> void:
 	var cp_pos = GameStateManager.get_current_checkpoint_position()
 	if cp_pos == Vector2.ZERO:
 		return
-
-	# Check distance to the current checkpoint
 	var dist = global_position.distance_to(cp_pos)
-
-	# If the AI has reached the current checkpoint
 	if dist <= GameStateManager.stop_distance:
 		print("Reached checkpoint index =", GameStateManager.current_checkpoint_index)
 		GameStateManager.next_checkpoint()
-
-		# Set the next checkpoint as the target
 		var next_cp = GameStateManager.get_current_checkpoint_position()
 		if next_cp != Vector2.ZERO:
 			print("Heading to next checkpoint:", next_cp)
@@ -110,44 +101,54 @@ func _check_if_reached_checkpoint() -> void:
 		else:
 			print("No more checkpoints to visit.")
 
-
-
 # ---------------------------------------------
 #           COMBAT PHASE
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	if enemies.size() == 0:
-		velocity = Vector2.ZERO
-		play_animation("idle")
+	var all_enemies = get_tree().get_nodes_in_group("enemies")
+
+	if not is_instance_valid(last_known_enemy):
+		if all_enemies.size() == 0:
+			velocity = Vector2.ZERO
+			play_animation("idle")
+			return
+		var nearest = all_enemies[0]
+		var min_dist = global_position.distance_to(nearest.global_position)
+		for e in all_enemies:
+			var d = global_position.distance_to(e.global_position)
+			if d < min_dist:
+				nearest = e
+				min_dist = d
+		last_known_enemy = nearest
+
+	if not is_instance_valid(last_known_enemy):
+		_reset_cover_lock()
+		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
 
-	# Find the nearest enemy
-	var nearest_enemy = enemies[0]
-	var min_dist = global_position.distance_to(nearest_enemy.global_position)
-	for e in enemies:
-		var d = global_position.distance_to(e.global_position)
-		if d < min_dist:
-			nearest_enemy = e
-			min_dist = d
+	if last_known_enemy.has_method("is_dead") and last_known_enemy.is_dead():
+		last_known_enemy = null
+		_reset_cover_lock()
+		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
+		return
 
-	# Find best cover relative to that enemy
-	var cover_pos = find_best_cover_position(global_position, nearest_enemy.global_position)
-	var dist_to_cover = cover_pos.distance_to(global_position)
-
-	# CHANGED: If cover is too far, skip cover and just shoot
-	var max_cover_dist = 400.0
-	if dist_to_cover <= max_cover_dist:
-		_go_to_cover_and_shoot(cover_pos, nearest_enemy, delta)
-	else:
-		_shoot_enemy_direct(nearest_enemy, delta)
-
+	if not cover_locked:
+		var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
+		var dist_to_cover = cover_pos.distance_to(global_position)
+		if dist_to_cover <= max_cover_distance:
+			cover_locked_position = cover_pos
+			cover_locked = true
+		else:
+			_shoot_enemy_direct(last_known_enemy, delta)
+			move_and_slide()
+			return
+	_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
 	move_and_slide()
 
 
 func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
-	if cover_pos.distance_to(global_position) > 30:
-		# Move towards cover
+	var dist_to_cover = cover_pos.distance_to(global_position)
+	if dist_to_cover > 50.0:
 		navigation_agent.set_target_position(cover_pos)
 		var next_pos = navigation_agent.get_next_path_position()
 		if next_pos != Vector2.ZERO:
@@ -162,14 +163,15 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 		velocity = Vector2.ZERO
 		var dir2 = (enemy.global_position - global_position).normalized()
 		rotation = lerp_angle(rotation, dir2.angle(), 10.0 * delta)
+
 		time_since_last_shot += delta
 		if time_since_last_shot >= fire_rate:
-			var b = gun.fire_bullet()
-			if b:
-				print("Shooting at:", enemy.name)
+			if gun and gun.has_method("fire_bullet"):
+				var b = gun.fire_bullet()
+				if b:
+					print("Shooting at:", enemy.name)
 			time_since_last_shot = 0.0
 		play_animation("idle")
-
 
 
 # ---------------------------------------------
@@ -270,7 +272,7 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	if covers.is_empty():
 		return ai_pos
 
-	var best_cover = covers[0]
+	var best_cover: Node2D = covers[0]
 	var best_dist = ai_pos.distance_to(best_cover.global_position)
 	for c in covers:
 		var d = ai_pos.distance_to(c.global_position)
@@ -278,5 +280,30 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 			best_cover = c
 			best_dist = d
 
-	var dir_away = (best_cover.global_position - enemy_pos).normalized()
-	return best_cover.global_position + dir_away * best_cover.get_radius()
+	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
+		locked_cover_node.disconnect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
+	locked_cover_node = best_cover
+	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
+		locked_cover_node.connect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
+	var best_spot: Node2D = null
+	var best_spot_dist = -INF
+	for child in best_cover.get_children():
+		if child is Node2D and child.name.begins_with("Position"):
+			var dist_to_enemy = child.global_position.distance_to(enemy_pos)
+			if dist_to_enemy > best_spot_dist:
+				best_spot_dist = dist_to_enemy
+				best_spot = child
+	if best_spot:
+		return best_spot.global_position
+	else:
+		return best_cover.global_position
+
+func _on_cover_destroyed() -> void:
+	print("Cover destroyed, AI must pick a new one.")
+	_reset_cover_lock()
+	locked_cover_node = null
+
+
+func _reset_cover_lock() -> void:
+	cover_locked = false
+	cover_locked_position = Vector2.ZERO
