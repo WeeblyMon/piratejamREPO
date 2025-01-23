@@ -3,6 +3,12 @@ extends Node
 var sfx_sounds: Dictionary = {}
 var music_tracks: Dictionary = {}
 
+#exampple uses
+#AudioManager.play_sfx("gunshot_1", volume_db=-5.0)
+#AudioManager.play_music("music_track_1", volume_db=-10.0, loop=true)
+#AudioManager.stop_sfx("gunshot_1")
+#AudioManager.stop_music("music_track_1")
+
 @export var audio_files: Dictionary = {
 	"sfx": {
 		"scream_2": "res://assets/audio/sfx/Scream_2.mp3",
@@ -16,6 +22,9 @@ var music_tracks: Dictionary = {}
 		"menu_navigation_confirm_1": "res://assets/audio/sfx/Menu_Navigation_Confirm_1.mp3",
 		"gun_jam_1": "res://assets/audio/sfx/Gun_Jam_1.mp3",
 		"gunshot_1": "res://assets/audio/sfx/Gunshot_1.mp3",
+		"handgun_shot": "res://assets/audio/sfx/pistol-shot.mp3",
+		"rifle_shot": "res://assets/audio/sfx/sniper-rifle.mp3",
+		"shotgun": "res://assets/audio/sfx/shotgun-firing.mp3",
 		"grunt_2": "res://assets/audio/sfx/Grunt_2.mp3",
 		"grunt_1": "res://assets/audio/sfx/Grunt_1.mp3",
 		"footsteps_wood_1_2": "res://assets/audio/sfx/Footsteps_Wood_1.2.mp3",
@@ -31,6 +40,7 @@ var music_tracks: Dictionary = {}
 		"casing_drop_1": "res://assets/audio/sfx/Casing_Drop_1.mp3",
 		"bullet_slow_mo_1": "res://assets/audio/sfx/Bullet_Slow_Mo_1.mp3",
 		"bullet_impact_1": "res://assets/audio/sfx/Bullet_Impact_1.mp3",
+		
 	},
 	"music": {
 		"music_track_1": "res://assets/audio/music/Normal_Theme_Sketch_1.1.mp3",
@@ -59,10 +69,24 @@ func play_sfx(sound_name: String, volume_db: float = 0.0, loop: bool = false) ->
 	if sfx_sounds.has(sound_name):
 		var player = sfx_sounds[sound_name]
 		player.volume_db = volume_db
-		player.loop = loop
+		if player.stream is AudioStream:
+			player.stream.loop = loop
 		player.play()
 	else:
 		push_warning("SFX sound not found: %s" % sound_name)
+
+func play_sfx_varied(sound_name: String, volume_db: float = 0.0, loop: bool = false, min_pitch: float = 0.9, max_pitch: float = 1.1) -> void:
+	if sfx_sounds.has(sound_name):
+		var player = sfx_sounds[sound_name]
+		player.volume_db = volume_db
+		if player.stream is AudioStream:
+			player.stream.loop = loop
+		var random_pitch = randf_range(min_pitch, max_pitch)
+		player.pitch_scale = random_pitch
+		player.play()
+	else:
+		push_warning("SFX sound not found: %s" % sound_name)
+
 
 func play_music(track_name: String, volume_db: float = 0.0, loop: bool = true) -> void:
 	if music_tracks.has(track_name):

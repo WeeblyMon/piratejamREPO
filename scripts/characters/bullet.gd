@@ -6,6 +6,7 @@ extends Node2D
 @export var max_points: int = 5
 @export var point_spacing: float = 20.0
 
+var current_weapon = GameStateManager.get_weapon()
 @onready var area: Area2D = $Area2D
 @onready var local_line2d: Line2D = $Line2D
 @onready var pistol_sprite: Sprite2D = $PistolP
@@ -27,12 +28,21 @@ func _ready() -> void:
 		push_warning("No child Line2D found")
 	
 	update_bullet_visibility()
+	update_speed()
+	
+func update_speed() -> void:
+	if current_weapon == "handgun":
+		speed = 1000
+	elif current_weapon == "rifle":
+		speed = 2000
+	elif current_weapon == "shotgun":
+		speed = 750
+	else:
+		speed = 500
+		
+		
 
 func update_bullet_visibility() -> void:
-	# Directly access the global GameStateController
-	var current_weapon = GameStateManager.get_weapon()
-	
-	# Set visibility based on the current weapon
 	pistol_sprite.visible = current_weapon == "pistol"
 	rifle_sprite.visible = current_weapon == "rifle"
 	shotgun_sprite.visible = current_weapon == "shotgun"

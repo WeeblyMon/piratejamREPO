@@ -73,3 +73,7 @@ position = Vector2(254, 29)
 scale = Vector2(0.705, 0.705)
 sprite_frames = SubResource("SpriteFrames_yu17p")
 animation = &"flash"
+
+[node name="FireTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]

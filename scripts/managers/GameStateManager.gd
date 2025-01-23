@@ -14,7 +14,16 @@ var current_resource: float = max_resource
 var current_weapon: String = "rifle"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
+var fire_rate: float = 0.1  # Default fire rate in seconds per shot (600 BPM)
 
+var weapon_data = {
+	"handgun": {"fire_rate": 0.5, "position": Vector2(163, 44), "direction": Vector2(1, 0)},  # 120 BPM
+	"rifle": {"fire_rate": 0.1, "position": Vector2(181, 36), "direction": Vector2(1, 0)},    # 600 BPM
+	"shotgun": {"fire_rate": 1.0, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
+}
+
+func get_weapon_data() -> Dictionary:
+	return weapon_data
 
 var current_save: Dictionary = {
 	"current_scene_path": "",
@@ -35,11 +44,18 @@ func _process(delta: float) -> void:
 # WEAPON GET/SET
 # ---------------------------------------
 func set_weapon(weapon_name: String) -> void:
-	current_weapon = weapon_name
-	print("Weapon switched to:", current_weapon)
+	if weapon_data.has(weapon_name):
+		current_weapon = weapon_name
+		fire_rate = weapon_data[weapon_name]["fire_rate"]
+		print("Weapon switched to:", current_weapon, "Fire rate:", fire_rate, "Seconds per shot")
+	else:
+		push_warning("Invalid weapon: %s".format(weapon_name))
 
 func get_weapon() -> String:
 	return current_weapon
+	
+func get_fire_rate() -> float:
+	return fire_rate
 
 # ---------------------------------------
 # SCENE SWITCHING

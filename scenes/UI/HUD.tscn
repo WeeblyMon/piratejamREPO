@@ -107,9 +107,9 @@ script = ExtResource("5_eyva2")
 [node name="Lines" type="AnimatedSprite2D" parent="Sanity Effects"]
 sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"noise"
-frame_progress = 0.50464
+frame_progress = 0.805576
 
 [node name="Noise" type="AnimatedSprite2D" parent="Sanity Effects"]
 sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"lines"
-frame_progress = 0.725813
+frame_progress = 0.0267484

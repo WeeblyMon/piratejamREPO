@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var speed: float = 150.0
-@export var fire_rate: float = 1.0
+var fire_rate = GameStateManager.get_fire_rate()
 @export var gun: Node2D
 
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
@@ -159,7 +159,6 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 			velocity = Vector2.ZERO
 			play_animation("idle")
 	else:
-		# Once near cover, shoot at the enemy
 		velocity = Vector2.ZERO
 		var dir2 = (enemy.global_position - global_position).normalized()
 		rotation = lerp_angle(rotation, dir2.angle(), 10.0 * delta)
@@ -183,24 +182,22 @@ func shoot(target: Node) -> void:
 		var bullet = gun.fire_bullet()
 		if bullet:
 			last_fired_bullet = bullet
-
-	# Reduce target's health if it has a `take_damage` method
 	if target and target.has_method("take_damage"):
 		target.take_damage(1)
-
 	play_animation("shoot")
 	
 func _shoot_enemy_direct(enemy: Node, delta: float) -> void:
 	velocity = Vector2.ZERO
-	var dir = (enemy.global_position - global_position).normalized()
-	rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
+	var direction = (enemy.global_position - global_position).normalized()
+	rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
 
 	time_since_last_shot += delta
 	if time_since_last_shot >= fire_rate:
-		var b = gun.fire_bullet()
-		if b:
-			print("Shooting directly at:", enemy.name)
-		time_since_last_shot = 0.0
+		if gun and gun.has_method("fire_bullet"):
+			var bullet = gun.fire_bullet()
+			if bullet:
+				print("AI fired at:", enemy.name)
+			time_since_last_shot = 0.0
 
 	play_animation("idle")
 
