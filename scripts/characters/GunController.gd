@@ -1,18 +1,20 @@
 extends Node2D
 
 @export var bullet_scene: PackedScene
-var fire_rate = GameStateManager.get_fire_rate()
 @onready var raycast: RayCast2D = $RayCast2D
 @onready var muzzle_handgun: Sprite2D = $PistolMF
 @onready var muzzle_rifle: AnimatedSprite2D = $RifleMF
 @onready var muzzle_shotgun: AnimatedSprite2D = $ShotgunMF
-var current_weapon = GameStateManager.get_weapon()
-var weapon_data = GameStateManager.get_weapon_data()
+
+var current_weapon: String = GameStateManager.get_weapon()
+var fire_rate: float = GameStateManager.get_fire_rate()
+var weapon_data: Dictionary = GameStateManager.get_weapon_data()
 var time_since_last_shot: float = 0.0
 var last_fired_bullet: Node = null
 
 func _ready() -> void:
-	var current_weapon = GameStateManager.get_weapon()
+	current_weapon = GameStateManager.get_weapon()
+	fire_rate = GameStateManager.get_fire_rate()
 	update_raycast(current_weapon)
 	update_weapon(current_weapon)
 	muzzle_handgun.visible = false
@@ -38,9 +40,9 @@ func fire_bullet() -> Node:
 
 		last_fired_bullet = bullet
 		time_since_last_shot = 0.0
-		print("Bullet fired from", GameStateManager.get_weapon())
+		print("Bullet fired from", current_weapon)
 		fire_sfx()
-		_show_muzzle_flash(GameStateManager.get_weapon())
+		_show_muzzle_flash(current_weapon)
 		return bullet
 	return null
 
@@ -80,6 +82,8 @@ func _show_muzzle_flash(weapon_name: String) -> void:
 
 func switch_weapon(new_weapon: String) -> void:
 	GameStateManager.set_weapon(new_weapon)
+	current_weapon = new_weapon
+	fire_rate = GameStateManager.get_fire_rate()
 	update_raycast(new_weapon)
 	update_weapon(new_weapon)
 
@@ -91,4 +95,5 @@ func update_raycast(weapon_name: String) -> void:
 		raycast.enabled = true
 
 func update_weapon(weapon_name: String) -> void:
-	print("Updated weapon:", weapon_name)
+	fire_rate = GameStateManager.get_fire_rate()
+	print("Updated weapon:", weapon_name, "Fire rate:", fire_rate)

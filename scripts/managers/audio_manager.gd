@@ -24,7 +24,7 @@ var music_tracks: Dictionary = {}
 		"gunshot_1": "res://assets/audio/sfx/Gunshot_1.mp3",
 		"handgun_shot": "res://assets/audio/sfx/pistol-shot.mp3",
 		"rifle_shot": "res://assets/audio/sfx/sniper-rifle.mp3",
-		"shotgun": "res://assets/audio/sfx/shotgun-firing.mp3",
+		"shotgun_shot": "res://assets/audio/sfx/shotgun-firing.mp3",
 		"grunt_2": "res://assets/audio/sfx/Grunt_2.mp3",
 		"grunt_1": "res://assets/audio/sfx/Grunt_1.mp3",
 		"footsteps_wood_1_2": "res://assets/audio/sfx/Footsteps_Wood_1.2.mp3",
