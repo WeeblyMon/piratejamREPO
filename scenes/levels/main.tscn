@@ -23,13 +23,18 @@ floor_stop_on_slope = false
 floor_block_on_wall = false
 path_debug = NodePath("../PathDebug")
 
+[node name="Camera2D" type="Camera2D" parent="Wielder"]
+position = Vector2(96.6666, 26.6667)
+scale = Vector2(3.33333, 3.33333)
+zoom = Vector2(0.925, 0.925)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Wielder/Camera2D"]
+
+[node name="Hud" parent="Wielder/Camera2D/CanvasLayer" instance=ExtResource("3_0b38m")]
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(83, 100)
 navigation_polygon = SubResource("NavigationPolygon_sbymi")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Hud" parent="CanvasLayer" instance=ExtResource("3_0b38m")]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -53,16 +58,17 @@ position = Vector2(474, 306)
 checkpoint_id = 3
 is_final = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1161, 48)
-zoom = Vector2(0.925, 0.925)
-
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
 
 [node name="Cover" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1711, 201)
 max_health = 1
+
+[node name="Cover2" parent="." instance=ExtResource("7_hca71")]
+position = Vector2(1137, 60)
+max_health = 1
+sprite_index = 0
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
