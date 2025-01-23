@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=15 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UI/UpdatableBar.tscn" id="1_7pai4"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
@@ -12,22 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://ri86b0fqxvyy" path="res://assets/art/UI/Sanity Effects/Lines/3.png" id="7_re2fp"]
 [ext_resource type="Texture2D" uid="uid://b5ph388v6cmbj" path="res://assets/art/UI/Sanity Effects/Noise/3.png" id="7_tot2g"]
 [ext_resource type="Texture2D" uid="uid://bjj4iit3xx66r" path="res://assets/art/UI/Sanity Effects/Noise/4.png" id="8_q8pxu"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxqga"]
-bg_color = Color(1, 0.054902, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fp0x4"]
-bg_color = Color(0, 0.728552, 9.06783e-05, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+[ext_resource type="Texture2D" uid="uid://4n6c82gdnlj6" path="res://assets/art/UI/HUD/HUD_HP_25x376.png" id="13_uvrah"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
 animations = [{
@@ -80,17 +65,6 @@ offset_bottom = 603.0
 value = 100.0
 script = ExtResource("2_3163p")
 
-[node name="Health" parent="." instance=ExtResource("1_7pai4")]
-layout_mode = 0
-offset_left = 392.0
-offset_top = 584.0
-offset_right = 755.0
-offset_bottom = 603.0
-theme_override_styles/background = SubResource("StyleBoxFlat_nxqga")
-theme_override_styles/fill = SubResource("StyleBoxFlat_fp0x4")
-value = 100.0
-script = ExtResource("3_0avjk")
-
 [node name="BulletControlBar" type="ProgressBar" parent="."]
 layout_mode = 0
 offset_left = 846.0
@@ -113,3 +87,13 @@ frame_progress = 0.805576
 sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"lines"
 frame_progress = 0.0267484
+
+[node name="Health" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 387.0
+offset_top = 584.0
+offset_right = 752.0
+offset_bottom = 609.0
+value = 100.0
+texture_progress = ExtResource("13_uvrah")
+script = ExtResource("3_0avjk")

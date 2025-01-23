@@ -40,7 +40,6 @@ func fire_bullet() -> Node:
 
 		last_fired_bullet = bullet
 		time_since_last_shot = 0.0
-		print("Bullet fired from", current_weapon)
 		fire_sfx()
 		_show_muzzle_flash(current_weapon)
 		return bullet

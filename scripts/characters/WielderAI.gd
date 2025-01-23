@@ -195,8 +195,6 @@ func _shoot_enemy_direct(enemy: Node, delta: float) -> void:
 	if time_since_last_shot >= fire_rate:
 		if gun and gun.has_method("fire_bullet"):
 			var bullet = gun.fire_bullet()
-			if bullet:
-				print("AI fired at:", enemy.name)
 			time_since_last_shot = 0.0
 
 	play_animation("idle")
@@ -215,14 +213,26 @@ func switch_weapon(new_weapon: String) -> void:
 func _enable_bullet_control() -> void:
 	Engine.time_scale = 0.2
 	pause_shooting()
-	if last_fired_bullet and last_fired_bullet.has_method("enable_player_control"):
-		last_fired_bullet.enable_player_control()
+
+	if not last_fired_bullet or not is_instance_valid(last_fired_bullet):
+		if gun and gun.has_method("fire_bullet"):
+			last_fired_bullet = gun.fire_bullet()
+			if last_fired_bullet:
+				time_since_last_shot = 0.0
+				print("AI immediately fired a bullet during slow motion.")
+
+	if last_fired_bullet and is_instance_valid(last_fired_bullet):
+		if last_fired_bullet.has_method("enable_player_control"):
+			last_fired_bullet.enable_player_control()
+
 
 func _disable_bullet_control() -> void:
 	Engine.time_scale = 1.0
 	resume_shooting()
-	if last_fired_bullet and last_fired_bullet.has_method("disable_player_control"):
-		last_fired_bullet.disable_player_control()
+	if last_fired_bullet and is_instance_valid(last_fired_bullet):
+		if last_fired_bullet.has_method("disable_player_control"):
+			last_fired_bullet.disable_player_control()
+		last_fired_bullet = null  
 
 func pause_shooting() -> void:
 	is_paused = true
