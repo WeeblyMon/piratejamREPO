@@ -80,9 +80,16 @@ position = Vector2(199, 11)
 scale = Vector2(0.946855, 1)
 texture = ExtResource("14_ybloy")
 
-[node name="Sanity Effects" type="Node2D" parent="."]
+[node name="Sanity Effects" type="Container" parent="."]
 modulate = Color(0.239216, 0.65098, 0.768627, 1)
-position = Vector2(577, 324)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.598958, 0.6)
 script = ExtResource("5_eyva2")
 
@@ -114,16 +121,16 @@ offset_bottom = 16.0
 script = ExtResource("4_yp0bx")
 
 [node name="MissionBox" type="Sprite2D" parent="."]
-position = Vector2(104, 498)
+position = Vector2(105, 492)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_hmx5i")
 
 [node name="Sanity" type="TextureProgressBar" parent="."]
-offset_left = 20.0
-offset_top = 566.0
-offset_right = 101.0
-offset_bottom = 647.0
-scale = Vector2(0.7, 0.7)
+offset_left = 17.0
+offset_top = 559.0
+offset_right = 98.0
+offset_bottom = 640.0
+scale = Vector2(0.8, 0.8)
 value = 97.0
 texture_progress = ExtResource("16_resqa")
 script = ExtResource("2_3163p")

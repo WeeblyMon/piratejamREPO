@@ -22,6 +22,10 @@ GameStateManager="*res://scripts/managers/GameStateManager.gd"
 Constants="*res://scripts/utilities/Constants.gd"
 AudioManager="*res://scenes/AudioManager/audio_manager.tscn"
 
+[display]
+
+window/stretch/mode="viewport"
+
 [global_group]
 
 enemy=""
