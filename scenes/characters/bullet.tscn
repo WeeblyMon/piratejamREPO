@@ -17,7 +17,7 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [node name="Bullet" type="Area2D"]
 script = ExtResource("1_2rjgs")
-speed = 1000.0
+speed = 1500.0
 point_spacing = 10.0
 
 [node name="PistolP" type="Sprite2D" parent="."]

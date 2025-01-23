@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 @onready var lines: AnimatedSprite2D = $Lines
 @onready var noise: AnimatedSprite2D = $Noise

@@ -42,9 +42,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("9_3ocm1")
 }],
-"loop": true,
+"loop": false,
 "name": &"flash",
-"speed": 12.0
+"speed": 24.0
 }]
 
 [node name="Gun" type="Node2D"]
@@ -73,3 +73,9 @@ position = Vector2(254, 29)
 scale = Vector2(0.705, 0.705)
 sprite_frames = SubResource("SpriteFrames_yu17p")
 animation = &"flash"
+frame = 3
+frame_progress = 1.0
+
+[node name="FireTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]
