@@ -40,7 +40,6 @@ func update_speed() -> void:
 	else:
 		speed = 500
 		
-		
 
 func update_bullet_visibility() -> void:
 	pistol_sprite.visible = current_weapon == "pistol"
