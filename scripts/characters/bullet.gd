@@ -47,31 +47,33 @@ func update_bullet_visibility() -> void:
 	shotgun_sprite.visible = current_weapon == "shotgun"
 
 func _process(delta: float) -> void:
+	# Calculate unscaled delta to maintain consistent behavior regardless of time scale
+	var unscaled_delta = delta / Engine.time_scale
 
-	
-	time_alive += delta
+	time_alive += unscaled_delta
 	if time_alive >= lifetime:
 		queue_free()
 		return
 
 	if is_controlled:
-		_control_bullet(delta)
+		_control_bullet(unscaled_delta)
 	else:
-		_move_forward(delta)
+		_move_forward(unscaled_delta)
 
-	_update_trail()
+	_update_trail(unscaled_delta)
 
-func _move_forward(delta: float) -> void:
-	position += Vector2.RIGHT.rotated(rotation) * speed * delta
+func _move_forward(unscaled_delta: float) -> void:
+	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta
 
-func _control_bullet(delta: float) -> void:
+func _control_bullet(unscaled_delta: float) -> void:
 	if Input.is_action_pressed("rotate_left"):
-		rotation -= deg_to_rad(160 * delta)
+		rotation -= deg_to_rad(160 * unscaled_delta)
 	if Input.is_action_pressed("rotate_right"):
-		rotation += deg_to_rad(160 * delta)
-	position += Vector2.RIGHT.rotated(rotation) * speed * delta * 0.7
+		rotation += deg_to_rad(160 * unscaled_delta)
+	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta * 0.7
 
-func _update_trail() -> void:
+
+func _update_trail(unscaled_delta: float) -> void:
 	if not local_line2d:
 		return
 	var line_pos = local_line2d.to_local(global_position)
@@ -86,6 +88,7 @@ func _update_trail() -> void:
 		distance_accum = 0.0
 		if local_line2d.get_point_count() > max_points:
 			local_line2d.remove_point(0)
+
 
 func enable_player_control() -> void:
 	is_controlled = true
