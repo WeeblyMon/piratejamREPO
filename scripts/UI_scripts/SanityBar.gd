@@ -1,5 +1,5 @@
-class_name SanityBar extends UpdatableBar
-
+extends TextureProgressBar
+class_name SanityBar
 
 func _init() -> void:
 	GameStateManager.sanity_bar = self

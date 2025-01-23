@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=19 format=3 uid="uid://b3n50h3s6bshv"]
 
-[ext_resource type="PackedScene" uid="uid://dwblgv22g0tt7" path="res://scenes/UI/UpdatableBar.tscn" id="1_7pai4"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
 [ext_resource type="Script" path="res://scenes/UI/ResourceBar.gd" id="4_yp0bx"]
@@ -13,6 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://b5ph388v6cmbj" path="res://assets/art/UI/Sanity Effects/Noise/3.png" id="7_tot2g"]
 [ext_resource type="Texture2D" uid="uid://bjj4iit3xx66r" path="res://assets/art/UI/Sanity Effects/Noise/4.png" id="8_q8pxu"]
 [ext_resource type="Texture2D" uid="uid://4n6c82gdnlj6" path="res://assets/art/UI/HUD/HUD_HP_25x376.png" id="13_uvrah"]
+[ext_resource type="Texture2D" uid="uid://dc6bdhenydv43" path="res://assets/art/UI/HUD/HUD_HP_Frame_48x461.png" id="14_ybloy"]
+[ext_resource type="Texture2D" uid="uid://djkdex2fhwo1d" path="res://assets/art/UI/HUD/HUD_Sanity_Frame_104x108.png" id="15_76t3o"]
+[ext_resource type="Texture2D" uid="uid://b35dtr5rvsdd3" path="res://assets/art/UI/HUD/HUD_Sanity_81x81.png" id="16_resqa"]
+[ext_resource type="Texture2D" uid="uid://b363emtiu86qk" path="res://assets/art/UI/HUD/HUD_Stars_Frame_67x316.png" id="17_4q2kg"]
+[ext_resource type="Texture2D" uid="uid://draof2b171t43" path="res://assets/art/UI/HUD/HUD_Objective_Frame_284x306.png" id="17_hmx5i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
 animations = [{
@@ -56,14 +60,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Sanity" parent="." instance=ExtResource("1_7pai4")]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 584.0
-offset_right = 208.0
-offset_bottom = 603.0
+[node name="Health" type="TextureProgressBar" parent="."]
+offset_left = 153.0
+offset_top = 590.0
+offset_right = 518.0
+offset_bottom = 615.0
 value = 100.0
-script = ExtResource("2_3163p")
+texture_progress = ExtResource("13_uvrah")
+script = ExtResource("3_0avjk")
+
+[node name="HPFrame" type="Sprite2D" parent="Health"]
+position = Vector2(198.75, 12)
+scale = Vector2(0.946855, 1)
+texture = ExtResource("14_ybloy")
+
+[node name="HPFrame2" type="Sprite2D" parent="Health"]
+position = Vector2(199, 11)
+scale = Vector2(0.946855, 1)
+texture = ExtResource("14_ybloy")
 
 [node name="BulletControlBar" type="ProgressBar" parent="."]
 layout_mode = 0
@@ -88,12 +102,29 @@ sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"lines"
 frame_progress = 0.0267484
 
-[node name="Health" type="TextureProgressBar" parent="."]
-layout_mode = 0
-offset_left = 387.0
-offset_top = 584.0
-offset_right = 752.0
-offset_bottom = 609.0
-value = 100.0
-texture_progress = ExtResource("13_uvrah")
-script = ExtResource("3_0avjk")
+[node name="Notoriety" type="Sprite2D" parent="."]
+position = Vector2(987, 42)
+texture = ExtResource("17_4q2kg")
+
+[node name="Meter" type="Sprite2D" parent="."]
+position = Vector2(1008, 593)
+scale = Vector2(0.761388, 1)
+texture = ExtResource("14_ybloy")
+
+[node name="HudObjectiveFrame284x306" type="Sprite2D" parent="."]
+position = Vector2(150, 435)
+texture = ExtResource("17_hmx5i")
+
+[node name="Sanity" type="TextureProgressBar" parent="."]
+offset_left = 30.0
+offset_top = 529.0
+offset_right = 111.0
+offset_bottom = 610.0
+value = 97.0
+texture_progress = ExtResource("16_resqa")
+script = ExtResource("2_3163p")
+
+[node name="SanityFrame" type="Sprite2D" parent="Sanity"]
+z_index = 1
+position = Vector2(39, 51)
+texture = ExtResource("15_76t3o")
