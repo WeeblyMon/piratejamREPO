@@ -5,7 +5,8 @@ signal game_saved
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 
-
+var reload_timer: Timer = null
+var is_reloading: bool = false
 var wielder
 var current_level: int = 1
 var current_scene: Node
@@ -23,8 +24,17 @@ var weapon_data = {
 	"shotgun": {"fire_rate": 1.0, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
 }
 
+var weapon_ammo = {
+	"handgun": {"current": 8, "max": 8},
+	"rifle": {"current": 30, "max": 30},
+	"shotgun": {"current": 6, "max": 6}
+}
+
 func get_weapon_data() -> Dictionary:
 	return weapon_data
+
+func get_weapon_ammo() -> Dictionary:
+	return weapon_ammo
 
 var current_save: Dictionary = {
 	"current_scene_path": "",
@@ -267,3 +277,82 @@ func find_nearest_cover(ai_position: Vector2) -> Vector2:
 			best_dist = d
 			best_cover = c
 	return best_cover.global_position
+	
+# ---------------------------------------
+# AMMO MANAGEMENT
+# ---------------------------------------
+func get_current_ammo() -> int:
+	if weapon_ammo.has(current_weapon):
+		return weapon_ammo[current_weapon]["current"]
+	return 0
+	
+func consume_ammo() -> bool:
+	if is_reloading:
+		# Don’t consume ammo while reloading
+		return false
+
+	if weapon_ammo.has(current_weapon):
+		var ammo_data = weapon_ammo[current_weapon]
+		if ammo_data["current"] > 0:
+			ammo_data["current"] -= 1
+			print("Ammo consumed. Remaining:", ammo_data["current"])
+			return true
+		else:
+			# Just once if needed, but we’re about to reload anyway
+			# print("Out of ammo!")  # You can comment out to reduce spam
+			return false
+	return false
+
+
+func reload_weapon() -> void:
+	if is_reloading:
+		return  # Already reloading, do nothing
+
+	if not weapon_ammo.has(current_weapon):
+		return  # No ammo data for this weapon?
+
+	var ammo_data = weapon_ammo[current_weapon]
+
+	if current_weapon == "shotgun":
+		if ammo_data["current"] < ammo_data["max"]:
+			AudioManager.play_sfx("reload_1")
+
+			if reload_timer == null:
+				reload_timer = Timer.new()
+				reload_timer.one_shot = true
+				add_child(reload_timer)
+
+				# Connect only once
+				if not reload_timer.timeout.is_connected(Callable(self, "_on_shotgun_reload_step")):
+					reload_timer.timeout.connect(Callable(self, "_on_shotgun_reload_step"))
+			else:
+				reload_timer.stop()
+
+			reload_timer.wait_time = 0.5  # Reload one shell per second
+			reload_timer.start()
+			is_reloading = true
+		else:
+			# Already full
+			is_reloading = false
+	else:
+		# Non‐shotgun: just fill to max
+		AudioManager.play_sfx("reload_1", 1.0)
+		ammo_data["current"] = ammo_data["max"]
+		is_reloading = false
+		print("Reloaded", current_weapon, "to max ammo:", ammo_data["max"])
+
+
+func _on_shotgun_reload_step() -> void:
+	var ammo_data = weapon_ammo[current_weapon]
+	ammo_data["current"] += 1
+	print("Shotgun reloaded 1 shell. Current ammo:", ammo_data["current"])
+
+	if ammo_data["current"] < ammo_data["max"]:
+		reload_timer.start()
+		AudioManager.play_sfx("reload_1")
+	else:
+		is_reloading = false
+		reload_timer.stop()
+		reload_timer.queue_free()
+		reload_timer = null
+		print("Shotgun fully reloaded.")

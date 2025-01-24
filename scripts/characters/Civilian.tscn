@@ -9,7 +9,8 @@
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_efw5o")
 health = 5
-panic_speed_multiplier = 5.0
+panic_speed_multiplier = 3.0
+panic_duration = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708

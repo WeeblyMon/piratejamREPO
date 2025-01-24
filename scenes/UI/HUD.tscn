@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=21 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://b35dtr5rvsdd3" path="res://assets/art/UI/HUD/HUD_Sanity_81x81.png" id="16_resqa"]
 [ext_resource type="Texture2D" uid="uid://b363emtiu86qk" path="res://assets/art/UI/HUD/HUD_Stars_Frame_67x316.png" id="17_4q2kg"]
 [ext_resource type="Texture2D" uid="uid://draof2b171t43" path="res://assets/art/UI/HUD/HUD_Objective_Frame_284x306.png" id="17_hmx5i"]
+[ext_resource type="Script" path="res://scripts/UI_scripts/ammo_counter.gd" id="18_fbdbv"]
+[ext_resource type="Texture2D" uid="uid://o32dop4fgtfo" path="res://assets/art/UI/HUD/HUD_HP_50x234.png" id="18_ya70m"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
 animations = [{
@@ -61,6 +63,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Health" type="TextureProgressBar" parent="."]
+layout_mode = 0
 offset_left = 106.0
 offset_top = 607.0
 offset_right = 471.0
@@ -126,6 +129,7 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_hmx5i")
 
 [node name="Sanity" type="TextureProgressBar" parent="."]
+layout_mode = 0
 offset_left = 17.0
 offset_top = 559.0
 offset_right = 98.0
@@ -139,3 +143,18 @@ script = ExtResource("2_3163p")
 z_index = 1
 position = Vector2(39, 51)
 texture = ExtResource("15_76t3o")
+
+[node name="Ammo Counter" type="Node2D" parent="."]
+script = ExtResource("18_fbdbv")
+
+[node name="Sprite" type="Sprite2D" parent="Ammo Counter"]
+position = Vector2(1060, 566)
+scale = Vector2(0.985361, 0.991214)
+texture = ExtResource("18_ya70m")
+
+[node name="AmmoText" type="RichTextLabel" parent="Ammo Counter"]
+offset_left = 985.0
+offset_top = 555.0
+offset_right = 1025.0
+offset_bottom = 595.0
+scale = Vector2(1.74126, 0.651476)

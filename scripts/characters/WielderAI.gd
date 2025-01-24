@@ -106,7 +106,8 @@ func _check_if_reached_checkpoint() -> void:
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
 	var all_enemies = get_tree().get_nodes_in_group("enemies")
-
+	
+	# If there's no valid last_known_enemy or no enemies at all, idle
 	if not is_instance_valid(last_known_enemy):
 		if all_enemies.size() == 0:
 			velocity = Vector2.ZERO
@@ -132,6 +133,23 @@ func _process_combat_phase(delta: float) -> void:
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
 
+	if GameStateManager.is_reloading:
+		return
+		
+	time_since_last_shot += delta
+	if time_since_last_shot >= GameStateManager.get_fire_rate():
+		if GameStateManager.get_current_ammo() > 0:
+			# Attempt to consume one round from the magazine
+			if GameStateManager.consume_ammo():
+				if gun and gun.has_method("fire_bullet"):
+					gun.fire_bullet()
+					time_since_last_shot = 0.0
+		else:
+			if not GameStateManager.is_reloading:
+				print("No ammo left! Starting reload...")
+				GameStateManager.reload_weapon()
+			return
+
 	if not cover_locked:
 		var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
 		var dist_to_cover = cover_pos.distance_to(global_position)
@@ -142,6 +160,7 @@ func _process_combat_phase(delta: float) -> void:
 			_shoot_enemy_direct(last_known_enemy, delta)
 			move_and_slide()
 			return
+
 	_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
 	move_and_slide()
 
