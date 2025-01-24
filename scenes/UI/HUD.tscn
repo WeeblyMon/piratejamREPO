@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=24 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://ri86b0fqxvyy" path="res://assets/art/UI/Sanity Effects/Lines/3.png" id="7_re2fp"]
 [ext_resource type="Texture2D" uid="uid://b5ph388v6cmbj" path="res://assets/art/UI/Sanity Effects/Noise/3.png" id="7_tot2g"]
 [ext_resource type="Texture2D" uid="uid://bjj4iit3xx66r" path="res://assets/art/UI/Sanity Effects/Noise/4.png" id="8_q8pxu"]
+[ext_resource type="Script" path="res://scripts/UI_scripts/notoriety.gd" id="12_imes8"]
+[ext_resource type="Texture2D" uid="uid://b0y8rkma4ush7" path="res://assets/art/UI/HUD/HUD_Stars_44x48.png" id="13_qrcvi"]
 [ext_resource type="Texture2D" uid="uid://4n6c82gdnlj6" path="res://assets/art/UI/HUD/HUD_HP_25x376.png" id="13_uvrah"]
 [ext_resource type="Texture2D" uid="uid://dc6bdhenydv43" path="res://assets/art/UI/HUD/HUD_HP_Frame_48x461.png" id="14_ybloy"]
 [ext_resource type="Texture2D" uid="uid://djkdex2fhwo1d" path="res://assets/art/UI/HUD/HUD_Sanity_Frame_104x108.png" id="15_76t3o"]
@@ -107,10 +109,47 @@ sprite_frames = SubResource("SpriteFrames_2mng4")
 animation = &"lines"
 frame_progress = 0.0267484
 
-[node name="Notoriety" type="Sprite2D" parent="."]
-position = Vector2(1040, 31)
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1040.0
+offset_top = 31.0
+offset_right = 1080.0
+offset_bottom = 71.0
+script = ExtResource("12_imes8")
+
+[node name="NotorietyFrame" type="Sprite2D" parent="Control"]
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_4q2kg")
+
+[node name="1" type="Sprite2D" parent="Control"]
+visible = false
+position = Vector2(-84, 0)
+texture = ExtResource("13_qrcvi")
+
+[node name="2" type="Sprite2D" parent="Control"]
+visible = false
+position = Vector2(-29, 0)
+texture = ExtResource("13_qrcvi")
+
+[node name="3" type="Sprite2D" parent="Control"]
+visible = false
+position = Vector2(26, 0)
+texture = ExtResource("13_qrcvi")
+
+[node name="4" type="Sprite2D" parent="Control"]
+visible = false
+position = Vector2(82, 0)
+texture = ExtResource("13_qrcvi")
+
+[node name="ProgressNoto" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = -89.0
+offset_top = 27.0
+offset_right = 94.0
+offset_bottom = 31.0
+value = 5.01
+show_percentage = false
 
 [node name="Meter" type="Sprite2D" parent="."]
 position = Vector2(1015, 613)
@@ -152,6 +191,7 @@ offset_bottom = 40.0
 script = ExtResource("18_fbdbv")
 
 [node name="AmmoText" type="Label" parent="AmmoCounter"]
+layout_mode = 0
 offset_left = 989.0
 offset_top = 555.0
 offset_right = 1029.0
@@ -160,6 +200,7 @@ theme_override_fonts/font = ExtResource("19_x7h6s")
 text = "0"
 
 [node name="AmmoText2" type="Label" parent="AmmoCounter"]
+layout_mode = 0
 offset_left = 1029.0
 offset_top = 555.0
 offset_right = 1069.0
@@ -168,6 +209,7 @@ theme_override_fonts/font = ExtResource("19_x7h6s")
 text = "0"
 
 [node name="Slash" type="Label" parent="AmmoCounter"]
+layout_mode = 0
 offset_left = 1013.0
 offset_top = 555.0
 offset_right = 1053.0

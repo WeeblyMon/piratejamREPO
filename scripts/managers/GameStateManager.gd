@@ -7,7 +7,11 @@ signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
 signal weapon_changed(new_weapon: String)
 signal jam_state_changed(is_jammed: bool)
+signal notoriety_changed(current_notoriety: int, max_stars: int)
 
+var notoriety: int = 0
+var max_stars: int = 4
+var max_progress: int = 25
 var is_jammed: bool = false
 var reload_timer: Timer = null
 var is_reloading: bool = false
@@ -383,3 +387,19 @@ func _on_full_reload_complete() -> void:
 	reload_timer.stop()
 	reload_timer.queue_free()
 	reload_timer = null
+
+func add_notoriety(amount: int) -> void:
+	notoriety += amount
+	if notoriety >= max_progress:
+		notoriety -= max_progress
+		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
+		add_star()
+	else:
+		emit_signal("notoriety_changed", notoriety, max_stars)
+
+func add_star() -> void:
+	if max_stars > 0:
+		max_stars -= 1
+		emit_signal("notoriety_changed", notoriety, max_stars)  # Update HUD
+	else:
+		print("Already at maximum stars!")

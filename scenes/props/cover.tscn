@@ -19,7 +19,6 @@ health_bar = NodePath("HealthBar")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
-scale = Vector2(1, 1)
 vertices = PackedVector2Array(-19.8675, -23.8411, -20.5298, 26.4901, 17.8808, 27.1523, 21.1921, -25.1656)
 affect_navigation_mesh = true
 carve_navigation_mesh = true

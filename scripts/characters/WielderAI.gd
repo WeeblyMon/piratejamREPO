@@ -331,18 +331,15 @@ func _reset_cover_lock() -> void:
 func trigger_jam() -> void:
 	if GameStateManager.is_jammed:
 		return  # Already jammed, ignore
-	print("Wielder: Triggering jam.")
 	GameStateManager.set_jam_state(true)
 	jammed_sprite.visible = true
 	GameStateManager.reload_weapon()
 	await get_tree().create_timer(2.0).timeout  # Replace yield with await
 	GameStateManager.set_jam_state(false)
 	jammed_sprite.visible = false
-	print("Wielder: Jam cleared.")
 
 
 func clear_jam():
-	print("Wielder: Clearing jam.")
 	GameStateManager.set_jam_state(false)
 
 func _on_jam_state_changed(is_jammed: bool) -> void:

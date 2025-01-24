@@ -26,4 +26,5 @@ func flash_color() -> void:
 	flash_timer.queue_free()  
 
 func die() -> void:
+	GameStateManager.add_notoriety(1)
 	queue_free()  
