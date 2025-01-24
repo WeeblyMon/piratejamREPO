@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6y3ecafagddx"]
+
+[ext_resource type="Script" path="res://scripts/characters/civilian.gd" id="1_efw5o"]
+[ext_resource type="Texture2D" uid="uid://ce5om4pyh2ev7" path="res://assets/art/characters/Goblin.png" id="1_l2a7d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iu3vw"]
+
+[node name="Civilian" type="CharacterBody2D" groups=["civilian"]]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_efw5o")
+health = 5
+panic_speed_multiplier = 3.0
+panic_duration = 30.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_l2a7d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(5.475, 5.475)
+shape = SubResource("CircleShape2D_iu3vw")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

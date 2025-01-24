@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=21 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://draof2b171t43" path="res://assets/art/UI/HUD/HUD_Objective_Frame_284x306.png" id="17_hmx5i"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/ammo_counter.gd" id="18_fbdbv"]
 [ext_resource type="Texture2D" uid="uid://o32dop4fgtfo" path="res://assets/art/UI/HUD/HUD_HP_50x234.png" id="18_ya70m"]
-[ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="19_x7h6s"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
 animations = [{
@@ -145,38 +144,17 @@ z_index = 1
 position = Vector2(39, 51)
 texture = ExtResource("15_76t3o")
 
-[node name="AmmoCounter" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Ammo Counter" type="Node2D" parent="."]
 script = ExtResource("18_fbdbv")
 
-[node name="AmmoText" type="Label" parent="AmmoCounter"]
-offset_left = 989.0
-offset_top = 555.0
-offset_right = 1029.0
-offset_bottom = 595.0
-theme_override_fonts/font = ExtResource("19_x7h6s")
-text = "0"
-
-[node name="AmmoText2" type="Label" parent="AmmoCounter"]
-offset_left = 1029.0
-offset_top = 555.0
-offset_right = 1069.0
-offset_bottom = 595.0
-theme_override_fonts/font = ExtResource("19_x7h6s")
-text = "0"
-
-[node name="Slash" type="Label" parent="AmmoCounter"]
-offset_left = 1013.0
-offset_top = 555.0
-offset_right = 1053.0
-offset_bottom = 595.0
-theme_override_fonts/font = ExtResource("19_x7h6s")
-text = "/
-"
-
-[node name="Sprite" type="Sprite2D" parent="AmmoCounter"]
-position = Vector2(1053, 566)
+[node name="Sprite" type="Sprite2D" parent="Ammo Counter"]
+position = Vector2(1060, 566)
 scale = Vector2(0.985361, 0.991214)
 texture = ExtResource("18_ya70m")
+
+[node name="AmmoText" type="RichTextLabel" parent="Ammo Counter"]
+offset_left = 973.0
+offset_top = 557.0
+offset_right = 1013.0
+offset_bottom = 597.0
+scale = Vector2(1.74126, 0.651476)

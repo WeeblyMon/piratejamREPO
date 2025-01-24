@@ -15,13 +15,14 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mo5d"]
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" groups=["bullet"]]
+z_index = 2
 script = ExtResource("1_2rjgs")
 speed = 1500.0
 point_spacing = 10.0
 
 [node name="PistolP" type="Sprite2D" parent="."]
-z_index = 1
+visible = false
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("2_80fba")

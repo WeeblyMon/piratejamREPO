@@ -33,18 +33,28 @@ func _process(delta: float) -> void:
 
 func fire_bullet() -> Node:
 	if bullet_scene and time_since_last_shot >= fire_rate:
-		var bullet = bullet_scene.instantiate()
-		bullet.global_position = raycast.global_position
-		bullet.rotation = raycast.global_rotation
-		get_tree().current_scene.add_child(bullet)
-
-		last_fired_bullet = bullet
-		time_since_last_shot = 0.0
-		fire_sfx()
-		_show_muzzle_flash(current_weapon)
-		return bullet
+		if GameStateManager.is_reloading:
+			print("Cannot fire while reloading!")
+			return null
+		
+		if GameStateManager.get_current_ammo() > 0:
+			if GameStateManager.consume_ammo():
+				var bullet = bullet_scene.instantiate()
+				bullet.global_position = raycast.global_position
+				bullet.rotation = raycast.global_rotation
+				get_tree().current_scene.add_child(bullet)
+				last_fired_bullet = bullet
+				time_since_last_shot = 0.0
+				fire_sfx()
+				_show_muzzle_flash(current_weapon)
+				return bullet
+		else:
+			print("No ammo left! Starting reload...")
+			GameStateManager.reload_weapon()
 	return null
 
+
+	
 func fire_sfx() -> void:
 	match current_weapon:
 		"handgun":
