@@ -22,7 +22,7 @@ speed = 1500.0
 point_spacing = 10.0
 
 [node name="PistolP" type="Sprite2D" parent="."]
-z_index = 1
+visible = false
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("2_80fba")

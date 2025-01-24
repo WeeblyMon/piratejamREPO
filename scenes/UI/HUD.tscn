@@ -151,28 +151,28 @@ offset_bottom = 40.0
 script = ExtResource("18_fbdbv")
 
 [node name="AmmoText" type="Label" parent="AmmoCounter"]
-offset_left = 993.0
+offset_left = 989.0
 offset_top = 555.0
-offset_right = 1033.0
+offset_right = 1029.0
 offset_bottom = 595.0
 text = "0"
 
 [node name="AmmoText2" type="Label" parent="AmmoCounter"]
-offset_left = 1023.0
+offset_left = 1029.0
 offset_top = 555.0
-offset_right = 1063.0
+offset_right = 1069.0
 offset_bottom = 595.0
 text = "0"
 
 [node name="Slash" type="Label" parent="AmmoCounter"]
-offset_left = 1009.0
+offset_left = 1013.0
 offset_top = 555.0
-offset_right = 1049.0
+offset_right = 1053.0
 offset_bottom = 595.0
 text = "/
 "
 
 [node name="Sprite" type="Sprite2D" parent="AmmoCounter"]
-position = Vector2(1060, 566)
+position = Vector2(1053, 566)
 scale = Vector2(0.985361, 0.991214)
 texture = ExtResource("18_ya70m")
