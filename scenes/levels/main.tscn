@@ -30,10 +30,6 @@ position = Vector2(96.6666, 26.6667)
 scale = Vector2(3.33333, 3.33333)
 zoom = Vector2(0.925, 0.925)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Wielder/Camera2D"]
-
-[node name="Hud" parent="Wielder/Camera2D/CanvasLayer" instance=ExtResource("3_0b38m")]
-
 [node name="Cover" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1657, 409)
 
@@ -81,6 +77,11 @@ sprite_index = 0
 [node name="Civilian" parent="." instance=ExtResource("8_v41f2")]
 position = Vector2(1290, -141)
 health = 10
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hud" parent="CanvasLayer" instance=ExtResource("3_0b38m")]
+metadata/_edit_use_anchors_ = true
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

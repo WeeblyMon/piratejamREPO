@@ -144,35 +144,17 @@ z_index = 1
 position = Vector2(39, 51)
 texture = ExtResource("15_76t3o")
 
-[node name="AmmoCounter" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Ammo Counter" type="Node2D" parent="."]
 script = ExtResource("18_fbdbv")
 
-[node name="AmmoText" type="Label" parent="AmmoCounter"]
-offset_left = 993.0
-offset_top = 555.0
-offset_right = 1033.0
-offset_bottom = 595.0
-text = "0"
-
-[node name="AmmoText2" type="Label" parent="AmmoCounter"]
-offset_left = 1023.0
-offset_top = 555.0
-offset_right = 1063.0
-offset_bottom = 595.0
-text = "0"
-
-[node name="Slash" type="Label" parent="AmmoCounter"]
-offset_left = 1009.0
-offset_top = 555.0
-offset_right = 1049.0
-offset_bottom = 595.0
-text = "/
-"
-
-[node name="Sprite" type="Sprite2D" parent="AmmoCounter"]
+[node name="Sprite" type="Sprite2D" parent="Ammo Counter"]
 position = Vector2(1060, 566)
 scale = Vector2(0.985361, 0.991214)
 texture = ExtResource("18_ya70m")
+
+[node name="AmmoText" type="RichTextLabel" parent="Ammo Counter"]
+offset_left = 973.0
+offset_top = 557.0
+offset_right = 1013.0
+offset_bottom = 597.0
+scale = Vector2(1.74126, 0.651476)

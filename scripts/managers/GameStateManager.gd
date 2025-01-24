@@ -4,6 +4,8 @@ signal game_loaded
 signal game_saved
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
+signal ammo_changed
+signal weapon_changed(new_weapon: String)
 
 var reload_timer: Timer = null
 var is_reloading: bool = false
@@ -61,6 +63,8 @@ func set_weapon(weapon_name: String) -> void:
 		print("Weapon switched to:", current_weapon, "Fire rate:", fire_rate, "Seconds per shot")
 	else:
 		push_warning("Invalid weapon: %s".format(weapon_name))
+
+
 
 func get_weapon() -> String:
 	return current_weapon
@@ -288,18 +292,16 @@ func get_current_ammo() -> int:
 	
 func consume_ammo() -> bool:
 	if is_reloading:
-		# Don’t consume ammo while reloading
 		return false
-
 	if weapon_ammo.has(current_weapon):
 		var ammo_data = weapon_ammo[current_weapon]
 		if ammo_data["current"] > 0:
 			ammo_data["current"] -= 1
+			emit_signal("ammo_changed", ammo_data["current"], ammo_data["max"])  # Emit signal
 			print("Ammo consumed. Remaining:", ammo_data["current"])
 			return true
 		else:
-			# Just once if needed, but we’re about to reload anyway
-			# print("Out of ammo!")  # You can comment out to reduce spam
+			print("Out of ammo!")
 			return false
 	return false
 
@@ -316,7 +318,6 @@ func reload_weapon() -> void:
 	if current_weapon == "shotgun":
 		if ammo_data["current"] < ammo_data["max"]:
 			AudioManager.play_sfx("reload_1")
-
 			if reload_timer == null:
 				reload_timer = Timer.new()
 				reload_timer.one_shot = true
@@ -327,7 +328,6 @@ func reload_weapon() -> void:
 					reload_timer.timeout.connect(Callable(self, "_on_shotgun_reload_step"))
 			else:
 				reload_timer.stop()
-			#if weapon is handgun or rifle then 1.5 sec timer
 			if current_weapon == "handgun" or current_weapon == "rifle":
 				reload_timer.wait_time = 1.5  # 1.5 seconds for handgun or rifle
 			else:
@@ -335,7 +335,6 @@ func reload_weapon() -> void:
 			reload_timer.start()
 			is_reloading = true
 		else:
-			# Already full
 			is_reloading = false
 	else:
 		# Non‐shotgun: just fill to max
