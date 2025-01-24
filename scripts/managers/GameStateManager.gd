@@ -3,6 +3,7 @@ extends Node
 signal game_loaded
 signal game_saved
 signal sanity_changed(sanity: int)
+signal wielder_phase_changed(new_phase: int)
 
 
 var wielder
@@ -127,8 +128,10 @@ enum WielderPhase { MOVEMENT, COMBAT }
 var current_wielder_phase: int = WielderPhase.MOVEMENT
 
 func set_wielder_phase(new_phase: int) -> void:
-	current_wielder_phase = new_phase
-	print("GameStateManager: Phase changed to:", new_phase)
+	if current_wielder_phase != new_phase:
+		current_wielder_phase = new_phase
+		emit_signal("wielder_phase_changed", new_phase)
+		print("GameStateManager: Phase changed to:", new_phase)
 
 func get_wielder_phase() -> int:
 	return current_wielder_phase

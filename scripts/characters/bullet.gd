@@ -18,6 +18,8 @@ var distance_accum: float = 0.0
 var is_controlled: bool = false
 
 func _ready() -> void:
+	add_to_group("bullet")
+	
 	area.body_entered.connect(_on_body_entered)
 	if local_line2d:
 		local_line2d.clear_points()
@@ -100,6 +102,8 @@ func disable_player_control() -> void:
 	Engine.time_scale = 1.0
 
 func _on_body_entered(body: Node) -> void:
+	if body.has_method("_start_panic"):
+			body._start_panic()
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
 	queue_free()

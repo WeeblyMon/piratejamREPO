@@ -32,6 +32,7 @@ enemy=""
 checkpoints=""
 cover=""
 civilian=""
+bullet=""
 
 [input]
 

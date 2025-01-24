@@ -10,9 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scripts/characters/Civilian.tscn" id="8_v41f2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
-vertices = PackedVector2Array(1861.79, 483.047, -41.9531, -243.656, -134.523, -494.641, 1073.04, -465.703, 1843.19, -447.219, -61.7188, 493.938)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(0, 5, 1)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-52, -242, -72, 504, 1872, 493, 1853, -457, 1073.28, -475.695, -149, -505)])
+vertices = PackedVector2Array(1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, -62.3203, 493.938, -86, -242.289, -86, -242.297, -100.688, -733.156)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(0, 5, 6)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-96, -242, -72, 504, 1872, 493, 2021, -742, 1049, -762, -111, -743)])
 
 [node name="TestLevel" type="Node2D" node_paths=PackedStringArray("wielder")]
 script = ExtResource("1_2htwu")
@@ -80,6 +80,7 @@ sprite_index = 0
 
 [node name="Civilian" parent="." instance=ExtResource("8_v41f2")]
 position = Vector2(1290, -141)
+health = 10
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
