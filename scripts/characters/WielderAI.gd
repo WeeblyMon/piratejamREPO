@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var speed: float = 150.0
 var fire_rate = GameStateManager.get_fire_rate()
 @export var gun: Node2D
-
+@onready var jammed_sprite: Sprite2D = $JammedSprite
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 @export var path_debug: Node2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -19,6 +19,9 @@ var locked_cover_node: Node2D = null
 var cover_locked_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	jammed_sprite.visible = false
+	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
+
 	if not navigation_agent:
 		push_warning("NavigationAgent2D node not found!")
 		return
@@ -139,7 +142,6 @@ func _process_combat_phase(delta: float) -> void:
 	time_since_last_shot += delta
 	if time_since_last_shot >= GameStateManager.get_fire_rate():
 		if GameStateManager.get_current_ammo() > 0:
-			# Attempt to consume one round from the magazine
 			if GameStateManager.consume_ammo():
 				if gun and gun.has_method("fire_bullet"):
 					gun.fire_bullet()
@@ -325,3 +327,23 @@ func _on_cover_destroyed() -> void:
 func _reset_cover_lock() -> void:
 	cover_locked = false
 	cover_locked_position = Vector2.ZERO
+
+func trigger_jam() -> void:
+	if GameStateManager.is_jammed:
+		return  # Already jammed, ignore
+	print("Wielder: Triggering jam.")
+	GameStateManager.set_jam_state(true)
+	jammed_sprite.visible = true
+	GameStateManager.reload_weapon()
+	await get_tree().create_timer(2.0).timeout  # Replace yield with await
+	GameStateManager.set_jam_state(false)
+	jammed_sprite.visible = false
+	print("Wielder: Jam cleared.")
+
+
+func clear_jam():
+	print("Wielder: Clearing jam.")
+	GameStateManager.set_jam_state(false)
+
+func _on_jam_state_changed(is_jammed: bool) -> void:
+	jammed_sprite.visible = is_jammed

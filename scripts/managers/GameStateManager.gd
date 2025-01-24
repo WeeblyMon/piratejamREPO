@@ -6,7 +6,9 @@ signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
 signal weapon_changed(new_weapon: String)
+signal jam_state_changed(is_jammed: bool)
 
+var is_jammed: bool = false
 var reload_timer: Timer = null
 var is_reloading: bool = false
 var wielder
@@ -72,6 +74,10 @@ func get_weapon() -> String:
 func get_fire_rate() -> float:
 	return fire_rate
 
+func set_jam_state(state: bool) -> void:
+	is_jammed = state
+	print("GameStateManager: Jam state changed to:", is_jammed)
+	
 # ---------------------------------------
 # SCENE SWITCHING
 # ---------------------------------------

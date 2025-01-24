@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="5_n2e8c"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="7_hca71"]
-[ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scripts/characters/Civilian.tscn" id="8_v41f2"]
+[ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scenes/characters/Civilian.tscn" id="8_v41f2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
 vertices = PackedVector2Array(1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, -62.3203, 493.938, -86, -242.289, -86, -242.297, -100.688, -733.156)

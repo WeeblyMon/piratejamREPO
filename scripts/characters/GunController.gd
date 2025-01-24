@@ -5,7 +5,7 @@ extends Node2D
 @onready var muzzle_handgun: Sprite2D = $PistolMF
 @onready var muzzle_rifle: AnimatedSprite2D = $RifleMF
 @onready var muzzle_shotgun: AnimatedSprite2D = $ShotgunMF
-
+var is_reloading: bool = false
 var current_weapon: String = GameStateManager.get_weapon()
 var fire_rate: float = GameStateManager.get_fire_rate()
 var weapon_data: Dictionary = GameStateManager.get_weapon_data()
@@ -14,6 +14,7 @@ var last_fired_bullet: Node = null
 
 func _ready() -> void:
 	current_weapon = GameStateManager.get_weapon()
+	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
 	fire_rate = GameStateManager.get_fire_rate()
 	update_raycast(current_weapon)
 	update_weapon(current_weapon)
@@ -32,6 +33,10 @@ func _process(delta: float) -> void:
 		last_fired_bullet = null
 
 func fire_bullet() -> Node:
+	if GameStateManager.is_jammed:
+		print("GunController: Cannot fire while jammed!")
+		return null
+		
 	if bullet_scene and time_since_last_shot >= fire_rate:
 		if GameStateManager.is_reloading:
 			print("Cannot fire while reloading!")
@@ -52,7 +57,6 @@ func fire_bullet() -> Node:
 			print("No ammo left! Starting reload...")
 			GameStateManager.reload_weapon()
 	return null
-
 
 	
 func fire_sfx() -> void:
