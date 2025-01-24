@@ -315,6 +315,7 @@ func reload_weapon() -> void:
 
 	var ammo_data = weapon_ammo[current_weapon]
 
+	# Handle shotgun reload (one shell at a time)
 	if current_weapon == "shotgun":
 		if ammo_data["current"] < ammo_data["max"]:
 			AudioManager.play_sfx("reload_1")
@@ -328,20 +329,29 @@ func reload_weapon() -> void:
 					reload_timer.timeout.connect(Callable(self, "_on_shotgun_reload_step"))
 			else:
 				reload_timer.stop()
-			if current_weapon == "handgun" or current_weapon == "rifle":
-				reload_timer.wait_time = 1.5  # 1.5 seconds for handgun or rifle
-			else:
-				reload_timer.wait_time = 0.5  # 0.5 seconds for shotgun (reload one shell per second)
+			reload_timer.wait_time = 0.5  # 0.5 seconds for shotgun (reload one shell per tick)
 			reload_timer.start()
 			is_reloading = true
 		else:
 			is_reloading = false
+
+	# Handle handgun and rifle reload (entire clip at once)
+	elif current_weapon == "handgun" or current_weapon == "rifle":
+		AudioManager.play_sfx("reload_1")
+		if reload_timer == null:
+			reload_timer = Timer.new()
+			reload_timer.one_shot = true
+			add_child(reload_timer)
+
+			if not reload_timer.timeout.is_connected(Callable(self, "_on_full_reload_complete")):
+				reload_timer.timeout.connect(Callable(self, "_on_full_reload_complete"))
+		else:
+			reload_timer.stop()
+		reload_timer.wait_time = 1.5  
+		reload_timer.start()
+		is_reloading = true
 	else:
-		# Non‐shotgun: just fill to max
-		AudioManager.play_sfx("reload_1", 1.0)
-		ammo_data["current"] = ammo_data["max"]
-		is_reloading = false
-		print("Reloaded", current_weapon, "to max ammo:", ammo_data["max"])
+		print("No reload logic defined for weapon:", current_weapon)
 
 
 func _on_shotgun_reload_step() -> void:
@@ -350,7 +360,7 @@ func _on_shotgun_reload_step() -> void:
 	print("Shotgun reloaded 1 shell. Current ammo:", ammo_data["current"])
 
 	if ammo_data["current"] < ammo_data["max"]:
-		reload_timer.start()
+		reload_timer.start()  # Continue reloading
 		AudioManager.play_sfx("reload_1")
 	else:
 		is_reloading = false
@@ -358,3 +368,12 @@ func _on_shotgun_reload_step() -> void:
 		reload_timer.queue_free()
 		reload_timer = null
 		print("Shotgun fully reloaded.")
+
+func _on_full_reload_complete() -> void:
+	var ammo_data = weapon_ammo[current_weapon]
+	ammo_data["current"] = ammo_data["max"] 
+	print("Reloaded", current_weapon, "to max ammo:", ammo_data["max"])
+	is_reloading = false
+	reload_timer.stop()
+	reload_timer.queue_free()
+	reload_timer = null
