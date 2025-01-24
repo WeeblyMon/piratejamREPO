@@ -13,7 +13,7 @@ var current_scene: Node
 var max_resource: float = 100.0
 var resource_regen_rate: float = 10.0  # Resource regenerated per second
 var current_resource: float = max_resource
-var current_weapon: String = "shotgun"
+var current_weapon: String = "handgun"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 var fire_rate: float = 0.0  # Default fire rate in seconds per shot (600 BPM)
@@ -327,8 +327,11 @@ func reload_weapon() -> void:
 					reload_timer.timeout.connect(Callable(self, "_on_shotgun_reload_step"))
 			else:
 				reload_timer.stop()
-
-			reload_timer.wait_time = 0.5  # Reload one shell per second
+			#if weapon is handgun or rifle then 1.5 sec timer
+			if current_weapon == "handgun" or current_weapon == "rifle":
+				reload_timer.wait_time = 1.5  # 1.5 seconds for handgun or rifle
+			else:
+				reload_timer.wait_time = 0.5  # 0.5 seconds for shotgun (reload one shell per second)
 			reload_timer.start()
 			is_reloading = true
 		else:

@@ -322,7 +322,6 @@ func _on_cover_destroyed() -> void:
 	_reset_cover_lock()
 	locked_cover_node = null
 
-
 func _reset_cover_lock() -> void:
 	cover_locked = false
 	cover_locked_position = Vector2.ZERO
