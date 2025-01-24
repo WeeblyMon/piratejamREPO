@@ -7,12 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="5_n2e8c"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="7_hca71"]
-[ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scripts/characters/Civilian.tscn" id="8_v41f2"]
+[ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scenes/characters/Civilian.tscn" id="8_v41f2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
-vertices = PackedVector2Array(1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, -62.3203, 493.938, -86, -242.289, -86, -242.297, -100.688, -733.156)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(0, 5, 6)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-96, -242, -72, 504, 1872, 493, 2021, -742, 1049, -762, -111, -743)])
+vertices = PackedVector2Array(1289.3, -353.203, 1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, 1286.72, -263, 1218, -263, -62.2734, 493.938, -77, -27.3125, 1218, -351.813, -100.656, -733.156)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3), PackedInt32Array(5, 4, 3, 6, 7), PackedInt32Array(1, 0, 8), PackedInt32Array(5, 7, 9, 1, 8)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-87, -27, -72, 504, 1872, 493, 2021, -742, 1049, -762, -111, -743)])
 
 [node name="TestLevel" type="Node2D" node_paths=PackedStringArray("wielder")]
 script = ExtResource("1_2htwu")
@@ -61,6 +61,9 @@ position = Vector2(1338, -194)
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(-97, 255)
 navigation_polygon = SubResource("NavigationPolygon_j7ll7")
+
+[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
+polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
 
 [node name="Cover3" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1457, 34)

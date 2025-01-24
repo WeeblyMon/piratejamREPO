@@ -1,4 +1,4 @@
-[gd_scene load_steps=190 format=3 uid="uid://vkatmye03xqt"]
+[gd_scene load_steps=191 format=3 uid="uid://vkatmye03xqt"]
 
 [ext_resource type="Script" path="res://scripts/characters/WielderAI.gd" id="1_jplbh"]
 [ext_resource type="Texture2D" uid="uid://c8ei7xc5335b2" path="res://assets/art/characters/survivor-idle_rifle_0.png" id="2_3cim3"]
@@ -187,6 +187,7 @@
 [ext_resource type="Texture2D" uid="uid://b5n2fsdlbtqob" path="res://resources/animations/Top_Down_Survivor/shotgun/shoot/survivor-shoot_shotgun_0.png" id="186_gg4wv"]
 [ext_resource type="Texture2D" uid="uid://hvf1xjaebljr" path="res://resources/animations/Top_Down_Survivor/shotgun/shoot/survivor-shoot_shotgun_1.png" id="187_cb4wp"]
 [ext_resource type="Texture2D" uid="uid://cx37x3dpyijky" path="res://resources/animations/Top_Down_Survivor/shotgun/shoot/survivor-shoot_shotgun_2.png" id="188_6ky6v"]
+[ext_resource type="Texture2D" uid="uid://bpn17uphtdb7r" path="res://assets/art/UI/Jammed_99x357.png" id="188_vdxcw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntrfv"]
 
@@ -835,6 +836,11 @@ radius = 44.03
 position = Vector2(46, -11)
 sprite_frames = SubResource("SpriteFrames_vo71q")
 animation = &"move_shotgun"
+
+[node name="JammedSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(363.333, -6.66667)
+texture = ExtResource("188_vdxcw")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 

@@ -10,3 +10,7 @@ func _input(event: InputEvent) -> void:
 	# Check for removeSanity input
 	if event.is_action_pressed("removeSanity"):
 		GameStateManager.set_sanity(10, "sub")  # Adjust the value (e.g., 10) as needed
+		
+	if event.is_action_pressed("jam_ability"):
+		if wielder and wielder.has_method("trigger_jam"):
+			wielder.trigger_jam()
