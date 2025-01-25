@@ -76,7 +76,7 @@ func fire_shotgun_volley() -> void:
 	# Consume exactly 1 ammo for the entire volley
 	if GameStateManager.consume_ammo():
 		# Spread settings
-		var spread_angle = deg_to_rad(30)  # total angle of the cone
+		var spread_angle = deg_to_rad(20)  # total angle of the cone
 		var pellet_count = 10
 		var angle_step = spread_angle / (pellet_count - 1)
 
@@ -85,9 +85,6 @@ func fire_shotgun_volley() -> void:
 			var bullet = bullet_scene.instantiate()
 			bullet.global_position = raycast.global_position
 			bullet.rotation = raycast.global_rotation - (spread_angle * 0.5) + (angle_step * i)
-
-			# Let player control each bullet
-			bullet.enable_player_control()
 
 			get_tree().current_scene.add_child(bullet)
 

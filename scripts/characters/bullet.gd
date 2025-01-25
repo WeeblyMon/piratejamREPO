@@ -61,8 +61,13 @@ func _process(delta: float) -> void:
 		_control_bullet(unscaled_delta)
 	else:
 		_move_forward(unscaled_delta)
-
 	_update_trail(unscaled_delta)
+	if Input.is_action_pressed("control_bullet"):
+		if not is_controlled:
+			enable_player_control()
+	else:
+		if is_controlled:
+			disable_player_control()
 
 func _move_forward(unscaled_delta: float) -> void:
 	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta
