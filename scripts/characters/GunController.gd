@@ -108,7 +108,7 @@ func reload_weapon() -> void:
 
 	# If for some reason we let the GunController reload other weapons fully:
 	if current_weapon != "shotgun":
-		print("reload_weapon() called, but not a shotgun. Implement or skip?")
+		GameStateManager.reload_weapon()
 		return
 
 	# Check if shotgun is already full
