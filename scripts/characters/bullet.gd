@@ -61,8 +61,13 @@ func _process(delta: float) -> void:
 		_control_bullet(unscaled_delta)
 	else:
 		_move_forward(unscaled_delta)
-
 	_update_trail(unscaled_delta)
+	if Input.is_action_pressed("control_bullet"):
+		if not is_controlled:
+			enable_player_control()
+	else:
+		if is_controlled:
+			disable_player_control()
 
 func _move_forward(unscaled_delta: float) -> void:
 	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta
@@ -95,11 +100,14 @@ func _update_trail(unscaled_delta: float) -> void:
 func enable_player_control() -> void:
 	is_controlled = true
 	time_alive = 0.0
+	add_to_group("controlled_bullets")
 	Engine.time_scale = 0.2
 
 func disable_player_control() -> void:
 	is_controlled = false
-	Engine.time_scale = 1.0
+	remove_from_group("controlled_bullets")
+	if get_tree().get_nodes_in_group("controlled_bullets").is_empty():
+		Engine.time_scale = 1.0
 
 func _on_body_entered(body: Node) -> void:
 	if body.has_method("_start_panic"):

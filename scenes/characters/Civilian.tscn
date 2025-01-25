@@ -19,5 +19,6 @@ texture = ExtResource("1_l2a7d")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(5.475, 5.475)
 shape = SubResource("CircleShape2D_iu3vw")
+disabled = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

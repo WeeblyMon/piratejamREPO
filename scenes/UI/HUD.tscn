@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b3n50h3s6bshv"]
+[gd_scene load_steps=25 format=3 uid="uid://b3n50h3s6bshv"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/SanityBar.gd" id="2_3163p"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/HealthBar.gd" id="3_0avjk"]
@@ -22,6 +22,8 @@
 [ext_resource type="Script" path="res://scripts/UI_scripts/ammo_counter.gd" id="18_fbdbv"]
 [ext_resource type="Texture2D" uid="uid://o32dop4fgtfo" path="res://assets/art/UI/HUD/HUD_HP_50x234.png" id="18_ya70m"]
 [ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="19_x7h6s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ckiy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2mng4"]
 animations = [{
@@ -58,6 +60,7 @@ animations = [{
 }]
 
 [node name="Hud" type="Control"]
+material = SubResource("ShaderMaterial_3ckiy")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,6 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Health" type="TextureProgressBar" parent="."]
+use_parent_material = true
 layout_mode = 0
 offset_left = 106.0
 offset_top = 607.0
@@ -77,17 +81,20 @@ texture_progress = ExtResource("13_uvrah")
 script = ExtResource("3_0avjk")
 
 [node name="HPFrame" type="Sprite2D" parent="Health"]
+use_parent_material = true
 position = Vector2(198.75, 12)
 scale = Vector2(0.946855, 1)
 texture = ExtResource("14_ybloy")
 
 [node name="HPFrame2" type="Sprite2D" parent="Health"]
+use_parent_material = true
 position = Vector2(199, 11)
 scale = Vector2(0.946855, 1)
 texture = ExtResource("14_ybloy")
 
 [node name="Sanity Effects" type="Container" parent="."]
 modulate = Color(0.239216, 0.65098, 0.768627, 1)
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -110,6 +117,7 @@ animation = &"lines"
 frame_progress = 0.0267484
 
 [node name="Control" type="Control" parent="."]
+use_parent_material = true
 layout_mode = 3
 anchors_preset = 0
 offset_left = 1040.0
@@ -119,30 +127,36 @@ offset_bottom = 71.0
 script = ExtResource("12_imes8")
 
 [node name="NotorietyFrame" type="Sprite2D" parent="Control"]
+use_parent_material = true
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_4q2kg")
 
 [node name="1" type="Sprite2D" parent="Control"]
 visible = false
+use_parent_material = true
 position = Vector2(-84, 0)
 texture = ExtResource("13_qrcvi")
 
 [node name="2" type="Sprite2D" parent="Control"]
 visible = false
+use_parent_material = true
 position = Vector2(-29, 0)
 texture = ExtResource("13_qrcvi")
 
 [node name="3" type="Sprite2D" parent="Control"]
 visible = false
+use_parent_material = true
 position = Vector2(26, 0)
 texture = ExtResource("13_qrcvi")
 
 [node name="4" type="Sprite2D" parent="Control"]
 visible = false
+use_parent_material = true
 position = Vector2(82, 0)
 texture = ExtResource("13_qrcvi")
 
 [node name="ProgressNoto" type="ProgressBar" parent="Control"]
+use_parent_material = true
 layout_mode = 0
 offset_left = -89.0
 offset_top = 27.0
@@ -152,11 +166,13 @@ value = 5.01
 show_percentage = false
 
 [node name="Meter" type="Sprite2D" parent="."]
+use_parent_material = true
 position = Vector2(1015, 613)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("14_ybloy")
 
 [node name="BulletControlBar" type="ProgressBar" parent="Meter"]
+use_parent_material = true
 offset_left = -214.0
 offset_top = -13.0
 offset_right = 178.0
@@ -164,11 +180,13 @@ offset_bottom = 16.0
 script = ExtResource("4_yp0bx")
 
 [node name="MissionBox" type="Sprite2D" parent="."]
+use_parent_material = true
 position = Vector2(105, 492)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_hmx5i")
 
 [node name="Sanity" type="TextureProgressBar" parent="."]
+use_parent_material = true
 layout_mode = 0
 offset_left = 17.0
 offset_top = 559.0
@@ -181,10 +199,12 @@ script = ExtResource("2_3163p")
 
 [node name="SanityFrame" type="Sprite2D" parent="Sanity"]
 z_index = 1
+use_parent_material = true
 position = Vector2(39, 51)
 texture = ExtResource("15_76t3o")
 
 [node name="AmmoCounter" type="Control" parent="."]
+use_parent_material = true
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -219,6 +239,7 @@ text = "/
 "
 
 [node name="Sprite" type="Sprite2D" parent="AmmoCounter"]
+use_parent_material = true
 position = Vector2(1053, 566)
 scale = Vector2(0.985361, 0.991214)
 texture = ExtResource("18_ya70m")
