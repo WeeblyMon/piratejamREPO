@@ -7,7 +7,7 @@
 
 [node name="PoliceMen" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_d7r8j")
-health = 100
+health = 20
 
 [node name="PoliceEnemy" type="Sprite2D" parent="."]
 position = Vector2(12.95, -6.95)
