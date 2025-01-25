@@ -57,6 +57,43 @@ func fire_bullet() -> Node:
 			print("No ammo left! Starting reload...")
 			GameStateManager.reload_weapon()
 	return null
+	
+func fire_shotgun_volley() -> void:
+	# Check jam/reload states
+	if GameStateManager.is_jammed:
+		print("GunController: Cannot fire while jammed!")
+		return
+
+	if GameStateManager.is_reloading:
+		print("GunController: Cannot fire while reloading!")
+		return
+
+	if GameStateManager.get_current_ammo() < 1:
+		print("Not enough ammo for shotgun volley! Starting reload...")
+		GameStateManager.reload_weapon()
+		return
+
+	# Consume exactly 1 ammo for the entire volley
+	if GameStateManager.consume_ammo():
+		# Spread settings
+		var spread_angle = deg_to_rad(30)  # total angle of the cone
+		var pellet_count = 10
+		var angle_step = spread_angle / (pellet_count - 1)
+
+		# Spawn each pellet
+		for i in range(pellet_count):
+			var bullet = bullet_scene.instantiate()
+			bullet.global_position = raycast.global_position
+			bullet.rotation = raycast.global_rotation - (spread_angle * 0.5) + (angle_step * i)
+
+			# Let player control each bullet
+			bullet.enable_player_control()
+
+			get_tree().current_scene.add_child(bullet)
+
+		print("GunController: Shotgun volley fired!")
+		fire_sfx()
+		_show_muzzle_flash(current_weapon)
 
 	
 func fire_sfx() -> void:

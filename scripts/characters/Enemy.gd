@@ -27,4 +27,5 @@ func flash_color() -> void:
 
 func die() -> void:
 	GameStateManager.add_notoriety(1)
+	AudioManager.play_sfx("enemy_hit_and_blood_1", +10.0)
 	queue_free()  

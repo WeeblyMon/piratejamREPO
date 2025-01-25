@@ -17,6 +17,7 @@ var last_known_enemy: Node = null
 var cover_locked: bool = false
 var locked_cover_node: Node2D = null
 var cover_locked_position: Vector2 = Vector2.ZERO
+var current_weapon = GameStateManager.get_weapon()
 
 func _ready() -> void:
 	jammed_sprite.visible = false
@@ -109,10 +110,10 @@ func _check_if_reached_checkpoint() -> void:
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
 	var all_enemies = get_tree().get_nodes_in_group("enemies")
-	
-	# If there's no valid last_known_enemy or no enemies at all, idle
+
+	# If we have no valid enemy, pick nearest
 	if not is_instance_valid(last_known_enemy):
-		if all_enemies.size() == 0:
+		if all_enemies.is_empty():
 			velocity = Vector2.ZERO
 			play_animation("idle")
 			return
@@ -125,33 +126,35 @@ func _process_combat_phase(delta: float) -> void:
 				min_dist = d
 		last_known_enemy = nearest
 
+	# If still invalid or dead, return to movement
 	if not is_instance_valid(last_known_enemy):
 		_reset_cover_lock()
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
-
 	if last_known_enemy.has_method("is_dead") and last_known_enemy.is_dead():
 		last_known_enemy = null
 		_reset_cover_lock()
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
 
+	# Skip shooting if reloading
 	if GameStateManager.is_reloading:
 		return
-		
+
+	# 1) AIM at the enemy
+	var aim_dir = (last_known_enemy.global_position - global_position).normalized()
+	rotation = lerp_angle(rotation, aim_dir.angle(), 8.0 * delta)
+
+	# 2) FIRE logic once per fire_rate
 	time_since_last_shot += delta
 	if time_since_last_shot >= GameStateManager.get_fire_rate():
-		if GameStateManager.get_current_ammo() > 0:
-			if GameStateManager.consume_ammo():
-				if gun and gun.has_method("fire_bullet"):
-					gun.fire_bullet()
-					time_since_last_shot = 0.0
+		if current_weapon == "shotgun":
+			gun.fire_shotgun_volley()  # Only called once, not each frame
 		else:
-			if not GameStateManager.is_reloading:
-				print("No ammo left! Starting reload...")
-				GameStateManager.reload_weapon()
-			return
+			gun.fire_bullet()
+		time_since_last_shot = 0.0
 
+	# 3) Decide whether we need cover
 	if not cover_locked:
 		var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
 		var dist_to_cover = cover_pos.distance_to(global_position)
@@ -159,17 +162,21 @@ func _process_combat_phase(delta: float) -> void:
 			cover_locked_position = cover_pos
 			cover_locked = true
 		else:
-			_shoot_enemy_direct(last_known_enemy, delta)
+			# If no cover chosen, just stand and shoot
 			move_and_slide()
+			play_animation("idle")
 			return
 
+	# 4) Move behind cover if needed
 	_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
 	move_and_slide()
+
 
 
 func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
 	var dist_to_cover = cover_pos.distance_to(global_position)
 	if dist_to_cover > 50.0:
+		# Move closer to cover
 		navigation_agent.set_target_position(cover_pos)
 		var next_pos = navigation_agent.get_next_path_position()
 		if next_pos != Vector2.ZERO:
@@ -182,17 +189,8 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 			play_animation("idle")
 	else:
 		velocity = Vector2.ZERO
-		var dir2 = (enemy.global_position - global_position).normalized()
-		rotation = lerp_angle(rotation, dir2.angle(), 10.0 * delta)
-
-		time_since_last_shot += delta
-		if time_since_last_shot >= fire_rate:
-			if gun and gun.has_method("fire_bullet"):
-				var b = gun.fire_bullet()
-				if b:
-					print("Shooting at:", enemy.name)
-			time_since_last_shot = 0.0
 		play_animation("idle")
+
 
 
 # ---------------------------------------------
@@ -216,11 +214,16 @@ func _shoot_enemy_direct(enemy: Node, delta: float) -> void:
 
 	time_since_last_shot += delta
 	if time_since_last_shot >= fire_rate:
-		if gun and gun.has_method("fire_bullet"):
-			var bullet = gun.fire_bullet()
-			time_since_last_shot = 0.0
+		# If current weapon is shotgun, fire volley instead of a single bullet
+		if current_weapon == "shotgun":
+			gun.fire_shotgun_volley()
+		else:
+			if gun and gun.has_method("fire_bullet"):
+				var bullet = gun.fire_bullet()
+		time_since_last_shot = 0.0
 
 	play_animation("idle")
+
 
 
 func switch_weapon(new_weapon: String) -> void:
