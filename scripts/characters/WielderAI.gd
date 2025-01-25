@@ -240,17 +240,19 @@ func _enable_bullet_control() -> void:
 	Engine.time_scale = 0.2
 	pause_shooting()
 
-	if not last_fired_bullet or not is_instance_valid(last_fired_bullet):
-		if gun and gun.has_method("fire_bullet"):
-			last_fired_bullet = gun.fire_bullet()
-			if last_fired_bullet:
-				time_since_last_shot = 0.0
-				print("AI immediately fired a bullet during slow motion.")
+	# If we're not using the shotgun, we can spawn a new bullet if needed
+	if current_weapon != "shotgun":
+		if not last_fired_bullet or not is_instance_valid(last_fired_bullet):
+			if gun and gun.has_method("fire_bullet"):
+				last_fired_bullet = gun.fire_bullet()
+				if last_fired_bullet:
+					time_since_last_shot = 0.0
+					print("AI immediately fired a bullet during slow motion.")
 
+	# If there's a valid bullet, enable control on it
 	if last_fired_bullet and is_instance_valid(last_fired_bullet):
 		if last_fired_bullet.has_method("enable_player_control"):
 			last_fired_bullet.enable_player_control()
-
 
 func _disable_bullet_control() -> void:
 	Engine.time_scale = 1.0

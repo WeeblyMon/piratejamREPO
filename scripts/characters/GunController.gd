@@ -24,13 +24,17 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
-	if is_instance_valid(last_fired_bullet):
-		if Input.is_action_pressed("control_bullet"):
+
+	var controlled_bullets = get_tree().get_nodes_in_group("controlled_bullets")
+
+	if Input.is_action_pressed("control_bullet"):
+		if controlled_bullets.size() == 0:
+			return  
+		if is_instance_valid(last_fired_bullet):
 			last_fired_bullet.enable_player_control()
-		else:
-			last_fired_bullet.disable_player_control()
 	else:
-		last_fired_bullet = null
+		if is_instance_valid(last_fired_bullet):
+			last_fired_bullet.disable_player_control()
 
 func fire_bullet() -> Node:
 	if GameStateManager.is_jammed:
