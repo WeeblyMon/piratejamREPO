@@ -21,7 +21,7 @@ var current_scene: Node
 var max_resource: float = 100.0
 var resource_regen_rate: float = 10.0  # Resource regenerated per second
 var current_resource: float = max_resource
-var current_weapon: String = "handgun"
+var current_weapon: String = "rifle"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 var fire_rate: float = 0.0  # Default fire rate in seconds per shot (600 BPM)

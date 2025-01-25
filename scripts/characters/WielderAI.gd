@@ -17,7 +17,9 @@ var last_known_enemy: Node = null
 var cover_locked: bool = false
 var locked_cover_node: Node2D = null
 var cover_locked_position: Vector2 = Vector2.ZERO
+var saved_path_target: Vector2 = Vector2.ZERO
 var current_weapon = GameStateManager.get_weapon()
+var has_saved_path: bool = false 
 
 func _ready() -> void:
 	jammed_sprite.visible = false
@@ -111,10 +113,11 @@ func _check_if_reached_checkpoint() -> void:
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
 	var all_enemies = get_tree().get_nodes_in_group("enemies")
-	if should_attack_civilians():
+	if should_attack_civilians() and GameStateManager.current_sanity < 40:
 		var civs = get_tree().get_nodes_in_group("civilian")
-		all_enemies += civs
-	# If we have no valid enemy, pick nearest
+		all_enemies += civs  # Add civilians to the list of targets
+
+	# If no valid enemy, find the nearest target
 	if not is_instance_valid(last_known_enemy):
 		if all_enemies.is_empty():
 			velocity = Vector2.ZERO
@@ -123,13 +126,13 @@ func _process_combat_phase(delta: float) -> void:
 		var nearest = all_enemies[0]
 		var min_dist = global_position.distance_to(nearest.global_position)
 		for e in all_enemies:
-			var d = global_position.distance_to(e.global_position)
-			if d < min_dist:
+			var dist = global_position.distance_to(e.global_position)
+			if dist < min_dist:
 				nearest = e
-				min_dist = d
+				min_dist = dist
 		last_known_enemy = nearest
 
-	# If still invalid or dead, return to movement
+	# If still invalid or target is dead, return to movement
 	if not is_instance_valid(last_known_enemy):
 		_reset_cover_lock()
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
@@ -140,25 +143,25 @@ func _process_combat_phase(delta: float) -> void:
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
 
+	# Adjust aim with accuracy offset
+	var aim_dir = (last_known_enemy.global_position - global_position).normalized()
+	aim_dir = aim_dir.rotated(get_accuracy_offset())  # Add inaccuracy based on sanity
+	rotation = lerp_angle(rotation, aim_dir.angle(), 8.0 * delta)
+
 	# Skip shooting if reloading
 	if GameStateManager.is_reloading:
 		return
 
-	# 1) AIM at the enemy
-	var aim_dir = (last_known_enemy.global_position - global_position).normalized()
-	aim_dir = aim_dir.rotated(get_accuracy_offset())  # random inaccuracy
-	rotation = lerp_angle(rotation, aim_dir.angle(), 8.0 * delta)
-
-	# 2) FIRE logic once per fire_rate
+	# Fire logic based on fire rate
 	time_since_last_shot += delta
 	if time_since_last_shot >= GameStateManager.get_fire_rate():
 		if current_weapon == "shotgun":
-			gun.fire_shotgun_volley()  # Only called once, not each frame
+			gun.fire_shotgun_volley()
 		else:
 			gun.fire_bullet()
 		time_since_last_shot = 0.0
 
-	# 3) Decide whether we need cover
+	# Cover logic
 	if should_use_cover():
 		if not cover_locked:
 			var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
@@ -167,16 +170,16 @@ func _process_combat_phase(delta: float) -> void:
 				cover_locked_position = cover_pos
 				cover_locked = true
 			else:
-				# If no cover chosen, just stand and shoot
 				move_and_slide()
 				play_animation("idle")
 				return
 
-	# 4) Move behind cover if needed
-	_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
-	move_and_slide()
-
-
+		_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
+		move_and_slide()
+	else:
+		# Avoid cover entirely
+		velocity = Vector2.ZERO
+		play_animation("idle")
 
 func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
 	var dist_to_cover = cover_pos.distance_to(global_position)
@@ -242,34 +245,65 @@ func switch_weapon(new_weapon: String) -> void:
 #           BULLET CONTROL
 # ---------------------------------------------
 func _enable_bullet_control() -> void:
+	# If we're already controlling bullets, do nothing
+	if bullet_controlled:
+		return  # <-- ADDED
+
+	bullet_controlled = true
+
+	# If we are in MOVEMENT phase and haven't saved a path yet
+	if GameStateManager.get_wielder_phase() == GameStateManager.WielderPhase.MOVEMENT and not has_saved_path:
+		saved_path_target = navigation_agent.get_target_position()
+		has_saved_path = true
+		print("Saved path target:", saved_path_target)
+
 	Engine.time_scale = 0.2
 	pause_shooting()
 
-	# If we're not using the shotgun, we can spawn a new bullet if needed
+	# If not shotgun, possibly spawn a bullet
 	if current_weapon != "shotgun":
 		if not last_fired_bullet or not is_instance_valid(last_fired_bullet):
 			if gun and gun.has_method("fire_bullet"):
 				last_fired_bullet = gun.fire_bullet()
 				if last_fired_bullet:
 					time_since_last_shot = 0.0
-					print("AI immediately fired a bullet during slow motion.")
+					print("AI fired bullet in slow motion")
 
-	# If there's a valid bullet, enable control on it
+	# Enable control if bullet exists
 	if last_fired_bullet and is_instance_valid(last_fired_bullet):
 		if last_fired_bullet.has_method("enable_player_control"):
 			last_fired_bullet.enable_player_control()
 
+
 func _disable_bullet_control() -> void:
+	# If we weren't controlling bullets, do nothing
+	if not bullet_controlled:
+		return  # <-- ADDED
+
+	bullet_controlled = false
+
 	Engine.time_scale = 1.0
 	resume_shooting()
+
+	# Restore the path if we had saved it
+	if has_saved_path and GameStateManager.get_wielder_phase() == GameStateManager.WielderPhase.MOVEMENT:
+		if saved_path_target != Vector2.ZERO:
+			navigation_agent.set_target_position(saved_path_target)
+			print("Restored path:", saved_path_target)
+
+	# Clear bullet control
 	if last_fired_bullet and is_instance_valid(last_fired_bullet):
 		if last_fired_bullet.has_method("disable_player_control"):
 			last_fired_bullet.disable_player_control()
-		last_fired_bullet = null  
+	last_fired_bullet = null
+
+	has_saved_path = false  # <-- ADDED: reset so next time we can store again
+	saved_path_target = Vector2.ZERO
+
+
 
 func pause_shooting() -> void:
 	is_paused = true
-	navigation_agent.set_target_position(global_position)
 	play_animation("idle")
 
 func resume_shooting() -> void:
@@ -366,10 +400,9 @@ func get_sanity_fraction() -> float:
 
 # 1) Decide whether to use cover
 func should_use_cover() -> bool:
-	# Example: only use cover if sanity above 30.
+	# Avoid cover entirely when sanity drops below 30
 	return GameStateManager.current_sanity > 30
 
-# 2) Adjust AI movement speed (faster with less sanity)
 func get_speed_multiplier() -> float:
 	var fraction = get_sanity_fraction()
 	# If fraction=1 => speed=1.0, fraction=0 => speed=2.0 (twice as fast)
@@ -384,12 +417,11 @@ func get_reload_time_multiplier() -> float:
 # 4) Lower accuracy: random aim offset
 func get_accuracy_offset() -> float:
 	var fraction = get_sanity_fraction()
-	# Up to ±10° offset at 0 sanity, 0° offset at full sanity
-	var max_degrees = 10.0
+	var max_degrees = 10.0  # Max inaccuracy at 0 sanity
 	var spread = lerp(max_degrees, 0.0, fraction)
 	return deg_to_rad(randf_range(-spread, spread))
 
 # 5) Possibly attack civilians too
 func should_attack_civilians() -> bool:
-	# Example: if sanity < 40, treat civilians as valid targets
+	# AI attacks civilians when sanity drops below 40
 	return GameStateManager.current_sanity < 40
