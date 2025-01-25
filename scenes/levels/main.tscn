@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bxx8l5vgqoic3"]
+[gd_scene load_steps=11 format=3 uid="uid://bxx8l5vgqoic3"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_2htwu"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="2_580be"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="7_hca71"]
 [ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scenes/characters/Civilian.tscn" id="8_v41f2"]
+[ext_resource type="PackedScene" uid="uid://hwvi22gcri5v" path="res://scenes/characters/wall.tscn" id="10_mdni5"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
 vertices = PackedVector2Array(1289.3, -353.203, 1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, 1286.72, -263, 1218, -263, -62.2734, 493.938, -77, -27.3125, 1218, -351.813, -100.656, -733.156)
@@ -18,9 +19,10 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-87, -27, -72, 504, 187
 script = ExtResource("1_2htwu")
 wielder = NodePath("Wielder")
 
-[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("2_580be")]
+[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") groups=["Weilder"] instance=ExtResource("2_580be")]
 z_index = 1
 position = Vector2(559, 302)
+collision_layer = 2
 floor_stop_on_slope = false
 floor_block_on_wall = false
 path_debug = NodePath("../PathDebug")
@@ -55,9 +57,6 @@ position = Vector2(474, 306)
 checkpoint_id = 3
 is_final = true
 
-[node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
-position = Vector2(1338, -194)
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(-97, 255)
 navigation_polygon = SubResource("NavigationPolygon_j7ll7")
@@ -85,6 +84,12 @@ health = 10
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("3_0b38m")]
 metadata/_edit_use_anchors_ = true
+
+[node name="PoliceMen2" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(628, 32)
+
+[node name="wall" parent="." instance=ExtResource("10_mdni5")]
+position = Vector2(514, 66)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

@@ -1,11 +1,28 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var health: int = 10 
 @export var detection_radius: float = 300.0  
 @onready var sprite: Sprite2D = $PoliceEnemy
+@onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var timer: Timer = $Timer
+@export var eBullet : PackedScene
+var Wielder
 
-func _ready() -> void:
+func _ready():
+	Wielder = get_parent().find_child("Wielder")
 	add_to_group("enemies")  
+
+func _physics_process(_delta):
+	_aim()
+	_check_player_collision()
+
+func _aim():
+	ray_cast_2d.target_position = to_local(Wielder.position)
+
+func _check_player_collision():
+	pass
+
+
 
 func take_damage(damage: int) -> void:
 	health -= damage

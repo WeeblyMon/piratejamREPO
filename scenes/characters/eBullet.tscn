@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxia6dypjwlnl"]
+
+[ext_resource type="Script" path="res://scripts/characters/eBullet.gd" id="1_wjaw6"]
+[ext_resource type="Texture2D" uid="uid://bo8260rw2hpg5" path="res://assets/art/props/yellow1.png" id="2_hk5f2"]
+
+[node name="eBullet" type="Area2D"]
+script = ExtResource("1_wjaw6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3.8147e-06, -7.62939e-06)
+scale = Vector2(0.323529, 0.352174)
+texture = ExtResource("2_hk5f2")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]
