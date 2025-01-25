@@ -21,6 +21,7 @@ var current_weapon = GameStateManager.get_weapon()
 
 func _ready() -> void:
 	jammed_sprite.visible = false
+	GameStateManager.connect("sanity_changed", Callable(self, "_on_sanity_changed"))
 	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
 
 	if not navigation_agent:
@@ -80,7 +81,7 @@ func _process_movement_phase(delta: float) -> void:
 		move_and_slide()
 		return
 	var direction = (next_pos - global_position).normalized()
-	velocity = direction * speed
+	velocity = direction * (speed * get_speed_multiplier())
 	rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
 
 	play_animation("move")
@@ -110,7 +111,9 @@ func _check_if_reached_checkpoint() -> void:
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
 	var all_enemies = get_tree().get_nodes_in_group("enemies")
-
+	if should_attack_civilians():
+		var civs = get_tree().get_nodes_in_group("civilian")
+		all_enemies += civs
 	# If we have no valid enemy, pick nearest
 	if not is_instance_valid(last_known_enemy):
 		if all_enemies.is_empty():
@@ -143,6 +146,7 @@ func _process_combat_phase(delta: float) -> void:
 
 	# 1) AIM at the enemy
 	var aim_dir = (last_known_enemy.global_position - global_position).normalized()
+	aim_dir = aim_dir.rotated(get_accuracy_offset())  # random inaccuracy
 	rotation = lerp_angle(rotation, aim_dir.angle(), 8.0 * delta)
 
 	# 2) FIRE logic once per fire_rate
@@ -155,17 +159,18 @@ func _process_combat_phase(delta: float) -> void:
 		time_since_last_shot = 0.0
 
 	# 3) Decide whether we need cover
-	if not cover_locked:
-		var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
-		var dist_to_cover = cover_pos.distance_to(global_position)
-		if dist_to_cover <= max_cover_distance:
-			cover_locked_position = cover_pos
-			cover_locked = true
-		else:
-			# If no cover chosen, just stand and shoot
-			move_and_slide()
-			play_animation("idle")
-			return
+	if should_use_cover():
+		if not cover_locked:
+			var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
+			var dist_to_cover = cover_pos.distance_to(global_position)
+			if dist_to_cover <= max_cover_distance:
+				cover_locked_position = cover_pos
+				cover_locked = true
+			else:
+				# If no cover chosen, just stand and shoot
+				move_and_slide()
+				play_animation("idle")
+				return
 
 	# 4) Move behind cover if needed
 	_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
@@ -349,3 +354,42 @@ func clear_jam():
 
 func _on_jam_state_changed(is_jammed: bool) -> void:
 	jammed_sprite.visible = is_jammed
+
+
+#
+# -------------- SANITY-BASED SECTION --------------
+#
+
+func get_sanity_fraction() -> float:
+	var fraction = float(GameStateManager.current_sanity) / float(GameStateManager.max_sanity)
+	return clamp(fraction, 0.0, 1.0)
+
+# 1) Decide whether to use cover
+func should_use_cover() -> bool:
+	# Example: only use cover if sanity above 30.
+	return GameStateManager.current_sanity > 30
+
+# 2) Adjust AI movement speed (faster with less sanity)
+func get_speed_multiplier() -> float:
+	var fraction = get_sanity_fraction()
+	# If fraction=1 => speed=1.0, fraction=0 => speed=2.0 (twice as fast)
+	return lerp(2.0, 1.0, fraction)
+
+# 3) Adjust reload speed (slower with less sanity)
+func get_reload_time_multiplier() -> float:
+	var fraction = get_sanity_fraction()
+	# fraction=1 => normal reload, fraction=0 => +100% time (2.0)
+	return lerp(2.0, 1.0, fraction)
+
+# 4) Lower accuracy: random aim offset
+func get_accuracy_offset() -> float:
+	var fraction = get_sanity_fraction()
+	# Up to ±10° offset at 0 sanity, 0° offset at full sanity
+	var max_degrees = 10.0
+	var spread = lerp(max_degrees, 0.0, fraction)
+	return deg_to_rad(randf_range(-spread, spread))
+
+# 5) Possibly attack civilians too
+func should_attack_civilians() -> bool:
+	# Example: if sanity < 40, treat civilians as valid targets
+	return GameStateManager.current_sanity < 40

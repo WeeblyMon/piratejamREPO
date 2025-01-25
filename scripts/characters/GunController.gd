@@ -11,6 +11,8 @@ var fire_rate: float = GameStateManager.get_fire_rate()
 var weapon_data: Dictionary = GameStateManager.get_weapon_data()
 var time_since_last_shot: float = 0.0
 var last_fired_bullet: Node = null
+var reload_timer: Timer = null
+var base_shell_time: float = 0.5
 
 func _ready() -> void:
 	current_weapon = GameStateManager.get_weapon()
@@ -21,6 +23,10 @@ func _ready() -> void:
 	muzzle_handgun.visible = false
 	muzzle_rifle.visible = false
 	muzzle_shotgun.visible = false
+
+func get_sanity_fraction() -> float:
+	var fraction = float(GameStateManager.current_sanity) / float(GameStateManager.max_sanity)
+	return clamp(fraction, 0.0, 1.0)
 
 func _process(delta: float) -> void:
 	time_since_last_shot += delta
@@ -59,7 +65,7 @@ func fire_bullet() -> Node:
 				return bullet
 		else:
 			print("No ammo left! Starting reload...")
-			GameStateManager.reload_weapon()
+			reload_weapon()
 	return null
 	
 func fire_shotgun_volley() -> void:
@@ -95,6 +101,70 @@ func fire_shotgun_volley() -> void:
 		print("GunController: Shotgun volley fired!")
 		fire_sfx()
 		_show_muzzle_flash(current_weapon)
+
+func reload_weapon() -> void:
+	if is_reloading:
+		return  # Already reloading, do nothing
+
+	# If for some reason we let the GunController reload other weapons fully:
+	if current_weapon != "shotgun":
+		print("reload_weapon() called, but not a shotgun. Implement or skip?")
+		return
+
+	# Check if shotgun is already full
+	var weap_ammo_dict = GameStateManager.get_weapon_ammo()
+	if not weap_ammo_dict.has(current_weapon):
+		push_warning("No ammo data for weapon: %s".format(current_weapon))
+		return
+
+	var ammo_data = weap_ammo_dict[current_weapon]
+	if ammo_data["current"] >= ammo_data["max"]:
+		print("Shotgun is already full. No reload needed.")
+		return
+
+	is_reloading = true
+
+	# Create or re-use a reload_timer
+	if reload_timer == null:
+		reload_timer = Timer.new()
+		reload_timer.one_shot = true
+		add_child(reload_timer)
+
+		# Connect once to a shell-loaded function
+		if not reload_timer.timeout.is_connected(Callable(self, "_on_shotgun_shell_loaded")):
+			reload_timer.timeout.connect(Callable(self, "_on_shotgun_shell_loaded"))
+	else:
+		reload_timer.stop()
+
+	# Calculate shell time based on sanity
+	var fraction = get_sanity_fraction()
+	var final_shell_time = base_shell_time * lerp(2.0, 1.0, fraction)
+
+	reload_timer.wait_time = final_shell_time
+	reload_timer.start()
+
+	print("Starting shotgun reload. Time per shell:", final_shell_time)
+	
+func _on_shotgun_shell_loaded() -> void:
+	var weap_ammo_dict = GameStateManager.get_weapon_ammo()
+	var ammo_data = weap_ammo_dict[current_weapon]
+	ammo_data["current"] += 1
+	print("Shotgun loaded 1 shell. Current ammo:", ammo_data["current"])
+
+	# If still not full, restart the timer for next shell
+	if ammo_data["current"] < ammo_data["max"]:
+		var fraction = get_sanity_fraction()
+		var final_shell_time = base_shell_time * lerp(2.0, 1.0, fraction)
+		reload_timer.wait_time = final_shell_time
+		reload_timer.start()
+		print("Reloading next shell. Time = ", final_shell_time)
+	else:
+		# Done loading
+		is_reloading = false
+		reload_timer.stop()
+		reload_timer.queue_free()
+		reload_timer = null
+		print("Shotgun fully reloaded.")
 
 	
 func fire_sfx() -> void:
