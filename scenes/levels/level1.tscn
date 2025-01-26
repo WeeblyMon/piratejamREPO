@@ -32125,7 +32125,55 @@ position = Vector2(-134, -848)
 detection_radius = 10.0
 
 [node name="PoliceMen5" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-708, -489)
+position = Vector2(-686, -1133)
+detection_radius = 10.0
+
+[node name="PoliceMen6" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-310, -1332)
+detection_radius = 10.0
+
+[node name="PoliceMen7" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-701, -1725)
+detection_radius = 10.0
+
+[node name="PoliceMen8" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1272, -1505)
+detection_radius = 10.0
+
+[node name="PoliceMen12" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1310, -1466)
+detection_radius = 10.0
+
+[node name="PoliceMen13" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1216, -1468)
+detection_radius = 10.0
+
+[node name="PoliceMen14" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1221, -1545)
+detection_radius = 10.0
+
+[node name="PoliceMen15" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1301, -1570)
+detection_radius = 10.0
+
+[node name="PoliceMen16" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(517, -1106)
+detection_radius = 10.0
+
+[node name="PoliceMen17" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(587, -1163)
+detection_radius = 10.0
+
+[node name="PoliceMen9" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(917, -258)
+detection_radius = 10.0
+
+[node name="PoliceMen10" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(859, -392)
+detection_radius = 10.0
+
+[node name="PoliceMen11" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(211, -299)
 detection_radius = 10.0
 
 [node name="TileMapParent" type="TileMapLayer" parent="."]
@@ -32181,7 +32229,7 @@ scale = Vector2(1, 1)
 collision_layer = 2
 
 [node name="Cover5" parent="Covers" instance=ExtResource("13_akbd0")]
-position = Vector2(-339.073, -270.199)
+position = Vector2(-492.715, -233.775)
 scale = Vector2(1, 1)
 collision_layer = 2
 
@@ -32217,11 +32265,6 @@ collision_layer = 2
 
 [node name="Cover12" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-413.907, -1195.36)
-scale = Vector2(1, 1)
-collision_layer = 2
-
-[node name="Cover13" parent="Covers" instance=ExtResource("13_akbd0")]
-position = Vector2(-692.053, -802.649)
 scale = Vector2(1, 1)
 collision_layer = 2
 

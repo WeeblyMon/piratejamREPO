@@ -5,12 +5,13 @@ signal game_saved
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
+
 signal weapon_changed(new_weapon: String)
 signal jam_state_changed(is_jammed: bool)
 signal notoriety_changed(current_notoriety: int, max_stars: int)
 
 var notoriety: int = 0
-var max_stars: int = 4
+var max_stars: int = 0
 var max_progress: int = 25
 var is_jammed: bool = false
 var reload_timer: Timer = null
@@ -21,7 +22,7 @@ var current_scene: Node
 var max_resource: float = 100.0
 var resource_regen_rate: float = 10.0  # Resource regenerated per second
 var current_resource: float = max_resource
-var current_weapon: String = "rifle"
+var current_weapon: String = "handgun"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 var fire_rate: float = 0.0  # Default fire rate in seconds per shot (600 BPM)
@@ -64,8 +65,19 @@ func _process(delta: float) -> void:
 # ---------------------------------------
 func set_weapon(weapon_name: String) -> void:
 	if weapon_data.has(weapon_name):
+		# Update weapon and related properties
 		current_weapon = weapon_name
 		fire_rate = weapon_data[weapon_name]["fire_rate"]
+
+		# Update ammunition for the new weapon
+		if weapon_ammo.has(current_weapon):
+			emit_signal("ammo_changed", weapon_ammo[current_weapon]["current"], weapon_ammo[current_weapon]["max"])
+		else:
+			print("Warning: No ammo data for weapon:", current_weapon)
+
+		# Emit signal for weapon change
+		emit_signal("weapon_changed", current_weapon)
+
 		print("Weapon switched to:", current_weapon, "Fire rate:", fire_rate, "Seconds per shot")
 	else:
 		push_warning("Invalid weapon: %s".format(weapon_name))
@@ -301,6 +313,7 @@ func get_current_ammo() -> int:
 func consume_ammo() -> bool:
 	if is_reloading:
 		return false
+
 	if weapon_ammo.has(current_weapon):
 		var ammo_data = weapon_ammo[current_weapon]
 		if ammo_data["current"] > 0:
@@ -311,7 +324,10 @@ func consume_ammo() -> bool:
 		else:
 			print("Out of ammo!")
 			return false
-	return false
+	else:
+		print("No ammo data for weapon:", current_weapon)
+		return false
+
 
 
 func reload_weapon() -> void:
@@ -396,8 +412,26 @@ func add_notoriety(amount: int) -> void:
 		emit_signal("notoriety_changed", notoriety, max_stars)
 
 func add_star() -> void:
-	if max_stars > 0:
-		max_stars -= 1
-		emit_signal("notoriety_changed", notoriety, max_stars)  # Update HUD
+	if notoriety >= max_progress:
+		notoriety -= max_progress  # Reset progression bar
+		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
+
+		# Cap stars at 4
+		if max_stars < 4:
+			max_stars += 1  # Increment stars
+			emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD again for star change
+
+			# Assign weapons or handle logic based on the current star count
+			match max_stars:
+				1:
+					set_weapon("rifle")  # Switch to rifle
+				2:
+					set_weapon("shotgun")  # Switch to shotgun
+				3:
+					print("Star 3 earned. No weapon defined yet.")
+				4:
+					print("Star 4 earned. No weapon defined yet.")
+		else:
+			print("Max stars reached. No further weapon upgrades available.")
 	else:
-		print("Already at maximum stars!")
+		emit_signal("notoriety_changed", notoriety, max_stars)  # Partial progress updates
