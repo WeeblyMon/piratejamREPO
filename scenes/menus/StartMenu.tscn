@@ -1,53 +1,151 @@
-[gd_scene load_steps=2 format=3 uid="uid://cexxjq0h6viq0"]
+[gd_scene load_steps=6 format=3 uid="uid://cexxjq0h6viq0"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/StartMenu.gd" id="1_k1r3i"]
+[ext_resource type="Theme" uid="uid://dy5gsyvl182a3" path="res://assets/art/UI/Menu/MainMenuTheme.tres" id="2_tducq"]
+[ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="3_78275"]
+[ext_resource type="Texture2D" uid="uid://boecvn1pltpfo" path="res://assets/art/UI/Menu/Menu_Sprite_Sheet.png" id="4_kyufv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ncx1s"]
+atlas = ExtResource("4_kyufv")
+region = Rect2(2, 4, 106, 726)
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k1r3i")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 14
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -105.5
-offset_top = -68.0
-offset_right = 105.5
-offset_bottom = 68.0
+offset_left = 694.0
+offset_top = 220.0
+offset_right = 694.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
 layout_mode = 2
+columns = 3
 
-[node name="Start" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Button3" type="Button" parent="MarginContainer/GridContainer"]
 layout_mode = 2
-text = "Start"
-
-[node name="Test" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test Ground"
-
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Load"
-
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_tducq")
 text = "Options"
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 62.0
+offset_top = 220.0
+offset_right = 62.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer3"]
 layout_mode = 2
+columns = 3
+
+[node name="Quit" type="Button" parent="MarginContainer3/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_tducq")
 text = "Quit"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Start" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Test" to="." method="_on_test_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_button_pressed"]
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 62.0
+offset_top = 92.0
+offset_right = 62.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_tducq")
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer2"]
+layout_mode = 2
+columns = 3
+
+[node name="Start" type="Button" parent="MarginContainer2/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_tducq")
+theme_override_fonts/font = ExtResource("3_78275")
+text = "Start"
+
+[node name="MarginContainer4" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 702.0
+offset_top = 100.0
+offset_right = 702.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer4"]
+layout_mode = 2
+columns = 3
+
+[node name="Button2" type="Button" parent="MarginContainer4/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_tducq")
+text = "Load"
+
+[node name="MarginContainer5" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 374.0
+offset_top = 164.0
+offset_right = 374.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer5"]
+layout_mode = 2
+columns = 3
+
+[node name="Test" type="Button" parent="MarginContainer5/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_tducq")
+theme_override_fonts/font = ExtResource("3_78275")
+text = "Test Ground"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -26.0
+offset_top = -72.0
+offset_right = 99.0
+offset_bottom = 672.0
+texture = SubResource("AtlasTexture_ncx1s")
+
+[connection signal="pressed" from="MarginContainer3/GridContainer/Quit" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MarginContainer2/GridContainer/Start" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer5/GridContainer/Test" to="." method="_on_test_button_pressed"]
