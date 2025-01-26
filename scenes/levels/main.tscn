@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="6_2pijb"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="7_hca71"]
 [ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scenes/characters/Civilian.tscn" id="8_v41f2"]
-[ext_resource type="PackedScene" uid="uid://hwvi22gcri5v" path="res://scenes/characters/wall.tscn" id="10_mdni5"]
+[ext_resource type="PackedScene" uid="uid://cxia6dypjwlnl" path="res://scenes/characters/eBullet.tscn" id="9_smcio"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
 vertices = PackedVector2Array(1289.3, -353.203, 1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, 1286.72, -263, 1218, -263, -62.2734, 493.938, -77, -27.3125, 1218, -351.813, -100.656, -733.156)
@@ -85,11 +85,10 @@ health = 10
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("3_0b38m")]
 metadata/_edit_use_anchors_ = true
 
-[node name="PoliceMen2" parent="." instance=ExtResource("6_2pijb")]
-position = Vector2(628, 32)
+[node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(600, 96)
 
-[node name="wall" parent="." instance=ExtResource("10_mdni5")]
-position = Vector2(514, 66)
+[node name="eBullet" parent="PoliceMen" instance=ExtResource("9_smcio")]
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

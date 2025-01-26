@@ -6,23 +6,22 @@
 
 [node name="TestScene" type="Node2D"]
 
-[node name="PoliceMen" parent="." instance=ExtResource("1_8bkbf")]
-
-[node name="Wielder" parent="PoliceMen" node_paths=PackedStringArray("path_debug") groups=["Weilder"] instance=ExtResource("3_dv1o8")]
+[node name="Wielder" parent="." groups=["Weilder"] instance=ExtResource("3_dv1o8")]
 z_index = 1
 position = Vector2(559, 302)
 collision_layer = 2
 floor_stop_on_slope = false
 floor_block_on_wall = false
-path_debug = NodePath("")
 
-[node name="Camera2D" type="Camera2D" parent="PoliceMen/Wielder"]
+[node name="Camera2D" type="Camera2D" parent="Wielder"]
 position = Vector2(96.6666, 26.6667)
 scale = Vector2(3.33333, 3.33333)
 zoom = Vector2(0.925, 0.925)
 
+[node name="PoliceMen" parent="." instance=ExtResource("1_8bkbf")]
+
 [node name="wall" parent="PoliceMen" instance=ExtResource("2_b0n4m")]
 position = Vector2(15, 52)
 
-[editable path="PoliceMen/Wielder"]
-[editable path="PoliceMen/Wielder/Gun"]
+[editable path="Wielder"]
+[editable path="Wielder/Gun"]
