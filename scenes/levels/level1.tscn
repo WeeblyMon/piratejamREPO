@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://bo787ao6qyh0d"]
+[gd_scene load_steps=23 format=4 uid="uid://bo787ao6qyh0d"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_7l1m2"]
 [ext_resource type="Texture2D" uid="uid://8xadxm3b4j17" path="res://resources/tilesets/road and pavements.png" id="3_x6eni"]
@@ -11,11 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://no2kjs32iev3" path="res://scenes/props/path_debug.tscn" id="10_sstb6"]
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="11_r2sgb"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="12_0ugyk"]
+[ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="13_akbd0"]
 [ext_resource type="PackedScene" uid="uid://b3n50h3s6bshv" path="res://scenes/UI/HUD.tscn" id="13_eoydk"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1lkl0"]
-vertices = PackedVector2Array(-2001.23, -6127.75, -2009.42, -6105.54, -2008.87, -6128.1, -3034.47, -7969.42, -3034.21, -7980.48, -2755.68, -7994.67, -3135.93, -6353, -2813, -6279, -3175.62, -6279, -3655.07, -6353, -2451.86, -6236.13, -2037.96, -6133.26, -2673.5, -6142.15, -2713, -6232.87, -3827.79, -6973.22, -3716.2, -7060.89, -3521.85, -7062.89, -3517.86, -6787.06, -3652.93, -6671.9, -2359.92, -6851.22, -2048.91, -7794.96, -2455.15, -6470.68, -2364.08, -7382.3, -2658.48, -5832.76, -2787, -5829.77, -2813, -5967.04, -2583.95, -7791.94, -2566.58, -7376.28, -2574.57, -7514.1, -2880, -6741.7, -2713, -6453.35, -3138.07, -6677.1, -3142.13, -6784.94, -3525.45, -7773, -3539.45, -7526.71, -3764, -7684, -3764, -7834.21, -3925.77, -7684, -3865.84, -7516.7, -3979.75, -7527.15, -2520, -6863.22, -2520, -6752.29, -3178.11, -7506.58, -3182.15, -7773, -3071.58, -7946, -3055, -7947.49, -3064.24, -7558.89, -3094.22, -7482.61, -2657.28, -7563.1, -2649.3, -7845.03, -2584.18, -7838.91, -2979.75, -7509.9, -3087.71, -7261.42, -2986.25, -7252.38, -4108.06, -6967.21, -4109.93, -7264.5, -3986.25, -7258.52, -3712.2, -7263, -3870.17, -7263, -2787, -5375.12, -3279.65, -5381.04, -3299.47, -5791, -3317.05, -5964.96, -3530.32, -5791, -3542.32, -6161.02, -3315.95, -6202, -2880, -7248.37, -3178.62, -6202, -3840.2, -6359.11, -4112.62, -6160.01, -4120.62, -6284, -4041.01, -6356.9, -3136.11, -7259.4, -4278, -6490.91, -4055.01, -6492.91, -4424.09, -6284, -3973.23, -7950.94, -3929.23, -7830.79, -3977.24, -7787, -4437.82, -7787, -4278, -7522.86)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5), PackedInt32Array(6, 7, 8, 9), PackedInt32Array(10, 11, 12, 13), PackedInt32Array(14, 15, 16, 17, 18), PackedInt32Array(19, 20, 11, 10, 21), PackedInt32Array(20, 19, 22), PackedInt32Array(12, 23, 24, 25, 7, 13), PackedInt32Array(26, 20, 22, 27, 28), PackedInt32Array(29, 30, 13, 7, 31, 32), PackedInt32Array(33, 34, 35, 36), PackedInt32Array(37, 35, 34, 38, 39), PackedInt32Array(40, 19, 21, 41), PackedInt32Array(41, 21, 30, 29), PackedInt32Array(42, 43, 44, 45, 46, 47), PackedInt32Array(48, 49, 50, 26), PackedInt32Array(48, 26, 28), PackedInt32Array(48, 28, 51, 46), PackedInt32Array(52, 51, 53, 32), PackedInt32Array(51, 52, 47, 46), PackedInt32Array(14, 54, 55, 56, 15), PackedInt32Array(57, 15, 56, 58), PackedInt32Array(58, 56, 39, 38), PackedInt32Array(24, 59, 60, 61, 25), PackedInt32Array(62, 25, 61, 63), PackedInt32Array(62, 63, 64, 65), PackedInt32Array(53, 66, 29, 32), PackedInt32Array(8, 67, 65, 9), PackedInt32Array(68, 9, 65, 64, 69, 70, 71), PackedInt32Array(32, 72, 52), PackedInt32Array(73, 74, 71, 70, 75), PackedInt32Array(76, 44, 43, 33, 36), PackedInt32Array(76, 36, 77), PackedInt32Array(78, 76, 77, 37, 39), PackedInt32Array(7, 6, 31), PackedInt32Array(32, 31, 18, 17), PackedInt32Array(68, 14, 18, 9), PackedInt32Array(73, 75, 79, 80), PackedInt32Array(80, 79, 78, 39)])
+vertices = PackedVector2Array(-2001.23, -6127.75, -2009.42, -6105.54, -2008.87, -6128.1, -2965.04, -7975.71, -3034.47, -7969.42, -3034.26, -7978.34, -3135.93, -6353, -2813, -6279, -3175.62, -6279, -3655.07, -6353, -2451.86, -6236.13, -2037.96, -6133.26, -2673.5, -6142.15, -2713, -6232.87, -3827.79, -6973.22, -3716.2, -7060.89, -3521.85, -7062.89, -3517.86, -6787.06, -3652.93, -6671.9, -2359.92, -6851.22, -2048.91, -7794.96, -2455.15, -6470.68, -2364.08, -7382.3, -2583.95, -7791.94, -2566.58, -7376.28, -2574.57, -7514.1, -3525.45, -7773, -3539.45, -7526.71, -3764, -7684, -3764, -7834.21, -3925.77, -7684, -3865.84, -7516.7, -3979.75, -7527.15, -2745.92, -6136.19, -2658.48, -5832.76, -2747.08, -5994, -2520, -6863.22, -2520, -6752.29, -2880, -6741.7, -2713, -6453.35, -3138.07, -6677.1, -3178.11, -7506.58, -3182.15, -7773, -3071.58, -7946, -3055, -7947.49, -3064.24, -7558.89, -3094.22, -7482.61, -2657.28, -7563.1, -2649.3, -7845.03, -2584.18, -7838.91, -2979.75, -7509.9, -3087.71, -7261.42, -2986.25, -7252.38, -3142.13, -6784.94, -4108.06, -6967.21, -4109.93, -7264.5, -3986.25, -7258.52, -3712.2, -7263, -3870.17, -7263, -2813, -5994, -2787, -5829.77, -2813, -5967.04, -2813, -6134.95, -2787, -5375.12, -3279.65, -5381.04, -3299.47, -5791, -3294.24, -5892, -3292.46, -5965.06, -3417.67, -5892, -3530.32, -5791, -3542.32, -6161.02, -3422.23, -6028.67, -2880, -7248.37, -3178.62, -6202, -3315.95, -6202, -3136.11, -7259.4, -4112.62, -6160.01, -4120.62, -6284, -4041.01, -6356.9, -3840.2, -6359.11, -4278, -6490.91, -4055.01, -6492.91, -4424.09, -6284, -3973.23, -7950.94, -3929.23, -7830.79, -3977.24, -7787, -4278, -7522.86, -4437.82, -7787, -3316.55, -6071.12)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5), PackedInt32Array(6, 7, 8, 9), PackedInt32Array(10, 11, 12, 13), PackedInt32Array(14, 15, 16, 17, 18), PackedInt32Array(19, 20, 11, 10, 21), PackedInt32Array(20, 19, 22), PackedInt32Array(23, 20, 22, 24, 25), PackedInt32Array(26, 27, 28, 29), PackedInt32Array(30, 28, 27, 31, 32), PackedInt32Array(33, 13, 12, 34, 35), PackedInt32Array(36, 19, 21, 37), PackedInt32Array(38, 37, 21, 39, 40), PackedInt32Array(41, 42, 43, 44, 45, 46), PackedInt32Array(47, 48, 49, 23), PackedInt32Array(47, 23, 25), PackedInt32Array(47, 25, 50, 45), PackedInt32Array(51, 50, 52, 53), PackedInt32Array(50, 51, 46, 45), PackedInt32Array(14, 54, 55, 56, 15), PackedInt32Array(57, 15, 56, 58), PackedInt32Array(58, 56, 32, 31), PackedInt32Array(59, 35, 34, 60, 61), PackedInt32Array(13, 33, 62, 7, 39), PackedInt32Array(61, 60, 63, 64, 65, 66), PackedInt32Array(66, 67, 61), PackedInt32Array(68, 66, 65, 69), PackedInt32Array(68, 69, 70, 71), PackedInt32Array(53, 52, 72, 38, 40), PackedInt32Array(8, 73, 74, 9), PackedInt32Array(53, 75, 51), PackedInt32Array(70, 76, 77, 78, 79, 9, 74), PackedInt32Array(80, 81, 78, 77, 82), PackedInt32Array(83, 43, 42, 26, 29), PackedInt32Array(83, 29, 84), PackedInt32Array(85, 83, 84, 30), PackedInt32Array(7, 6, 40, 39), PackedInt32Array(53, 40, 18, 17), PackedInt32Array(79, 14, 18, 9), PackedInt32Array(85, 30, 32, 86, 87), PackedInt32Array(82, 87, 86, 80), PackedInt32Array(71, 70, 74, 88)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-4027, -5550, -4552, -6278, -4526, -8045, -1998, -7949, -1860, -6482, -2034, -6010, -2732, -5357, -3499, -5338)])
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6twwb"]
@@ -31837,11 +31838,25 @@ sources/3 = SubResource("TileSetAtlasSource_3auke")
 sources/4 = SubResource("TileSetAtlasSource_rs885")
 sources/5 = SubResource("TileSetAtlasSource_tpxf2")
 
+[sub_resource type="Environment" id="Environment_a0sw1"]
+background_mode = 3
+glow_enabled = true
+glow_levels/3 = 1.41
+glow_strength = 0.98
+glow_blend_mode = 1
+glow_hdr_threshold = 0.12
+glow_hdr_scale = 0.78
+glow_hdr_luminance_cap = 14.16
+adjustment_enabled = true
+adjustment_brightness = 0.8
+adjustment_saturation = 2.34
+
 [node name="Level1" type="Node2D" node_paths=PackedStringArray("wielder")]
 script = ExtResource("1_7l1m2")
 wielder = NodePath("Wielder")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 z_index = 6
 position = Vector2(3615, 5928)
 navigation_polygon = SubResource("NavigationPolygon_1lkl0")
@@ -31882,12 +31897,20 @@ polygon = PackedVector2Array(-3044, -7990, -3054, -7569, -2667, -7573, -2659, -7
 [node name="Polygon2D10" type="Polygon2D" parent="NavigationRegion2D"]
 polygon = PackedVector2Array(-2042, -7805, -2574, -7802, -2575, -8001, -3072, -7956, -3983, -7961, -3987, -7797, -4451, -7797, -4849, -7795, -4785, -8602, -1941, -8588)
 
+[node name="Polygon2D13" type="Polygon2D" parent="NavigationRegion2D"]
+position = Vector2(-534, 96)
+polygon = PackedVector2Array(-2878, -6118, -2766, -6163, -2770, -5998, -2874, -5998)
+
+[node name="Polygon2D14" type="Polygon2D" parent="NavigationRegion2D"]
+position = Vector2(13, -6)
+polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5998)
+
 [node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("9_tj2ga")]
 z_index = 1
-position = Vector2(404, 217)
+position = Vector2(563, 177)
 path_debug = NodePath("../PathDebug")
 
-[node name="NavigationAgent2D" parent="Wielder" index="3"]
+[node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 
@@ -31921,11 +31944,189 @@ checkpoint_id = 4
 position = Vector2(-276, -18)
 checkpoint_id = 5
 
+[node name="RouteA-5" parent="RouteA/RouteA-1/RouteA-2/RouteA-3" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-452, -126)
+checkpoint_id = 6
+
+[node name="RouteA-6" parent="RouteA/RouteA-1/RouteA-2/RouteA-3" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-674, -323)
+checkpoint_id = 7
+
+[node name="RouteA-7" parent="RouteA/RouteA-1/RouteA-2/RouteA-3" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-674, -1449)
+checkpoint_id = 8
+
+[node name="RouteA-8" parent="RouteA/RouteA-1/RouteA-2/RouteA-3" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-175, -1351)
+checkpoint_id = 9
+
+[node name="RouteA-9" parent="RouteA/RouteA-1/RouteA-2/RouteA-3" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(140, -1686)
+checkpoint_id = 10
+is_final = true
+
+[node name="RouteB" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(552, 74)
+path_label = "bravo"
+
+[node name="RouteB2" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-300, -26)
+checkpoint_id = 2
+path_label = "bravo"
+
+[node name="RouteB3" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-359, -376)
+checkpoint_id = 3
+path_label = "bravo"
+
+[node name="RouteB4" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-671, -414)
+checkpoint_id = 4
+path_label = "bravo"
+
+[node name="RouteB5" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-669, -903)
+checkpoint_id = 5
+path_label = "bravo"
+
+[node name="RouteB6" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-669, -1118)
+checkpoint_id = 6
+path_label = "bravo"
+
+[node name="RouteB7" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-856, -1294)
+checkpoint_id = 7
+path_label = "bravo"
+
+[node name="RouteB8" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-862, -1726)
+checkpoint_id = 8
+path_label = "bravo"
+
+[node name="RouteB9" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-578, -1778)
+checkpoint_id = 9
+path_label = "bravo"
+
+[node name="RouteB10" parent="RouteB" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-468, -2082)
+checkpoint_id = 10
+path_label = "bravo"
+is_final = true
+
+[node name="RouteC" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(566, 138)
+path_label = "charlie"
+
+[node name="RouteC_1" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(301, -114)
+checkpoint_id = 2
+path_label = "charlie"
+
+[node name="RouteC_2" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(281, -499)
+checkpoint_id = 3
+path_label = "charlie"
+
+[node name="RouteC_3" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(8, -580)
+checkpoint_id = 4
+path_label = "charlie"
+
+[node name="RouteC_4" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(6, -1034)
+checkpoint_id = 5
+path_label = "charlie"
+
+[node name="RouteC_5" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-10, -1724)
+checkpoint_id = 6
+path_label = "charlie"
+
+[node name="RouteC_6" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-84, -1829)
+checkpoint_id = 7
+path_label = "charlie"
+
+[node name="RouteC_7" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-98, -2092)
+checkpoint_id = 8
+path_label = "charlie"
+
+[node name="RouteC_8" parent="RouteC" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-483, -2143)
+checkpoint_id = 9
+path_label = "charlie"
+
+[node name="RouteD" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(829, 46)
+path_label = "delta"
+
+[node name="RouteD2" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(49, -295)
+checkpoint_id = 2
+path_label = "delta"
+
+[node name="RouteD3" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(481, -313)
+checkpoint_id = 3
+path_label = "delta"
+
+[node name="RouteD4" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(589, -984)
+checkpoint_id = 4
+path_label = "delta"
+
+[node name="RouteD5" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(545, -1591)
+checkpoint_id = 5
+path_label = "delta"
+
+[node name="RouteD6" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(256, -1653)
+checkpoint_id = 6
+path_label = "delta"
+
+[node name="RouteD7" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-329, -1656)
+checkpoint_id = 7
+path_label = "delta"
+
+[node name="RouteD8" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-353, -1981)
+checkpoint_id = 8
+path_label = "delta"
+
+[node name="RouteD9" parent="RouteD" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+position = Vector2(-748, -2057)
+checkpoint_id = 9
+path_label = "delta"
+is_final = true
+
 [node name="Enemies" type="Node2D" parent="."]
+z_index = 1
 
 [node name="PoliceMen" parent="Enemies" instance=ExtResource("12_0ugyk")]
 z_index = 1
 position = Vector2(209, -190)
+detection_radius = 10.0
+
+[node name="PoliceMen2" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(831, -289)
+detection_radius = 10.0
+
+[node name="PoliceMen3" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(587, -1078)
+detection_radius = 10.0
+
+[node name="PoliceMen4" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-134, -848)
+detection_radius = 10.0
+
+[node name="PoliceMen5" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-708, -489)
+detection_radius = 10.0
 
 [node name="TileMapParent" type="TileMapLayer" parent="."]
 
@@ -31960,6 +32161,82 @@ navigation_enabled = false
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("13_eoydk")]
+
+[node name="Covers" type="Node2D" parent="."]
+position = Vector2(250, -24)
+scale = Vector2(1.51, 1.51)
+
+[node name="Cover" parent="Covers" instance=ExtResource("13_akbd0")]
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover2" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-101.325, -143.046)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover3" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(371.523, -72.8477)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover5" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-339.073, -270.199)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover6" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-198.676, -394.702)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover7" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(158.278, -585.43)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover8" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-230.464, -772.185)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover9" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(666.225, -833.775)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover10" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(479.47, -1096.03)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover11" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(862.252, -903.311)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover12" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-413.907, -1195.36)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover13" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-692.053, -802.649)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover14" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-604.636, -969.536)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="Cover15" parent="Covers" instance=ExtResource("13_akbd0")]
+position = Vector2(-602.649, -576.821)
+scale = Vector2(1, 1)
+collision_layer = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_a0sw1")
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

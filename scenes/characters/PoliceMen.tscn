@@ -6,6 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_svv8h"]
 
 [node name="PoliceMen" type="CharacterBody2D" groups=["enemy"]]
+z_index = 2
 script = ExtResource("1_d7r8j")
 health = 20
 

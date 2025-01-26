@@ -90,3 +90,5 @@ jam_ability={
 [rendering]
 
 occlusion_culling/bvh_build_quality=1
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

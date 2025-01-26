@@ -20,8 +20,24 @@ var cover_locked_position: Vector2 = Vector2.ZERO
 var saved_path_target: Vector2 = Vector2.ZERO
 var current_weapon = GameStateManager.get_weapon()
 var has_saved_path: bool = false 
+@onready var detection_ray_cast: RayCast2D = $DetectionRayCast
+@onready var detection_ray_cast2: RayCast2D = $DetectionRayCast2
+@onready var detection_ray_cast3: RayCast2D = $DetectionRayCast3
+@onready var detection_ray_cast4: RayCast2D = $DetectionRayCast4
+@onready var detection_ray_cast5: RayCast2D = $DetectionRayCast5
+var combat_cooldown: float = 0.0
+var combat_cooldown_duration: float = 1.0
+@export var fov_angle: float = 130  # Degrees
+@export var detection_range: float = 500.0
+var has_killed_enemy: bool = false
+var cover_timeout: float = 5.0  # Maximum time in cover
+var cover_timer: float = 0.0
+
 
 func _ready() -> void:
+	detection_ray_cast.global_position = global_position
+	detection_ray_cast.rotation = rotation	
+	
 	jammed_sprite.visible = false
 	GameStateManager.connect("sanity_changed", Callable(self, "_on_sanity_changed"))
 	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
@@ -43,12 +59,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("control_bullet"):
-		if GameStateManager.consume_resource(20 * delta): 
+		if GameStateManager.consume_resource(20 * delta):
 			_enable_bullet_control()
 		else:
-			_disable_bullet_control()  
+			_disable_bullet_control()
 	else:
 		_disable_bullet_control()
+
 	if bullet_controlled:
 		return
 
@@ -57,31 +74,38 @@ func _process(delta: float) -> void:
 		play_animation("idle")
 		move_and_slide()
 		return
-		
+
+	if combat_cooldown > 0.0:
+		combat_cooldown -= delta
+		if combat_cooldown < 0.0:
+			combat_cooldown = 0.0
+
 	match GameStateManager.get_wielder_phase():
 		GameStateManager.WielderPhase.MOVEMENT:
 			_process_movement_phase(delta)
-			if GameStateManager.is_enemy_in_range(global_position):
+			if combat_cooldown == 0.0 and _is_enemy_detected():
 				GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.COMBAT)
+				print("Enemy detected. Switching to COMBAT phase.")
 
 		GameStateManager.WielderPhase.COMBAT:
 			_process_combat_phase(delta)
-			if GameStateManager.all_enemies_cleared():
-				GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
-				var cp_pos = GameStateManager.get_current_checkpoint_position()
-				if cp_pos != Vector2.ZERO:
-					navigation_agent.set_target_position(cp_pos)
 
 # ---------------------------------------------
 #           MOVEMENT PHASE
 # ---------------------------------------------
 func _process_movement_phase(delta: float) -> void:
+	# Check if the navigation agent has a valid path
+	if navigation_agent.is_navigation_finished():
+		# Set a new path to the next checkpoint
+		_reset_navigation_target()
+
 	var next_pos = navigation_agent.get_next_path_position()
 	if next_pos == Vector2.ZERO:
 		velocity = Vector2.ZERO
 		play_animation("idle")
 		move_and_slide()
 		return
+
 	var direction = (next_pos - global_position).normalized()
 	velocity = direction * (speed * get_speed_multiplier())
 	rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
@@ -90,6 +114,7 @@ func _process_movement_phase(delta: float) -> void:
 	move_and_slide()
 
 	_check_if_reached_checkpoint()
+
 
 
 
@@ -112,19 +137,37 @@ func _check_if_reached_checkpoint() -> void:
 #           COMBAT PHASE
 # ---------------------------------------------
 func _process_combat_phase(delta: float) -> void:
-	var all_enemies = get_tree().get_nodes_in_group("enemies")
-	if should_attack_civilians() and GameStateManager.current_sanity < 40:
-		var civs = get_tree().get_nodes_in_group("civilian")
-		all_enemies += civs  # Add civilians to the list of targets
+	if has_killed_enemy:
+		has_killed_enemy = false
+		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
+		print("Enemy killed. Switching to MOVEMENT phase.")
+		
+		# Reset navigation to the next checkpoint
+		_reset_navigation_target()
+		combat_cooldown = combat_cooldown_duration
+		return
 
-	# If no valid enemy, find the nearest target
+	# Handle combat cooldown logic
+	if combat_cooldown > 0.0:
+		combat_cooldown -= delta
+		if combat_cooldown > 0.0:
+			velocity = Vector2.ZERO
+			play_animation("idle")
+			move_and_slide()
+			return
+
+	# Revalidate last_known_enemy
 	if not is_instance_valid(last_known_enemy):
+		var all_enemies = get_alive_enemies()
 		if all_enemies.is_empty():
 			velocity = Vector2.ZERO
 			play_animation("idle")
+			move_and_slide()
 			return
-		var nearest = all_enemies[0]
-		var min_dist = global_position.distance_to(nearest.global_position)
+		
+		# Find the nearest enemy within detection range
+		var nearest = null
+		var min_dist = detection_range
 		for e in all_enemies:
 			var dist = global_position.distance_to(e.global_position)
 			if dist < min_dist:
@@ -132,36 +175,42 @@ func _process_combat_phase(delta: float) -> void:
 				min_dist = dist
 		last_known_enemy = nearest
 
-	# If still invalid or target is dead, return to movement
+	# If no valid enemy, switch back to movement
 	if not is_instance_valid(last_known_enemy):
 		_reset_cover_lock()
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
-	if last_known_enemy.has_method("is_dead") and last_known_enemy.is_dead():
+
+	# Check if enemy is within detection range
+	var dist_to_enemy = global_position.distance_to(last_known_enemy.global_position)
+	if dist_to_enemy > detection_range:
+		print("Enemy out of range. Returning to movement phase.")
 		last_known_enemy = null
-		_reset_cover_lock()
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		return
 
-	# Adjust aim with accuracy offset
+	# Aim and rotate towards the enemy
 	var aim_dir = (last_known_enemy.global_position - global_position).normalized()
-	aim_dir = aim_dir.rotated(get_accuracy_offset())  # Add inaccuracy based on sanity
+	aim_dir = aim_dir.rotated(get_accuracy_offset())
 	rotation = lerp_angle(rotation, aim_dir.angle(), 8.0 * delta)
 
-	# Skip shooting if reloading
+	# Respect reload state
 	if GameStateManager.is_reloading:
+		play_animation("reload")
 		return
 
-	# Fire logic based on fire rate
-	time_since_last_shot += delta
-	if time_since_last_shot >= GameStateManager.get_fire_rate():
-		if current_weapon == "shotgun":
-			gun.fire_shotgun_volley()
-		else:
-			gun.fire_bullet()
+	# Handle shooting
+	var facing_threshold = deg_to_rad(10)
+	var angle_difference = abs(rotation - aim_dir.angle())
+	if angle_difference <= facing_threshold and time_since_last_shot >= GameStateManager.get_fire_rate():
+		shoot(last_known_enemy)
+		if has_killed_enemy:
+			return
 		time_since_last_shot = 0.0
+	else:
+		time_since_last_shot += delta
 
-	# Cover logic
+	# Handle cover behavior
 	if should_use_cover():
 		if not cover_locked:
 			var cover_pos = find_best_cover_position(global_position, last_known_enemy.global_position)
@@ -170,22 +219,35 @@ func _process_combat_phase(delta: float) -> void:
 				cover_locked_position = cover_pos
 				cover_locked = true
 			else:
-				move_and_slide()
+				velocity = Vector2.ZERO
 				play_animation("idle")
+				move_and_slide()
 				return
-
 		_go_to_cover_and_shoot(cover_locked_position, last_known_enemy, delta)
 		move_and_slide()
 	else:
-		# Avoid cover entirely
+		# Fallback to standing still and idling if no cover
 		velocity = Vector2.ZERO
 		play_animation("idle")
+		move_and_slide()
+
+
+
 
 func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
+	cover_timer += delta
+
+	if cover_timer > cover_timeout:
+		print("Cover timeout reached. Resetting cover lock.")
+		_reset_cover_lock()
+		cover_timer = 0.0
+		return
+
 	var dist_to_cover = cover_pos.distance_to(global_position)
 	if dist_to_cover > 50.0:
 		# Move closer to cover
-		navigation_agent.set_target_position(cover_pos)
+		if not navigation_agent.is_target_reached():
+			navigation_agent.set_target_position(cover_pos)  # Ensure target is set
 		var next_pos = navigation_agent.get_next_path_position()
 		if next_pos != Vector2.ZERO:
 			var dir = (next_pos - global_position).normalized()
@@ -198,6 +260,18 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 	else:
 		velocity = Vector2.ZERO
 		play_animation("idle")
+		cover_timer = 0.0  # Reset timer once cover is reached
+
+
+func get_alive_enemies() -> Array:
+	var alive_enemies = []
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if enemy.has_method("is_dead"):
+			if not enemy.is_dead():
+				alive_enemies.append(enemy)
+		else:
+			alive_enemies.append(enemy)
+	return alive_enemies
 
 
 
@@ -205,15 +279,35 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 #           SHOOTING & WEAPON
 # ---------------------------------------------
 func shoot(target: Node) -> void:
-	if is_playing_animation:
+	if is_playing_animation or GameStateManager.is_reloading:
 		return
+
+	# Check if target is within detection range
+	var dist_to_target = global_position.distance_to(target.global_position)
+	if dist_to_target > detection_range:
+		print("Target out of range. Aborting shot.")
+		return
+
 	if gun and gun.has_method("fire_bullet"):
 		var bullet = gun.fire_bullet()
 		if bullet:
 			last_fired_bullet = bullet
+
 	if target and target.has_method("take_damage"):
 		target.take_damage(1)
+		if target.has_method("is_dead") and target.is_dead():
+			print("Enemy killed:", target.name)
+			has_killed_enemy = true
+			last_known_enemy = null
+			_reset_cover_lock()
+			play_animation("shoot")
+			return  # Exit early
+
 	play_animation("shoot")
+
+
+
+
 	
 func _shoot_enemy_direct(enemy: Node, delta: float) -> void:
 	velocity = Vector2.ZERO
@@ -390,6 +484,7 @@ func _on_jam_state_changed(is_jammed: bool) -> void:
 	jammed_sprite.visible = is_jammed
 
 
+
 #
 # -------------- SANITY-BASED SECTION --------------
 #
@@ -425,3 +520,80 @@ func get_accuracy_offset() -> float:
 func should_attack_civilians() -> bool:
 	# AI attacks civilians when sanity drops below 40
 	return GameStateManager.current_sanity < 40
+	
+
+func _is_enemy_detected() -> bool:
+	# Check DetectionRayCast
+	if detection_ray_cast.is_colliding():
+		var collider = detection_ray_cast.get_collider()
+		if collider and collider.is_in_group("enemy"):
+			if collider.has_method("is_dead") and collider.is_dead():
+				print("Detected enemy is dead:", collider.name)
+			else:
+				print("Enemy detected by DetectionRayCast:", collider.name)
+				return true
+		else:
+			print("DetectionRayCast collision, but not an enemy:", collider)
+	
+	# Check DetectionRayCast2
+	if detection_ray_cast2.is_colliding():
+		var collider = detection_ray_cast2.get_collider()
+		if collider and collider.is_in_group("enemy"):
+			if collider.has_method("is_dead") and collider.is_dead():
+				print("Detected enemy is dead:", collider.name)
+			else:
+				print("Enemy detected by DetectionRayCast2:", collider.name)
+				return true
+		else:
+			print("DetectionRayCast2 collision, but not an enemy:", collider)
+	
+	# Check DetectionRayCast3
+	if detection_ray_cast3.is_colliding():
+		var collider = detection_ray_cast3.get_collider()
+		if collider and collider.is_in_group("enemy"):
+			if collider.has_method("is_dead") and collider.is_dead():
+				print("Detected enemy is dead:", collider.name)
+			else:
+				print("Enemy detected by DetectionRayCast3:", collider.name)
+				return true
+		else:
+			print("DetectionRayCast3 collision, but not an enemy:", collider)
+	
+	# Check DetectionRayCast4
+	if detection_ray_cast4.is_colliding():
+		var collider = detection_ray_cast4.get_collider()
+		if collider and collider.is_in_group("enemy"):
+			if collider.has_method("is_dead") and collider.is_dead():
+				print("Detected enemy is dead:", collider.name)
+			else:
+				print("Enemy detected by DetectionRayCast4:", collider.name)
+				return true
+		else:
+			print("DetectionRayCast4 collision, but not an enemy:", collider)
+	
+	# Check DetectionRayCast5
+	if detection_ray_cast5.is_colliding():
+		var collider = detection_ray_cast5.get_collider()
+		if collider and collider.is_in_group("enemy"):
+			if collider.has_method("is_dead") and collider.is_dead():
+				print("Detected enemy is dead:", collider.name)
+			else:
+				print("Enemy detected by DetectionRayCast5:", collider.name)
+				return true
+		else:
+			print("DetectionRayCast5 collision, but not an enemy:", collider)
+	
+	return false
+	
+func _reset_navigation_target() -> void:
+	# Get the current checkpoint position
+	var cp_pos = GameStateManager.get_current_checkpoint_position()
+
+	# If the checkpoint position is valid, set it as the target
+	if cp_pos != Vector2.ZERO:
+		print("Resetting navigation target to checkpoint:", cp_pos)
+		navigation_agent.set_target_position(cp_pos)
+	else:
+		# If no checkpoint is available, stop the agent
+		print("No checkpoint available. Stopping navigation.")
+		navigation_agent.set_target_position(global_position)  # Prevent unintended movement

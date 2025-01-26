@@ -5,7 +5,7 @@ extends Node2D
 @onready var sprite: Sprite2D = $PoliceEnemy
 
 func _ready() -> void:
-	add_to_group("enemies")  
+	add_to_group("enemy")  # Changed from "enemies" to "enemy"
 
 func take_damage(damage: int) -> void:
 	health -= damage
@@ -26,6 +26,10 @@ func flash_color() -> void:
 	flash_timer.queue_free()  
 
 func die() -> void:
-	GameStateManager.add_notoriety(1)
+	GameStateManager.add_notoriety(15)
 	AudioManager.play_sfx("enemy_hit_and_blood_1", +10.0)
-	queue_free()  
+	remove_from_group("enemy")  # Remove from group upon death
+	queue_free()
+
+func is_dead() -> bool:
+	return health <= 0

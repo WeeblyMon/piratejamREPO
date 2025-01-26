@@ -837,28 +837,9 @@ position = Vector2(363.333, -6.66667)
 texture = ExtResource("188_vdxcw")
 
 [node name="DetectionRayCast" type="RayCast2D" parent="."]
-scale = Vector2(1.58, 1)
-target_position = Vector2(1000, 0)
-
-[node name="DetectionRayCast4" type="RayCast2D" parent="."]
-rotation = -0.113446
-scale = Vector2(1.58, 1)
-target_position = Vector2(1000, 0)
-
-[node name="DetectionRayCast5" type="RayCast2D" parent="."]
-rotation = 0.113446
-scale = Vector2(1.58, 1)
-target_position = Vector2(1000, 0)
-
-[node name="DetectionRayCast2" type="RayCast2D" parent="."]
-rotation = -0.261799
-scale = Vector2(1.58, 1)
-target_position = Vector2(1000, 0)
-
-[node name="DetectionRayCast3" type="RayCast2D" parent="."]
-rotation = 0.261799
-scale = Vector2(1.58, 1)
-target_position = Vector2(1000, 0)
+position = Vector2(150, 36.6667)
+scale = Vector2(1.5101, 0.955904)
+target_position = Vector2(500, 3.487)
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 

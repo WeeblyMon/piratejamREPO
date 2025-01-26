@@ -70,8 +70,6 @@ func set_weapon(weapon_name: String) -> void:
 	else:
 		push_warning("Invalid weapon: %s".format(weapon_name))
 
-
-
 func get_weapon() -> String:
 	return current_weapon
 	
