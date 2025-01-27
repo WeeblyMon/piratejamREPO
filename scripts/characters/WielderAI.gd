@@ -573,6 +573,7 @@ func _flash_color() -> void:
 	await flash_timer.timeout
 	animated_sprite.modulate = Color(1, 1, 1)  # Reset color
 	flash_timer.queue_free()
+	AudioManager.play_sfx("pain_1")
 
 func die() -> void:
 	print("Wielder died!")
