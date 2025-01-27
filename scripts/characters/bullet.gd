@@ -80,6 +80,10 @@ func _control_bullet_with_mouse(delta: float) -> void:
 	var max_rotation = deg_to_rad(max_turn_rate) * delta
 	rotation += clamp(angle_difference, -max_rotation, max_rotation)
 
+	# Play steering sound if not already playing
+	if not AudioManager.is_sfx_playing("bullet_steering_1"):
+		AudioManager.play_sfx("bullet_steering_1", 1.0, true)  # Set to loop
+
 	# Move the bullet forward
 	_move_forward(delta)
 
@@ -105,15 +109,21 @@ func enable_player_control() -> void:
 	is_controlled = true
 	add_to_group("controlled_bullets")
 	Engine.time_scale = 0.2  # Slow down time for control
-	time_alive = 0.0  # Reset time_alive for the controlled phase
 
+	# Play the slow-motion sound once
+	AudioManager.play_sfx("bullet_slow_mo_1", 1.0, false)  # Play sound with no looping
+
+	time_alive = 0.0  # Reset time_alive for the controlled phase
+	
 func disable_player_control() -> void:
 	# Disable control of the bullet
 	is_controlled = false
 	remove_from_group("controlled_bullets")
-	# Reset time scale if no bullets are controlled
-	if get_tree().get_nodes_in_group("controlled_bullets").is_empty():
-		Engine.time_scale = 1.0
+	Engine.time_scale = 1.0  # Restore normal time
+
+	# Stop both sounds
+	AudioManager.stop_sfx("bullet_slow_mo_1")
+	AudioManager.stop_sfx("bullet_steering_1")
 
 func _on_body_entered(body: Node) -> void:
 	# Handle collisions

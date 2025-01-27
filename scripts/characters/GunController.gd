@@ -56,6 +56,7 @@ func _process(delta: float) -> void:
 
 func fire_bullet() -> Node:
 	# Prevent firing if the weapon is jammed
+	AudioManager.play_sfx_varied("casing_drop_1", 1.2, false, 0.9, 1.4)
 	if GameStateManager.is_jammed:
 		print("GunController: Cannot fire while jammed!")
 		return null

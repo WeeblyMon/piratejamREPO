@@ -26,7 +26,7 @@ var current_weapon: String = "handgun"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 var fire_rate: float = 0.0  # Default fire rate in seconds per shot (600 BPM)
-
+var is_tv_static_playing: bool = false
 var weapon_data = {
 	"handgun": {"fire_rate": 0.5, "position": Vector2(163, 44), "direction": Vector2(1, 0)},  # 120 BPM
 	"rifle": {"fire_rate": 0.1, "position": Vector2(181, 36), "direction": Vector2(1, 0)},    # 600 BPM
@@ -59,7 +59,7 @@ var current_save: Dictionary = {
 
 func _process(delta: float) -> void:
 	current_resource = min(max_resource, current_resource + resource_regen_rate * delta)
-
+	check_sanity()
 # ---------------------------------------
 # WEAPON GET/SET
 # ---------------------------------------
@@ -115,19 +115,33 @@ func switch_scene(new_scene_path: String) -> void:
 # ---------------------------------------
 # SANITY / HEALTH 
 # ---------------------------------------
-func set_sanity(sanity_amount: int, operation: String) -> void:
-	var new_sanity = current_sanity
-	if operation == "add":
-		new_sanity = clamp(current_sanity + sanity_amount, 0, max_sanity)
-	elif operation == "sub":
-		new_sanity = clamp(current_sanity - sanity_amount, 0, max_sanity)
+func set_sanity(sanity_amount: int, operation: String = "set") -> void:
+	match operation:
+		"add":
+			current_sanity = clamp(current_sanity + sanity_amount, 0, max_sanity)
+		"sub":
+			current_sanity = clamp(current_sanity - sanity_amount, 0, max_sanity)
+		"set":
+			current_sanity = clamp(sanity_amount, 0, max_sanity)
+		_:
+			push_warning("Invalid operation for set_sanity: %s".format(operation))
+
+	emit_signal("sanity_changed", current_sanity)
+
+	# Update the SanityBar if it exists
+	if sanity_bar:
+		sanity_bar.update_sanity_bar(current_sanity, max_sanity)
+
+			
+func check_sanity() -> void:
+	if current_sanity < 30:
+		if not is_tv_static_playing:
+			AudioManager.play_sfx("tv_static_1", 0.3, true)
+			is_tv_static_playing = true
 	else:
-		push_warning("Invalid operation for set_sanity: %s".format(operation))
-	if new_sanity != current_sanity:
-		current_sanity = new_sanity
-		emit_signal("sanity_changed", current_sanity)
-		if sanity_bar:
-			sanity_bar.update_sanity_bar(current_sanity, max_sanity)
+		if is_tv_static_playing:
+			AudioManager.stop_sfx("tv_static_1")  # Stop the sound if sanity recovers
+			is_tv_static_playing = false
 
 
 func set_health(health_amount: int, operation) -> void:
