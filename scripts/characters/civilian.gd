@@ -47,6 +47,7 @@ func flash_color() -> void:
 	await flash_timer.timeout
 	sprite.modulate = Color(1, 1, 1)
 	flash_timer.queue_free()
+	AudioManager.play_sfx_varied("enemy_hit_1", false)
 
 func die() -> void:
 	GameStateManager.set_sanity(14, "sub")

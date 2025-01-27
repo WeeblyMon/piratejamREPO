@@ -31,6 +31,7 @@ carve_navigation_mesh = true
 shape = SubResource("RectangleShape2D_rtbjk")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
+visible = false
 offset_left = -17.0
 offset_top = 5.0
 offset_right = 78.0

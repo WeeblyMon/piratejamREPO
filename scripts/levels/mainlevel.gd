@@ -4,6 +4,7 @@ extends Node2D
 
 func _ready() -> void:
 	AudioManager.play_music("level_music")
+	AudioManager.play_sfx("crowd_chatter_1")
 
 func _input(event: InputEvent) -> void:
 	# Check for addSanity input

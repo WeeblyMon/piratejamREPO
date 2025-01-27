@@ -14,6 +14,7 @@ signal cover_destroyed
 
 func _ready() -> void:
 	current_health = max_health
+	health_bar.visible = false
 	health_bar.value = current_health
 	health_bar.max_value = max_health
 	update_sprite()
@@ -22,6 +23,7 @@ func get_radius() -> float:
 	return radius
 
 func take_damage(amount: int) -> void:
+	health_bar.visible = true
 	current_health -= amount
 	current_health = max(0, current_health)  
 	health_bar.value = current_health
@@ -33,6 +35,7 @@ func take_damage(amount: int) -> void:
 
 func destroy_cover() -> void:
 	emit_signal("cover_destroyed")
+	AudioManager.play_sfx("explosion_2")
 	spawn_explosion()
 	queue_free()
 

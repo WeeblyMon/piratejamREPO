@@ -577,6 +577,7 @@ func _flash_color() -> void:
 
 func die() -> void:
 	print("Wielder died!")
+	AudioManager.play_sfx("death_1")
 	queue_free()
 
 # ---------------------------------------------
