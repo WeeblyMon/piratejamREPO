@@ -56,27 +56,38 @@ func fire_bullet() -> Node:
 		print("GunController: Cannot fire while jammed!")
 		return null
 
-	if bullet_scene and time_since_last_shot >= fire_rate:
-		if GameStateManager.is_reloading:
-			print("Cannot fire while reloading!")
-			return null
+	# Ensure we respect fire rate timing
+	if time_since_last_shot < fire_rate:
+		return null
 
-		if GameStateManager.get_current_ammo() > 0:
-			if GameStateManager.consume_ammo():
-				var bullet = bullet_scene.instantiate()
-				bullet.global_position = raycast.global_position
-				bullet.rotation = raycast.global_rotation
-				get_tree().current_scene.add_child(bullet)
-				last_fired_bullet = bullet
-				time_since_last_shot = 0.0
-				fire_sfx()
-				_show_muzzle_flash(current_weapon)
-				return bullet
-		else:
-			print("No ammo left! Starting reload...")
-			reload_weapon()
+	if GameStateManager.is_reloading:
+		print("Cannot fire while reloading!")
+		return null
+
+	# Handle shotgun separately
+	if current_weapon == "shotgun":
+		fire_shotgun_volley()
+		time_since_last_shot = 0.0
+		return null  # Shotgun doesn't return a single bullet
+
+	# Standard single-bullet logic
+	if bullet_scene and GameStateManager.get_current_ammo() > 0:
+		if GameStateManager.consume_ammo():
+			var bullet = bullet_scene.instantiate()
+			bullet.global_position = raycast.global_position
+			bullet.rotation = raycast.global_rotation
+			get_tree().current_scene.add_child(bullet)
+			last_fired_bullet = bullet
+			time_since_last_shot = 0.0
+			fire_sfx()
+			_show_muzzle_flash(current_weapon)
+			return bullet
+	else:
+		print("No ammo left! Starting reload...")
+		reload_weapon()
 
 	return null
+
 
 	
 func fire_shotgun_volley() -> void:
