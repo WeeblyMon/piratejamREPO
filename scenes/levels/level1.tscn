@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://bo787ao6qyh0d"]
+[gd_scene load_steps=22 format=4 uid="uid://bo787ao6qyh0d"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_7l1m2"]
 [ext_resource type="Texture2D" uid="uid://8xadxm3b4j17" path="res://resources/tilesets/road and pavements.png" id="3_x6eni"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://csqsadv8sd5xh" path="res://resources/tilesets/windows.png" id="7_rwgjl"]
 [ext_resource type="Texture2D" uid="uid://w8gpfm88ee70" path="res://resources/tilesets/!obj_door2.png" id="8_acljd"]
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="9_tj2ga"]
-[ext_resource type="PackedScene" uid="uid://no2kjs32iev3" path="res://scenes/props/path_debug.tscn" id="10_sstb6"]
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="11_r2sgb"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="12_0ugyk"]
 [ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="13_akbd0"]
@@ -31908,6 +31907,7 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
 position = Vector2(563, 177)
+detection_range = 600.0
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
@@ -31915,14 +31915,6 @@ target_desired_distance = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="Wielder"]
 zoom = Vector2(0.68, 0.68)
-
-[node name="PathDebug" parent="." node_paths=PackedStringArray("navigation_region", "navigation_agent") instance=ExtResource("10_sstb6")]
-visible = false
-z_index = 4
-position = Vector2(498, 378)
-navigation_region = NodePath("../NavigationRegion2D")
-path_thickness = 5.0
-navigation_agent = NodePath("../Wielder/NavigationAgent2D")
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
 position = Vector2(326, 98)
@@ -32109,71 +32101,71 @@ z_index = 1
 [node name="PoliceMen" parent="Enemies" instance=ExtResource("12_0ugyk")]
 z_index = 1
 position = Vector2(209, -190)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen2" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(831, -289)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen3" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(587, -1078)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen4" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-134, -848)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen5" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-686, -1133)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen6" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-310, -1332)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen7" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-701, -1725)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen8" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1272, -1505)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen12" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1310, -1466)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen13" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1216, -1468)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen14" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1221, -1545)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen15" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1301, -1570)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen16" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(517, -1106)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen17" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(587, -1163)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen9" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(917, -258)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen10" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(859, -392)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="PoliceMen11" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(211, -299)
-detection_radius = 10.0
+detection_radius = 500.0
 
 [node name="TileMapParent" type="TileMapLayer" parent="."]
 

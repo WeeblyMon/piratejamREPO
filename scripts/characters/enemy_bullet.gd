@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var speed: float = 400.0
+@export var speed: float = 500.0
 @export var damage: int = 1
 @export var lifetime: float = 3.0  # Bullet will disappear after 3 seconds
 

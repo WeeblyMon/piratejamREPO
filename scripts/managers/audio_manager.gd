@@ -52,7 +52,9 @@ var music_tracks: Dictionary = {}
 		"wood_break_2": "res://assets/audio/sfx/Wood_Break_2.mp3"
 	},
 	"music": {
-		"music_track_1": "res://assets/audio/music/Normal_Theme_Sketch_1.1.mp3"
+		"music_track_1": "res://assets/audio/music/Normal_Theme_Sketch_1.1.mp3",
+		"level_music": "res://assets/audio/music/Mission_Theme_V2.mp3",
+		"main menu": "res://assets/audio/music/Mission_Theme_V2.mp3"
 	}
 }
 func _ready() -> void:
@@ -97,7 +99,8 @@ func play_music(track_name: String, volume_db: float = 0.0, loop: bool = true) -
 	if music_tracks.has(track_name):
 		var player = music_tracks[track_name]
 		player.volume_db = volume_db
-		player.loop = loop
+		if player.stream is AudioStream:
+			player.stream.loop = loop
 		player.play()
 	else:
 		push_warning("Music track not found: %s" % track_name)
