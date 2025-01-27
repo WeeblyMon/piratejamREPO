@@ -106,24 +106,32 @@ func _update_trail() -> void:
 
 func enable_player_control() -> void:
 	# Enable control of the bullet
-	is_controlled = true
-	add_to_group("controlled_bullets")
-	Engine.time_scale = 0.2  # Slow down time for control
+	if not is_controlled:  # Only enable if not already controlled
+		is_controlled = true
+		add_to_group("controlled_bullets")
+		Engine.time_scale = 0.2  # Slow down time for control
 
-	# Play the slow-motion sound once
-	AudioManager.play_sfx("bullet_slow_mo_1", 1.0, false)  # Play sound with no looping
+		# Play the slow-motion sound if it's not already playing
+		if not AudioManager.is_sfx_playing("bullet_slow_mo_1"):
+			AudioManager.play_sfx("bullet_slow_mo_1", 1.0, false)  # Play sound with no looping
 
-	time_alive = 0.0  # Reset time_alive for the controlled phase
-	
+		time_alive = 0.0  # Reset time_alive for the controlled phase
+
 func disable_player_control() -> void:
 	# Disable control of the bullet
-	is_controlled = false
-	remove_from_group("controlled_bullets")
-	Engine.time_scale = 1.0  # Restore normal time
+	if is_controlled:  # Only disable if it was controlled
+		is_controlled = false
+		remove_from_group("controlled_bullets")
+		Engine.time_scale = 1.0  # Restore normal time
 
-	# Stop both sounds
-	AudioManager.stop_sfx("bullet_slow_mo_1")
-	AudioManager.stop_sfx("bullet_steering_1")
+		# Stop the slow-motion sound
+		if AudioManager.is_sfx_playing("bullet_slow_mo_1"):
+			AudioManager.stop_sfx("bullet_slow_mo_1")
+
+		# Stop the steering sound if it was playing
+		if AudioManager.is_sfx_playing("bullet_steering_1"):
+			AudioManager.stop_sfx("bullet_steering_1")
+
 
 func _on_body_entered(body: Node) -> void:
 	# Handle collisions

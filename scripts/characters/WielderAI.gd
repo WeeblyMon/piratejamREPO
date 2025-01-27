@@ -27,7 +27,6 @@ var has_killed_enemy: bool = false
 var cover_timeout: float = 5.0  # Maximum time in cover
 var cover_timer: float = 0.0
 @onready var detection_area: Area2D = Area2D.new()
-@export var detection_radius: float = 300.0  # Detection range
 @export var health: int = 100  # Wielder's health
 var target: Node = null
 
@@ -86,6 +85,8 @@ func _process(delta: float) -> void:
 # ---------------------------------------------
 #           MOVEMENT PHASE
 # ---------------------------------------------
+var footstep_timer: float = 0.0  # Timer to control footstep sounds
+
 func _process_movement_phase(delta: float) -> void:
 	# Check if the navigation agent has a valid path
 	if navigation_agent.is_navigation_finished():
@@ -104,6 +105,16 @@ func _process_movement_phase(delta: float) -> void:
 	rotation = lerp_angle(rotation, direction.angle(), 10.0 * delta)
 
 	play_animation("move")
+	
+	# Handle footstep sounds based on `is_sfx_playing`
+	footstep_timer -= delta
+	if footstep_timer <= 0.0:
+		if not AudioManager.is_sfx_playing("footsteps_asphalt_1_1"):
+			AudioManager.play_sfx("footsteps_asphalt_1_1", 0.5)
+		elif not AudioManager.is_sfx_playing("footsteps_asphalt_1_2"):
+			AudioManager.play_sfx("footsteps_asphalt_1_2", 0.5)
+		footstep_timer = 0.5  # Adjust delay between steps as needed
+
 	move_and_slide()
 
 	_check_if_reached_checkpoint()
@@ -132,6 +143,7 @@ func _check_if_reached_checkpoint() -> void:
 func _process_combat_phase(delta: float) -> void:
 	if has_killed_enemy:
 		has_killed_enemy = false
+		last_known_enemy = null  # Clear the killed enemy
 		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
 		print("Enemy killed. Switching to MOVEMENT phase.")
 		
@@ -149,30 +161,15 @@ func _process_combat_phase(delta: float) -> void:
 			move_and_slide()
 			return
 
-	# Revalidate last_known_enemy
+	# Revalidate last_known_enemy or find a new one
 	if not is_instance_valid(last_known_enemy):
-		var all_enemies = get_alive_enemies()
-		if all_enemies.is_empty():
-			velocity = Vector2.ZERO
-			play_animation("idle")
-			move_and_slide()
-			return
-		
-		# Find the nearest enemy within detection range
-		var nearest = null
-		var min_dist = detection_range
-		for e in all_enemies:
-			var dist = global_position.distance_to(e.global_position)
-			if dist < min_dist:
-				nearest = e
-				min_dist = dist
-		last_known_enemy = nearest
+		last_known_enemy = _find_nearest_enemy()
 
-	# If no valid enemy, switch back to movement
-	if not is_instance_valid(last_known_enemy):
-		_reset_cover_lock()
-		GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
-		return
+		# If no valid enemy, switch back to movement
+		if not is_instance_valid(last_known_enemy):
+			_reset_cover_lock()
+			GameStateManager.set_wielder_phase(GameStateManager.WielderPhase.MOVEMENT)
+			return
 
 	# Check if enemy is within detection range
 	var dist_to_enemy = global_position.distance_to(last_known_enemy.global_position)
@@ -226,6 +223,7 @@ func _process_combat_phase(delta: float) -> void:
 
 
 
+
 func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> void:
 	cover_timer += delta
 
@@ -275,8 +273,7 @@ func shoot(target: Node) -> void:
 		return
 
 	# Check if target is within detection range
-	var dist_to_target = global_position.distance_to(target.global_position)
-	if dist_to_target > detection_range:
+	if not is_instance_valid(target) or global_position.distance_to(target.global_position) > detection_range:
 		print("Target out of range. Aborting shot.")
 		return
 
@@ -297,6 +294,20 @@ func shoot(target: Node) -> void:
 
 	play_animation("shoot")
 
+func _find_nearest_enemy() -> Node:
+	var all_enemies = get_alive_enemies()
+	if all_enemies.is_empty():
+		return null  # No enemies found
+
+	var nearest = null
+	var min_dist = detection_range
+	for enemy in all_enemies:
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < min_dist:
+			nearest = enemy
+			min_dist = dist
+
+	return nearest
 
 
 
@@ -462,6 +473,7 @@ func trigger_jam() -> void:
 	if GameStateManager.is_jammed:
 		return  # Already jammed, ignore
 	GameStateManager.set_jam_state(true)
+	AudioManager.play_sfx("gun_jam_1")
 	jammed_sprite.visible = true
 	GameStateManager.reload_weapon()
 	await get_tree().create_timer(2.0).timeout  # Replace yield with await
@@ -573,14 +585,16 @@ func _create_detection_area() -> void:
 	detection_area.name = "DetectionArea"
 	var collision_shape = CollisionShape2D.new()
 	collision_shape.shape = CircleShape2D.new()
-	collision_shape.shape.radius = detection_radius
+	collision_shape.shape.radius = detection_range  # Use detection_range here
 	detection_area.add_child(collision_shape)
+
 	detection_area.collision_layer = 1  # Wielder's layer
-	detection_area.collision_mask = 2 
+	detection_area.collision_mask = 2  # Detect enemies
 	detection_area.monitoring = true
 	detection_area.connect("body_entered", Callable(self, "_on_body_entered"))
 	detection_area.connect("body_exited", Callable(self, "_on_body_exited"))
 	add_child(detection_area)
+
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy"):

@@ -127,6 +127,7 @@ func set_sanity(sanity_amount: int, operation: String = "set") -> void:
 			push_warning("Invalid operation for set_sanity: %s".format(operation))
 
 	emit_signal("sanity_changed", current_sanity)
+	AudioManager.play_sfx("sanity_heartbeat_1")
 
 	# Update the SanityBar if it exists
 	if sanity_bar:
@@ -152,6 +153,7 @@ func set_health(health_amount: int, operation) -> void:
 func adjust_sanity(amount: int) -> void:
 	current_sanity = clamp(current_sanity + amount, 0, max_sanity)
 	emit_signal("sanity_changed", current_sanity)
+	
 
 func _update_dict_int_value(key: String, value, operation) -> Dictionary:
 	var new_save = current_save.duplicate()
