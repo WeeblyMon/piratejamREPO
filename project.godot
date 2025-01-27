@@ -88,6 +88,14 @@ jam_ability={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Wielder"
+2d_physics/layer_2="Enemy"
+2d_physics/layer_3="Cover"
+2d_physics/layer_4="Enemy Bullet"
+2d_physics/layer_5="Player_bullet"
+
 [rendering]
 
 occlusion_culling/bvh_build_quality=1

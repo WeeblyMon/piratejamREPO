@@ -10,20 +10,19 @@
 [ext_resource type="PackedScene" uid="uid://c6y3ecafagddx" path="res://scenes/characters/Civilian.tscn" id="8_v41f2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_j7ll7"]
-vertices = PackedVector2Array(1289.3, -353.203, 1048.95, -751.992, 2009.74, -732.219, 1863.12, 483.039, 1286.72, -263, 1218, -263, -62.2734, 493.938, -77, -27.3125, 1218, -351.813, -100.656, -733.156)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3), PackedInt32Array(5, 4, 3, 6, 7), PackedInt32Array(1, 0, 8), PackedInt32Array(5, 7, 9, 1, 8)])
+vertices = PackedVector2Array(1791.3, 109.797, 2009.74, -732.219, 1863.12, 483.039, 1788.72, 200, 1590.3, -269.203, 1519, -267.813, 1289.3, -353.203, 1048.95, -751.992, 1587.72, -179, 1720, 111.188, 1218, -351.813, 1286.72, -263, 1519, -179, -62.2734, 493.938, 1720, 200, -77, -27.3125, 1218, -263, -100.656, -733.156)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7, 1), PackedInt32Array(8, 4, 1, 0, 9), PackedInt32Array(7, 6, 10), PackedInt32Array(11, 6, 5, 12), PackedInt32Array(3, 2, 13, 14), PackedInt32Array(8, 9, 14, 13, 15, 12), PackedInt32Array(11, 12, 15, 16), PackedInt32Array(16, 15, 17, 7, 10)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-87, -27, -72, 504, 1872, 493, 2021, -742, 1049, -762, -111, -743)])
 
 [node name="TestLevel" type="Node2D" node_paths=PackedStringArray("wielder")]
 script = ExtResource("1_2htwu")
 wielder = NodePath("Wielder")
 
-[node name="Wielder" parent="." node_paths=PackedStringArray("path_debug") instance=ExtResource("2_580be")]
+[node name="Wielder" parent="." instance=ExtResource("2_580be")]
 z_index = 1
 position = Vector2(559, 302)
 floor_stop_on_slope = false
 floor_block_on_wall = false
-path_debug = NodePath("../PathDebug")
 
 [node name="Camera2D" type="Camera2D" parent="Wielder"]
 position = Vector2(96.6666, 26.6667)
@@ -44,32 +43,28 @@ offset_bottom = 677.0
 [node name="PathDebug" parent="." instance=ExtResource("4_ah6nj")]
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(845, 162)
+position = Vector2(1047, 11)
 
 [node name="RouteA-1" parent="RouteA" groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(396, -348)
+position = Vector2(527, 10)
 checkpoint_id = 2
 
 [node name="RouteA-2" parent="RouteA/RouteA-1" groups=["checkpoints"] instance=ExtResource("5_n2e8c")]
-position = Vector2(474, 306)
+position = Vector2(177, 396)
 checkpoint_id = 3
 is_final = true
 
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
-health = 10
 
 [node name="PoliceMen2" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1643, -398)
-health = 10
 
 [node name="PoliceMen3" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1804, -44)
-health = 10
 
 [node name="PoliceMen4" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1767, 445)
-health = 10
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(-97, 255)
@@ -78,16 +73,21 @@ navigation_polygon = SubResource("NavigationPolygon_j7ll7")
 [node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
 polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
 
+[node name="Polygon2D2" type="Polygon2D" parent="NavigationRegion2D"]
+position = Vector2(301, 84)
+polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
+
+[node name="Polygon2D3" type="Polygon2D" parent="NavigationRegion2D"]
+position = Vector2(502, 463)
+polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
+
 [node name="Cover3" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1457, 34)
-collision_layer = 2
 sprite_index = 0
 radius = 100.0
 
 [node name="Cover2" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1157, -53)
-collision_layer = 2
-max_health = 2
 sprite_index = 0
 
 [node name="Civilian" parent="." instance=ExtResource("8_v41f2")]

@@ -19,6 +19,8 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [node name="Bullet" type="Area2D" groups=["bullet"]]
 z_index = 2
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("1_2rjgs")
 speed = 1500.0
 point_spacing = 10.0
@@ -39,6 +41,8 @@ gradient = SubResource("Gradient_kys51")
 antialiased = true
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_5mo5d")

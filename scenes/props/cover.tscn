@@ -10,8 +10,10 @@ size = Vector2(30, 44)
 
 [node name="Cover" type="StaticBody2D" node_paths=PackedStringArray("health_bar") groups=["cover"]]
 scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
 script = ExtResource("1_e5aqx")
-max_health = 20
+max_health = 50
 sprite_frames = Array[Texture2D]([ExtResource("2_1jt22"), ExtResource("3_deve5")])
 explosion_scene = ExtResource("2_ijvvp")
 sprite_index = 1

@@ -5,7 +5,6 @@ var fire_rate = GameStateManager.get_fire_rate()
 @export var gun: Node2D
 @onready var jammed_sprite: Sprite2D = $JammedSprite
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-@export var path_debug: Node2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export var max_cover_distance: float = 400.0
 var is_playing_animation: bool = false
@@ -20,11 +19,6 @@ var cover_locked_position: Vector2 = Vector2.ZERO
 var saved_path_target: Vector2 = Vector2.ZERO
 var current_weapon = GameStateManager.get_weapon()
 var has_saved_path: bool = false 
-@onready var detection_ray_cast: RayCast2D = $DetectionRayCast
-@onready var detection_ray_cast2: RayCast2D = $DetectionRayCast2
-@onready var detection_ray_cast3: RayCast2D = $DetectionRayCast3
-@onready var detection_ray_cast4: RayCast2D = $DetectionRayCast4
-@onready var detection_ray_cast5: RayCast2D = $DetectionRayCast5
 var combat_cooldown: float = 0.0
 var combat_cooldown_duration: float = 1.0
 @export var fov_angle: float = 130  # Degrees
@@ -32,12 +26,14 @@ var combat_cooldown_duration: float = 1.0
 var has_killed_enemy: bool = false
 var cover_timeout: float = 5.0  # Maximum time in cover
 var cover_timer: float = 0.0
+@onready var detection_area: Area2D = Area2D.new()
+@export var detection_radius: float = 300.0  # Detection range
+@export var health: int = 100  # Wielder's health
+var target: Node = null
 
 
 func _ready() -> void:
-	detection_ray_cast.global_position = global_position
-	detection_ray_cast.rotation = rotation	
-	
+	_create_detection_area()
 	jammed_sprite.visible = false
 	GameStateManager.connect("sanity_changed", Callable(self, "_on_sanity_changed"))
 	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
@@ -45,9 +41,6 @@ func _ready() -> void:
 	if not navigation_agent:
 		push_warning("NavigationAgent2D node not found!")
 		return
-	if path_debug and path_debug.has_method("set"):
-		path_debug.navigation_agent = navigation_agent
-
 	if gun and gun.has_method("switch_weapon"):
 		gun.switch_weapon(GameStateManager.get_weapon())
 	GameStateManager.init_checkpoints_for_ai(global_position)
@@ -520,70 +513,20 @@ func should_attack_civilians() -> bool:
 	# AI attacks civilians when sanity drops below 40
 	return GameStateManager.current_sanity < 40
 	
-
 func _is_enemy_detected() -> bool:
-	# Check DetectionRayCast
-	if detection_ray_cast.is_colliding():
-		var collider = detection_ray_cast.get_collider()
-		if collider and collider.is_in_group("enemy"):
-			if collider.has_method("is_dead") and collider.is_dead():
-				print("Detected enemy is dead:", collider.name)
-			else:
-				print("Enemy detected by DetectionRayCast:", collider.name)
-				return true
+	# Check if there is a valid target detected by the Area2D
+	if target and target.is_in_group("enemy"):
+		if target.has_method("is_dead") and target.is_dead():
+			print("Detected enemy is dead:", target.name)
+			return false  # Enemy is dead, no valid target
 		else:
-			print("DetectionRayCast collision, but not an enemy:", collider)
-	
-	# Check DetectionRayCast2
-	if detection_ray_cast2.is_colliding():
-		var collider = detection_ray_cast2.get_collider()
-		if collider and collider.is_in_group("enemy"):
-			if collider.has_method("is_dead") and collider.is_dead():
-				print("Detected enemy is dead:", collider.name)
-			else:
-				print("Enemy detected by DetectionRayCast2:", collider.name)
-				return true
-		else:
-			print("DetectionRayCast2 collision, but not an enemy:", collider)
-	
-	# Check DetectionRayCast3
-	if detection_ray_cast3.is_colliding():
-		var collider = detection_ray_cast3.get_collider()
-		if collider and collider.is_in_group("enemy"):
-			if collider.has_method("is_dead") and collider.is_dead():
-				print("Detected enemy is dead:", collider.name)
-			else:
-				print("Enemy detected by DetectionRayCast3:", collider.name)
-				return true
-		else:
-			print("DetectionRayCast3 collision, but not an enemy:", collider)
-	
-	# Check DetectionRayCast4
-	if detection_ray_cast4.is_colliding():
-		var collider = detection_ray_cast4.get_collider()
-		if collider and collider.is_in_group("enemy"):
-			if collider.has_method("is_dead") and collider.is_dead():
-				print("Detected enemy is dead:", collider.name)
-			else:
-				print("Enemy detected by DetectionRayCast4:", collider.name)
-				return true
-		else:
-			print("DetectionRayCast4 collision, but not an enemy:", collider)
-	
-	# Check DetectionRayCast5
-	if detection_ray_cast5.is_colliding():
-		var collider = detection_ray_cast5.get_collider()
-		if collider and collider.is_in_group("enemy"):
-			if collider.has_method("is_dead") and collider.is_dead():
-				print("Detected enemy is dead:", collider.name)
-			else:
-				print("Enemy detected by DetectionRayCast5:", collider.name)
-				return true
-		else:
-			print("DetectionRayCast5 collision, but not an enemy:", collider)
-	
-	return false
-	
+			print("Enemy detected by Area2D:", target.name)
+			return true  # Valid enemy detected
+	else:
+		print("No valid enemy detected in Area2D.")
+		return false
+
+
 func _reset_navigation_target() -> void:
 	# Get the current checkpoint position
 	var cp_pos = GameStateManager.get_current_checkpoint_position()
@@ -596,3 +539,55 @@ func _reset_navigation_target() -> void:
 		# If no checkpoint is available, stop the agent
 		print("No checkpoint available. Stopping navigation.")
 		navigation_agent.set_target_position(global_position)  # Prevent unintended movement
+
+
+# ---------------------------------------------
+# HEALTH AND DAMAGE MANAGEMENT
+# ---------------------------------------------
+func take_damage(damage: int) -> void:
+	health -= damage
+	print("Wielder took damage! Health:", health)
+	animated_sprite.modulate = Color(1, 0, 0)  # Flash red on damage
+	_flash_color()
+	if health <= 0:
+		die()
+
+func _flash_color() -> void:
+	var flash_timer = Timer.new()
+	flash_timer.one_shot = true
+	flash_timer.wait_time = 0.1
+	add_child(flash_timer)
+	flash_timer.start()
+	await flash_timer.timeout
+	animated_sprite.modulate = Color(1, 1, 1)  # Reset color
+	flash_timer.queue_free()
+
+func die() -> void:
+	print("Wielder died!")
+	queue_free()
+
+# ---------------------------------------------
+# DETECTION AREA
+# ---------------------------------------------
+func _create_detection_area() -> void:
+	detection_area.name = "DetectionArea"
+	var collision_shape = CollisionShape2D.new()
+	collision_shape.shape = CircleShape2D.new()
+	collision_shape.shape.radius = detection_radius
+	detection_area.add_child(collision_shape)
+	detection_area.collision_layer = 1  # Wielder's layer
+	detection_area.collision_mask = 2 
+	detection_area.monitoring = true
+	detection_area.connect("body_entered", Callable(self, "_on_body_entered"))
+	detection_area.connect("body_exited", Callable(self, "_on_body_exited"))
+	add_child(detection_area)
+
+func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("enemy"):
+		target = body
+		print("Enemy detected:", target.name)
+
+func _on_body_exited(body: Node) -> void:
+	if body == target:
+		target = null
+		print("Enemy out of range.")
