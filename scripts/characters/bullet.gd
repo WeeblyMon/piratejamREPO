@@ -5,6 +5,7 @@ extends Node2D
 @export var damage: int = 1
 @export var max_points: int = 5
 @export var point_spacing: float = 20.0
+@export var max_turn_rate: float = 320.0  # Max turn rate in degrees per second
 
 var current_weapon = GameStateManager.get_weapon()
 @onready var area: Area2D = $Area2D
@@ -18,50 +19,39 @@ var distance_accum: float = 0.0
 var is_controlled: bool = false
 
 func _ready() -> void:
+	# Add this bullet to the appropriate group
 	add_to_group("bullet")
-	
+	# Connect signals
 	area.body_entered.connect(_on_body_entered)
 	if local_line2d:
 		local_line2d.clear_points()
-		local_line2d.get_parent().remove_child(local_line2d)
-		get_tree().root.add_child(local_line2d)
-		local_line2d.global_transform = Transform2D()
 	else:
-		push_warning("No child Line2D found")
-	
+		push_warning("Line2D is missing!")
 	update_bullet_visibility()
 	update_speed()
-	
+
 func update_speed() -> void:
-	if current_weapon == "handgun":
-		speed = 1000
-	elif current_weapon == "rifle":
-		speed = 2000
-	elif current_weapon == "shotgun":
-		speed = 750
-	else:
-		speed = 500
-		
+	# Adjust speed based on weapon type
+	match current_weapon:
+		"handgun": speed = 1000
+		"rifle": speed = 2000
+		"shotgun": speed = 750
+		_: speed = 500
 
 func update_bullet_visibility() -> void:
+	# Enable the correct sprite for the weapon type
 	pistol_sprite.visible = current_weapon == "handgun"
 	rifle_sprite.visible = current_weapon == "rifle"
 	shotgun_sprite.visible = current_weapon == "shotgun"
 
 func _process(delta: float) -> void:
-	# Calculate unscaled delta to maintain consistent behavior regardless of time scale
-	var unscaled_delta = delta / Engine.time_scale
-
-	time_alive += unscaled_delta
+	# Handle lifetime expiration
+	time_alive += delta
 	if time_alive >= lifetime:
 		queue_free()
 		return
 
-	if is_controlled:
-		_control_bullet(unscaled_delta)
-	else:
-		_move_forward(unscaled_delta)
-	_update_trail(unscaled_delta)
+	# Check for control toggles
 	if Input.is_action_pressed("control_bullet"):
 		if not is_controlled:
 			enable_player_control()
@@ -69,18 +59,32 @@ func _process(delta: float) -> void:
 		if is_controlled:
 			disable_player_control()
 
-func _move_forward(unscaled_delta: float) -> void:
-	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta
+	# Update movement logic
+	if is_controlled:
+		_control_bullet_with_mouse(delta)
+	else:
+		_move_forward(delta)
 
-func _control_bullet(unscaled_delta: float) -> void:
-	if Input.is_action_pressed("rotate_left"):
-		rotation -= deg_to_rad(160 * unscaled_delta)
-	if Input.is_action_pressed("rotate_right"):
-		rotation += deg_to_rad(160 * unscaled_delta)
-	position += Vector2.RIGHT.rotated(rotation) * speed * unscaled_delta * 0.7
+	# Update trail
+	_update_trail()
 
+func _move_forward(delta: float) -> void:
+	# Basic forward movement
+	position += Vector2.RIGHT.rotated(rotation) * speed * delta
 
-func _update_trail(unscaled_delta: float) -> void:
+func _control_bullet_with_mouse(delta: float) -> void:
+	# Adjust rotation to follow the mouse
+	var mouse_pos = get_global_mouse_position()
+	var target_angle = (mouse_pos - global_position).angle()
+	var angle_difference = wrapf(target_angle - rotation, -PI, PI)
+	var max_rotation = deg_to_rad(max_turn_rate) * delta
+	rotation += clamp(angle_difference, -max_rotation, max_rotation)
+
+	# Move the bullet forward
+	_move_forward(delta)
+
+func _update_trail() -> void:
+	# Update the trail with the bullet's current position
 	if not local_line2d:
 		return
 	var line_pos = local_line2d.to_local(global_position)
@@ -96,22 +100,25 @@ func _update_trail(unscaled_delta: float) -> void:
 		if local_line2d.get_point_count() > max_points:
 			local_line2d.remove_point(0)
 
-
 func enable_player_control() -> void:
+	# Enable control of the bullet
 	is_controlled = true
-	time_alive = 0.0
 	add_to_group("controlled_bullets")
-	Engine.time_scale = 0.2
+	Engine.time_scale = 0.2  # Slow down time for control
+	time_alive = 0.0  # Reset time_alive for the controlled phase
 
 func disable_player_control() -> void:
+	# Disable control of the bullet
 	is_controlled = false
 	remove_from_group("controlled_bullets")
+	# Reset time scale if no bullets are controlled
 	if get_tree().get_nodes_in_group("controlled_bullets").is_empty():
 		Engine.time_scale = 1.0
 
 func _on_body_entered(body: Node) -> void:
+	# Handle collisions
 	if body.has_method("_start_panic"):
-			body._start_panic()
+		body._start_panic()
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
 	queue_free()
