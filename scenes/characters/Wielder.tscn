@@ -805,7 +805,7 @@ animations = [{
 "speed": 24.0
 }]
 
-[node name="Wielder" type="CharacterBody2D" node_paths=PackedStringArray("gun")]
+[node name="Wielder" type="CharacterBody2D" node_paths=PackedStringArray("gun") groups=["wielder"]]
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_jplbh")
 gun = NodePath("Gun")

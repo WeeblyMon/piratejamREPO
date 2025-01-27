@@ -1,15 +1,28 @@
 extends Node2D
 
-@export var health: int = 10 
-@export var detection_radius: float = 300.0  
+@export var health: int = 10
+@export var detection_radius: float = 300.0
+@export var fire_rate: float = 1.0  # Seconds per shot
+@export var bullet_scene: PackedScene  # Assign your bullet scene here
+
 @onready var sprite: Sprite2D = $PoliceEnemy
+@onready var detection_area: Area2D = Area2D.new()
+
+var target: Node = null
+var fire_timer: Timer = null
 
 func _ready() -> void:
-	add_to_group("enemy")  # Changed from "enemies" to "enemy"
+	add_to_group("enemy")  # Add to the enemy group
+	_create_detection_area()  # Set up the detection radius
+	_setup_fire_timer()
+
+# ---------------------------------------------
+# HEALTH AND DAMAGE MANAGEMENT
+# ---------------------------------------------
 
 func take_damage(damage: int) -> void:
 	health -= damage
-	sprite.modulate = Color(1, 0, 0)  
+	sprite.modulate = Color(1, 0, 0)  # Flash red when damaged
 	flash_color()
 	if health <= 0:
 		die()
@@ -22,8 +35,8 @@ func flash_color() -> void:
 	flash_timer.start()
 	AudioManager.play_sfx_varied("grunt_2", -0.5, false, 0.9, 1.1)
 	await flash_timer.timeout
-	sprite.modulate = Color(1, 1, 1)  
-	flash_timer.queue_free()  
+	sprite.modulate = Color(1, 1, 1)  # Restore normal color
+	flash_timer.queue_free()
 
 func die() -> void:
 	GameStateManager.add_notoriety(40)
@@ -33,3 +46,62 @@ func die() -> void:
 
 func is_dead() -> bool:
 	return health <= 0
+
+# ---------------------------------------------
+# DETECTION AND SHOOTING LOGIC
+# ---------------------------------------------
+
+func _create_detection_area() -> void:
+	# Set up detection radius
+	detection_area.name = "DetectionArea"
+
+	# Add a collision shape for detection
+	var collision_shape = CollisionShape2D.new()
+	collision_shape.shape = CircleShape2D.new()
+	collision_shape.shape.radius = detection_radius
+	detection_area.add_child(collision_shape)
+
+	# Add signals for detecting targets
+	detection_area.monitoring = true
+	detection_area.connect("body_entered", Callable(self, "_on_body_entered"))
+	detection_area.connect("body_exited", Callable(self, "_on_body_exited"))
+
+	add_child(detection_area)
+
+func _setup_fire_timer() -> void:
+	fire_timer = Timer.new()
+	fire_timer.one_shot = false
+	fire_timer.wait_time = fire_rate
+	fire_timer.connect("timeout", Callable(self, "_fire_bullet"))
+	add_child(fire_timer)
+
+func _on_body_entered(body: Node) -> void:
+	if body.is_in_group("wielder"):
+		target = body
+		fire_timer.start()
+
+func _on_body_exited(body: Node) -> void:
+	if body == target:
+		target = null
+		fire_timer.stop()
+
+func _fire_bullet() -> void:
+	if not target or is_dead():
+		return
+
+	# Turn to face the target
+	look_at(target.global_position)
+
+	# Instantiate and fire a bullet at the target
+	var bullet = bullet_scene.instantiate()
+	bullet.global_position = global_position
+	bullet.rotation = (target.global_position - global_position).angle()
+
+	# Add a property to the bullet to exclude enemies from collision
+	if bullet.has_method("set_owner_group"):
+		bullet.set_owner_group("enemy")  # This assumes your bullet has this logic implemented
+
+	get_tree().current_scene.add_child(bullet)
+
+	# Play shooting sound effect
+	AudioManager.play_sfx("gunshot_1")

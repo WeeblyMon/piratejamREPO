@@ -57,15 +57,19 @@ is_final = true
 
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
+health = 10
 
 [node name="PoliceMen2" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1643, -398)
+health = 10
 
 [node name="PoliceMen3" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1804, -44)
+health = 10
 
 [node name="PoliceMen4" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1767, 445)
+health = 10
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(-97, 255)

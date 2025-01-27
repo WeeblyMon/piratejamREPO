@@ -33,6 +33,7 @@ checkpoints=""
 cover=""
 civilian=""
 bullet=""
+wielder=""
 
 [input]
 
