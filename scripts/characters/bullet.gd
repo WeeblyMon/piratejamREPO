@@ -5,7 +5,7 @@ extends Node2D
 @export var damage: int = 1
 @export var max_points: int = 5
 @export var point_spacing: float = 20.0
-@export var max_turn_rate: float = 320.0  # Max turn rate in degrees per second
+@export var max_turn_rate: float = 420.0  # Max turn rate in degrees per second
 
 var current_weapon = GameStateManager.get_weapon()
 @onready var area: Area2D = $Area2D

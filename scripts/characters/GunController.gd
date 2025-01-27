@@ -38,7 +38,9 @@ func get_sanity_fraction() -> float:
 	return clamp(fraction, 0.0, 1.0)
 
 func _process(delta: float) -> void:
-	time_since_last_shot += delta
+	# Increment with unscaled delta to ensure consistent behavior in slow motion
+	var unscaled_delta = delta / Engine.time_scale
+	time_since_last_shot += unscaled_delta
 
 	var controlled_bullets = get_tree().get_nodes_in_group("controlled_bullets")
 
@@ -51,42 +53,55 @@ func _process(delta: float) -> void:
 		if is_instance_valid(last_fired_bullet):
 			last_fired_bullet.disable_player_control()
 
+
 func fire_bullet() -> Node:
+	# Prevent firing if the weapon is jammed
 	if GameStateManager.is_jammed:
 		print("GunController: Cannot fire while jammed!")
 		return null
 
-	# Ensure we respect fire rate timing
-	if time_since_last_shot < fire_rate:
+	# Use unscaled delta to account for slow motion
+	var unscaled_delta = 1.0 / Engine.time_scale
+	if time_since_last_shot < fire_rate * unscaled_delta:
 		return null
 
+	# Prevent firing if reloading
 	if GameStateManager.is_reloading:
 		print("Cannot fire while reloading!")
 		return null
 
-	# Handle shotgun separately
+	# Handle shotgun logic (fires multiple pellets)
 	if current_weapon == "shotgun":
 		fire_shotgun_volley()
 		time_since_last_shot = 0.0
-		return null  # Shotgun doesn't return a single bullet
+		return null
 
-	# Standard single-bullet logic
+	# Standard bullet logic
 	if bullet_scene and GameStateManager.get_current_ammo() > 0:
+		# Consume ammo before firing
 		if GameStateManager.consume_ammo():
+			# Instantiate and configure the bullet
 			var bullet = bullet_scene.instantiate()
 			bullet.global_position = raycast.global_position
 			bullet.rotation = raycast.global_rotation
 			get_tree().current_scene.add_child(bullet)
+
+			# Update state for the last fired bullet
 			last_fired_bullet = bullet
 			time_since_last_shot = 0.0
+
+			# Play firing effects
 			fire_sfx()
 			_show_muzzle_flash(current_weapon)
+
 			return bullet
 	else:
+		# If out of ammo, initiate a reload
 		print("No ammo left! Starting reload...")
 		reload_weapon()
 
 	return null
+
 
 
 	

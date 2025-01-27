@@ -66,9 +66,6 @@ func _process(delta: float) -> void:
 	else:
 		_disable_bullet_control()
 
-	if bullet_controlled:
-		return
-
 	if is_paused:
 		velocity = Vector2.ZERO
 		play_animation("idle")
@@ -88,7 +85,10 @@ func _process(delta: float) -> void:
 				print("Enemy detected. Switching to COMBAT phase.")
 
 		GameStateManager.WielderPhase.COMBAT:
-			_process_combat_phase(delta)
+			# Pass unscaled delta to ensure AI works during slow motion
+			var unscaled_delta = delta / Engine.time_scale
+			_process_combat_phase(unscaled_delta)
+
 
 # ---------------------------------------------
 #           MOVEMENT PHASE
@@ -199,7 +199,7 @@ func _process_combat_phase(delta: float) -> void:
 		play_animation("reload")
 		return
 
-	# Handle shooting
+	# Handle shooting with unscaled delta
 	var facing_threshold = deg_to_rad(10)
 	var angle_difference = abs(rotation - aim_dir.angle())
 	if angle_difference <= facing_threshold and time_since_last_shot >= GameStateManager.get_fire_rate():
@@ -230,7 +230,6 @@ func _process_combat_phase(delta: float) -> void:
 		velocity = Vector2.ZERO
 		play_animation("idle")
 		move_and_slide()
-
 
 
 

@@ -86,7 +86,8 @@ func get_weapon() -> String:
 	return current_weapon
 	
 func get_fire_rate() -> float:
-	return fire_rate
+	return fire_rate / Engine.time_scale
+
 
 func set_jam_state(state: bool) -> void:
 	is_jammed = state

@@ -32219,7 +32219,7 @@ scale = Vector2(1, 1)
 collision_layer = 2
 
 [node name="Cover2" parent="Covers" instance=ExtResource("13_akbd0")]
-position = Vector2(-101.325, -143.046)
+position = Vector2(-305.96, -680.795)
 scale = Vector2(1, 1)
 collision_layer = 2
 
