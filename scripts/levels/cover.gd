@@ -10,6 +10,7 @@ extends Node2D
 
 var current_health: int
 
+
 signal cover_destroyed
 
 func _ready() -> void:

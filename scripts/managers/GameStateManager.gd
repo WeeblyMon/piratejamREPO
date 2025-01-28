@@ -5,7 +5,7 @@ signal game_saved
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
-
+signal checkpoint_reached(checkpoint_id: int, is_final: bool)
 signal weapon_changed(new_weapon: String)
 signal jam_state_changed(is_jammed: bool)
 signal notoriety_changed(current_notoriety: int, max_stars: int)

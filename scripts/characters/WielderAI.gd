@@ -22,7 +22,7 @@ var has_saved_path: bool = false
 var combat_cooldown: float = 0.0
 var combat_cooldown_duration: float = 1.0
 @export var fov_angle: float = 130  # Degrees
-@export var detection_range: float = 500.0
+@export var detection_range: float = 1200.0
 var has_killed_enemy: bool = false
 var cover_timeout: float = 5.0  # Maximum time in cover
 var cover_timer: float = 0.0
@@ -30,6 +30,7 @@ var cover_timer: float = 0.0
 @export var health: int = 100  # Wielder's health
 var target: Node = null
 
+signal player_died
 # Enemy Position History for Movement Detection
 var enemy_position_history: Array = []
 var enemy_history_length: int = 5  # Number of previous positions to store
@@ -51,7 +52,6 @@ func _ready() -> void:
 	if first_cp_pos != Vector2.ZERO:
 		print("Initial checkpoint pos:", first_cp_pos)
 		navigation_agent.set_target_position(first_cp_pos)
-
 
 func _process(delta: float) -> void:
 	# Handle bullet control input
@@ -448,9 +448,9 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	var best_score = -INF
 
 	# Define weights for scoring
-	var enemy_weight = 2.0
-	var ai_weight = 1.0
-	var cover_score = 1.0  # Equal weight for all covers
+	var enemy_weight = 2.5  # Reduced weight to prioritize distance from enemy
+	var ai_weight = 0.5     # Reduced weight to prioritize closeness to AI
+	var cover_score = 1.0    # Equal weight for all covers
 
 	for cover in covers:
 		for child in cover.get_children():
@@ -469,8 +469,8 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 				var dist_to_ai = cover_pos.distance_to(ai_pos)
 
 				# Define minimum and maximum distances
-				var min_enemy_distance = 100.0  # Adjust as needed
-				var max_ai_distance = 300.0  # Adjust as needed
+				var min_enemy_distance = 30.0  
+				var max_ai_distance = 200.0    # Increased from 300.0 to allow farther covers
 
 				if dist_to_enemy < min_enemy_distance:
 					print("Cover too close to enemy. Skipping.")
@@ -670,11 +670,11 @@ func _flash_color() -> void:
 	AudioManager.play_sfx("pain_1")
 
 func die() -> void:
-	print("Wielder died!")
 	AudioManager.play_sfx("death_1")
 	queue_free()
 	if AudioManager.is_music_playing("level_music"):
 		AudioManager.stop_all_music()
+	emit_signal("player_died")
 
 # ---------------------------------------------
 # DETECTION AREA

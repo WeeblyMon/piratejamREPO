@@ -32009,10 +32009,7 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
 position = Vector2(570, 343)
-speed = 150.0
-fov_angle = 130.0
 detection_range = 600.0
-health = 100
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
@@ -32549,6 +32546,9 @@ navigation_enabled = false
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("13_eoydk")]
 
+[node name="endscreen" parent="CanvasLayer/Hud" index="7" node_paths=PackedStringArray("player")]
+player = NodePath("../../../Wielder")
+
 [node name="Covers" type="Node2D" parent="."]
 position = Vector2(250, -24)
 scale = Vector2(1.51, 1.51)
@@ -33021,3 +33021,4 @@ debug_color = Color(0, 0.6, 0.701961, 1)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
+[editable path="CanvasLayer/Hud"]

@@ -811,7 +811,6 @@ collision_mask = 2
 script = ExtResource("1_jplbh")
 gun = NodePath("Gun")
 max_cover_distance = 600.0
-detection_range = 1200.0
 
 [node name="Gun" parent="." instance=ExtResource("3_thj8m")]
 
