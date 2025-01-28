@@ -8,27 +8,54 @@ extends Node2D
 @export var max_turn_rate: float = 420.0  # Max turn rate in degrees per second
 
 var current_weapon = GameStateManager.get_weapon()
+
 @onready var area: Area2D = $Area2D
 @onready var local_line2d: Line2D = $Line2D
 @onready var pistol_sprite: Sprite2D = $PistolP
 @onready var rifle_sprite: Sprite2D = $RifleP
 @onready var shotgun_sprite: Sprite2D = $ShotgunP
 
+@onready var sprite: Sprite2D = null  # Declare 'sprite' variable
+
 var time_alive: float = 0.0
 var distance_accum: float = 0.0
 var is_controlled: bool = false
 
 func _ready() -> void:
-	# Add this bullet to the appropriate group
+	# Add this bullet to the "bullet" group
 	add_to_group("bullet")
-	# Connect signals
-	area.body_entered.connect(_on_body_entered)
+	print("Player Bullet initialized. Groups: ", get_groups())
+	
+	# Set Collision Layer and Mask
+	area.collision_layer = 5  # Layer 5: Player Bullet
+	area.collision_mask = 2 | 4  # Layers 2 (Enemy) and 4 (Enemy Bullet)
+	
+	# Connect collision signal using Callable syntax for Area2D
+	if not area.is_connected("area_entered", Callable(self, "_on_area_entered")):
+		area.connect("area_entered", Callable(self, "_on_area_entered"))
+		print("Connected 'area_entered' signal to _on_area_entered")
+	else:
+		print("'area_entered' signal already connected")
+	
+	# Clear trail points
 	if local_line2d:
 		local_line2d.clear_points()
 	else:
 		push_warning("Line2D is missing!")
+	
+	# Update visibility and speed based on weapon
 	update_bullet_visibility()
 	update_speed()
+	
+	# Assign 'sprite' based on current_weapon
+	if current_weapon == "handgun":
+		sprite = pistol_sprite
+	elif current_weapon == "rifle":
+		sprite = rifle_sprite
+	elif current_weapon == "shotgun":
+		sprite = shotgun_sprite
+	else:
+		sprite = pistol_sprite  # Default to pistol_sprite if weapon type is unknown
 
 func update_speed() -> void:
 	# Adjust speed based on weapon type
@@ -68,8 +95,11 @@ func _process(delta: float) -> void:
 	# Update trail
 	_update_trail()
 
+	# Debugging
+	print("Bullet Groups: ", get_groups(), " | Collision Mask: ", area.collision_mask)
+
 func _move_forward(delta: float) -> void:
-	# Basic forward movement
+	# Basic forward movement using manual position updates
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta
 
 func _control_bullet_with_mouse(delta: float) -> void:
@@ -84,7 +114,7 @@ func _control_bullet_with_mouse(delta: float) -> void:
 	if not AudioManager.is_sfx_playing("bullet_steering_1"):
 		AudioManager.play_sfx("bullet_steering_1", 1.0, true)  # Set to loop
 
-	# Move the bullet forward
+	# Move the bullet forward using manual position updates
 	_move_forward(delta)
 
 func _update_trail() -> void:
@@ -106,22 +136,30 @@ func _update_trail() -> void:
 
 func enable_player_control() -> void:
 	# Enable control of the bullet
-	if not is_controlled:  # Only enable if not already controlled
+	if not is_controlled:
 		is_controlled = true
 		add_to_group("controlled_bullets")
+		area.collision_mask = 2 | 4  # Layer 4
+		print("Collision Mask set to Layer 4")
+
 		Engine.time_scale = 0.2  # Slow down time for control
 
-		# Play the slow-motion sound if it's not already playing
 		if not AudioManager.is_sfx_playing("bullet_slow_mo_1"):
-			AudioManager.play_sfx("bullet_slow_mo_1", 1.0, false)  # Play sound with no looping
+			AudioManager.play_sfx("bullet_slow_mo_1", +1.0, false)  # Play sound without looping
 
 		time_alive = 0.0  # Reset time_alive for the controlled phase
 
 func disable_player_control() -> void:
 	# Disable control of the bullet
-	if is_controlled:  # Only disable if it was controlled
+	if is_controlled:
 		is_controlled = false
 		remove_from_group("controlled_bullets")
+		print("Bullet removed from 'controlled_bullets'")
+		
+		# Revert collision mask to Layers 2 (Enemy) and 4 (Enemy Bullet)
+		area.collision_mask = (1 << 1) | (1 << 3)  # Layers 2 and 4
+		print("Collision Mask reverted to Layers 2 and 4")
+
 		Engine.time_scale = 1.0  # Restore normal time
 
 		# Stop the slow-motion sound
@@ -132,13 +170,33 @@ func disable_player_control() -> void:
 		if AudioManager.is_sfx_playing("bullet_steering_1"):
 			AudioManager.stop_sfx("bullet_steering_1")
 
+func _on_area_entered(area_other: Area2D) -> void:
+	print("Player Bullet collided with: ", area_other.get_groups())
+	if is_in_group("controlled_bullets") and area_other.is_in_group("enemy_bullets"):
+		print("Controlled bullet blocked enemy bullet!")
+		AudioManager.play_sfx("collision_ping_1")  # Play ding sound
+		area_other.queue_free()  # Destroy enemy bullet
 
-func _on_body_entered(body: Node) -> void:
-	# Handle collisions
-	if body.has_method("_start_panic"):
-		body._start_panic()
-	if body.has_method("take_damage"):
-		body.take_damage(damage)
-	queue_free()
-	if local_line2d:
-		local_line2d.clear_points()
+		# Provide visual feedback by flashing the controlled bullet
+		if sprite:
+			sprite.modulate = Color(1, 1, 0)  # Yellow flash
+			var flash_timer = Timer.new()
+			flash_timer.one_shot = true
+			flash_timer.wait_time = 0.1
+			add_child(flash_timer)
+			flash_timer.connect("timeout", Callable(self, "_reset_flash"), CONNECT_DEFERRED)
+			flash_timer.start()
+		else:
+			push_warning("Sprite is not assigned!")
+
+		# Do not destroy player bullet to allow multiple blocks
+		return  # Exit to prevent further processing
+	elif area_other.has_method("take_damage"):
+		area_other.take_damage(damage)
+		queue_free()
+
+func _reset_flash() -> void:
+	if sprite:
+		sprite.modulate = Color(1, 1, 1)  # Reset to original color
+	else:
+		push_warning("Sprite is not assigned!")

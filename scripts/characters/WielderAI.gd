@@ -568,7 +568,6 @@ func _is_enemy_detected() -> bool:
 			print("Enemy detected by Area2D:", target.name)
 			return true  # Valid enemy detected
 	else:
-		print("No valid enemy detected in Area2D.")
 		return false
 
 

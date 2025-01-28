@@ -5,7 +5,7 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ga2jj"]
 
-[node name="EnemyBullet" type="Node2D"]
+[node name="EnemyBullet" type="Node2D" groups=["enemy_bullets"]]
 script = ExtResource("1_bklnd")
 
 [node name="RifleP" type="Sprite2D" parent="."]
@@ -13,10 +13,12 @@ rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("1_8eex4")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["enemy_bullets"]]
 collision_layer = 8
-collision_mask = 5
+collision_mask = 21
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 scale = Vector2(0.555, 0.555)
 shape = SubResource("CircleShape2D_ga2jj")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]

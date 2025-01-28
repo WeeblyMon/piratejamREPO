@@ -57,6 +57,21 @@ is_final = true
 [node name="PoliceMen" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1338, -194)
 
+[node name="PoliceMen5" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(1327, -115)
+
+[node name="PoliceMen6" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(1187, -183)
+
+[node name="PoliceMen7" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(1115, -253)
+
+[node name="PoliceMen8" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(1041, -153)
+
+[node name="PoliceMen9" parent="." instance=ExtResource("6_2pijb")]
+position = Vector2(894, -164)
+
 [node name="PoliceMen2" parent="." instance=ExtResource("6_2pijb")]
 position = Vector2(1643, -398)
 

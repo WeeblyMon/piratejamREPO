@@ -20,10 +20,12 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 [node name="Bullet" type="Area2D" groups=["bullet"]]
 z_index = 2
 collision_layer = 16
-collision_mask = 2
+collision_mask = 10
 script = ExtResource("1_2rjgs")
 speed = 1500.0
+damage = 2
 point_spacing = 10.0
+max_turn_rate = 1200.0
 
 [node name="PistolP" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_82ksc")
@@ -40,9 +42,9 @@ width_curve = SubResource("Curve_retox")
 gradient = SubResource("Gradient_kys51")
 antialiased = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["bullet"]]
 collision_layer = 16
-collision_mask = 2
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_5mo5d")
@@ -58,3 +60,5 @@ visible = false
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("4_cgy6a")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
