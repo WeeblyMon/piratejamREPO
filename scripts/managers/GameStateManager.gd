@@ -9,6 +9,10 @@ signal checkpoint_reached(checkpoint_id: int, is_final: bool)
 signal weapon_changed(new_weapon: String)
 signal jam_state_changed(is_jammed: bool)
 signal notoriety_changed(current_notoriety: int, max_stars: int)
+signal health_changed(new_health: int, max_health: int)
+
+var max_health: int = 100
+var current_health: int = max_health
 
 var notoriety: int = 0
 var max_stars: int = 0
@@ -145,10 +149,30 @@ func check_sanity() -> void:
 			is_tv_static_playing = false
 
 
-func set_health(health_amount: int, operation) -> void:
-	current_save = _update_dict_int_value(Constants.HEALTH, health_amount, operation)
-	health_bar.update_bar(operation, health_amount)
-	print(JSON.stringify(current_save))
+func set_health(health_amount: int, operation: String = "set") -> void:
+	match operation:
+		"add":
+			current_health = clamp(current_health + health_amount, 0, max_health)
+		"sub":
+			current_health = clamp(current_health - health_amount, 0, max_health)
+		"set":
+			current_health = clamp(health_amount, 0, max_health)
+		_:
+			push_warning("Invalid operation for set_health: %s".format(operation))
+
+	emit_signal("health_changed", current_health, max_health)  # Update health bar
+	print("Health Updated: ", current_health, "/", max_health)
+
+func take_damage(amount: int) -> void:
+	set_health(amount, "sub")
+	if current_health <= 0:
+		die()
+
+func heal(amount: int) -> void:
+	set_health(amount, "add")
+
+func die() -> void:
+	emit_signal("player_died")
 	
 func adjust_sanity(amount: int) -> void:
 	current_sanity = clamp(current_sanity + amount, 0, max_sanity)

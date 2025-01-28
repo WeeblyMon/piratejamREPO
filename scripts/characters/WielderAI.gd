@@ -432,11 +432,10 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 # ---------------------------------------------
 #           Cover System
 # ---------------------------------------------
-
 func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	var covers = get_tree().get_nodes_in_group("cover")
 	print("AI searching for covers. Total covers found:", covers.size())
-	if covers.is_empty():
+	if covers.size() == 0:
 		print("No covers available.")
 		return ai_pos
 
@@ -448,8 +447,8 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	var best_score = -INF
 
 	# Define weights for scoring
-	var enemy_weight = 2.5  # Reduced weight to prioritize distance from enemy
-	var ai_weight = 0.5     # Reduced weight to prioritize closeness to AI
+	var enemy_weight = 2.5  # Adjusted weight
+	var ai_weight = 0.5     # Adjusted weight
 	var cover_score = 1.0    # Equal weight for all covers
 
 	for cover in covers:
@@ -468,9 +467,9 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 				var dist_to_enemy = cover_pos.distance_to(enemy_pos)
 				var dist_to_ai = cover_pos.distance_to(ai_pos)
 
-				# Define minimum and maximum distances
-				var min_enemy_distance = 30.0  
-				var max_ai_distance = 200.0    # Increased from 300.0 to allow farther covers
+				# Relaxed Distance Thresholds to Prevent Skipping Covers
+				var min_enemy_distance = 30.0  # Reduced from 50.0
+				var max_ai_distance = 200.0    # Increased from 200.0
 
 				if dist_to_enemy < min_enemy_distance:
 					print("Cover too close to enemy. Skipping.")
@@ -527,6 +526,29 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	# If no cover spots are effective, stay in current position
 	print("No effective covers found. Staying in current position.")
 	return ai_pos
+
+
+func _get_enemies_in_los() -> Array:
+	var enemies_in_los = []
+	for enemy in get_alive_enemies():
+		if _has_line_of_sight(enemy.global_position):
+			enemies_in_los.append(enemy)
+	return enemies_in_los
+	
+func _find_nearest_enemy_from_list(enemies: Array) -> Node:
+	if enemies.size() == 0:
+		return null
+	var nearest = enemies[0]
+	var min_dist = global_position.distance_to(nearest.global_position)
+	for enemy in enemies:
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < min_dist:
+			nearest = enemy
+			min_dist = dist
+	return nearest
+
+
+
 
 func _is_cover_effective(cover_pos: Vector2, ai_pos: Vector2, enemy_pos: Vector2) -> bool:
 	# Cast a ray from enemy to cover to check for obstacles
@@ -651,12 +673,23 @@ func _reset_navigation_target() -> void:
 # HEALTH AND DAMAGE MANAGEMENT
 # ---------------------------------------------
 func take_damage(damage: int) -> void:
-	health -= damage
+	health = max(0, health - damage)  # Prevent negative HP
 	print("Wielder took damage! Health:", health)
-	animated_sprite.modulate = Color(1, 0, 0)  # Flash red on damage
+	
+	# Update health bar
+	GameStateManager.emit_signal("health_changed", health, GameStateManager.max_health)
+	
+	# Flash red on damage
+	animated_sprite.modulate = Color(1, 0, 0)
 	_flash_color()
+	
 	if health <= 0:
 		die()
+
+func heal(amount: int) -> void:
+	health = min(GameStateManager.max_health, health + amount)  # Prevent over-healing
+	GameStateManager.emit_signal("health_changed", health, GameStateManager.max_health)
+	print("Wielder healed. Current Health:", health)
 
 func _flash_color() -> void:
 	var flash_timer = Timer.new()
@@ -670,11 +703,18 @@ func _flash_color() -> void:
 	AudioManager.play_sfx("pain_1")
 
 func die() -> void:
+	print("Wielder has died!")
 	AudioManager.play_sfx("death_1")
+	
+	# Update health bar to reflect 0 HP
+	GameStateManager.emit_signal("health_changed", 0, GameStateManager.max_health)
+	
 	queue_free()
 	if AudioManager.is_music_playing("level_music"):
 		AudioManager.stop_all_music()
-	emit_signal("player_died")
+	
+	emit_signal("player_died")  # Notify GameStateManager
+
 
 # ---------------------------------------------
 # DETECTION AREA
@@ -710,10 +750,10 @@ func _has_line_of_sight(target_pos: Vector2) -> bool:
 	ray_params.from = global_position
 	ray_params.to = target_pos
 	ray_params.exclude = [self]
-	ray_params.collision_mask = 1 << 6  # Only detect layer 6 (Obstacles)
-	ray_params.collide_with_areas = false
+	ray_params.collision_mask = 1 << 5  # Only detect layer 6 (Obstacles)
+	ray_params.collide_with_areas = true
 	ray_params.collide_with_bodies = true
-
+	
 	var collision = space_state.intersect_ray(ray_params)
 
 	# Debugging: Print collision details

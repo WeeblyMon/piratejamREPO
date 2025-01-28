@@ -32009,7 +32009,6 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
 position = Vector2(570, 343)
-detection_range = 600.0
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
@@ -32398,7 +32397,7 @@ position = Vector2(1316, -1266)
 detection_radius = 500.0
 
 [node name="PoliceMen64" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(1379, -368)
+position = Vector2(1327, -609)
 detection_radius = 500.0
 
 [node name="PoliceMen65" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32878,146 +32877,147 @@ position = Vector2(28.0689, -28.5075)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a0sw1")
 
-[node name="ObstacleCollision" type="Node2D" parent="."]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleCollision"]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 32
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-503.375, 171.344)
 shape = SubResource("RectangleShape2D_0idvq")
 debug_color = Color(0, 0.827451, 0.964706, 1)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(182.625, 348.844)
 shape = SubResource("RectangleShape2D_ybv6v")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(382.5, -147)
 shape = SubResource("RectangleShape2D_8c4yo")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(620.875, -186.5)
 shape = SubResource("RectangleShape2D_8be8s")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-783.938, -264)
 shape = SubResource("RectangleShape2D_cbcht")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-1047.47, -1124)
 shape = SubResource("RectangleShape2D_3wxa8")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-308.734, -740)
 shape = SubResource("RectangleShape2D_a2ty0")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-496.133, -798.5)
 shape = SubResource("RectangleShape2D_or4hy")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D9" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-583, -1299.25)
 shape = SubResource("RectangleShape2D_fkqvq")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D10" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-449, -1460)
 shape = SubResource("RectangleShape2D_6t17c")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D11" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(212.5, -580)
 shape = SubResource("RectangleShape2D_hj2hw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D12" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(1026.75, -412.5)
 shape = SubResource("RectangleShape2D_63jp2")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D13" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(1272.88, -38.75)
 shape = SubResource("RectangleShape2D_a8om2")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D14" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(1215.94, 339.625)
 shape = SubResource("RectangleShape2D_hb5ha")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D15" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(897.969, 683.313)
 shape = SubResource("RectangleShape2D_tlhtf")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D16" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(910.984, -1136.66)
 shape = SubResource("RectangleShape2D_hdohn")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D17" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(1158.99, -1184.17)
 shape = SubResource("RectangleShape2D_c80vx")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D18" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(842.496, -1452.59)
 shape = SubResource("RectangleShape2D_ehmam")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D19" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(756, -1868.21)
 shape = SubResource("RectangleShape2D_5t67q")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D20" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(283.248, -1347.1)
 shape = SubResource("RectangleShape2D_u8w0o")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D21" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(136.876, -1460)
 shape = SubResource("RectangleShape2D_13lqn")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D22" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(26.062, -1245)
 shape = SubResource("RectangleShape2D_kles8")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D23" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(95.531, -2384)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D24" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D24" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(-834, -2220)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D25" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D25" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(1383, -2254)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D26" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D26" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(2056, -687.5)
 shape = SubResource("RectangleShape2D_f5hiq")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D27" type="CollisionShape2D" parent="ObstacleCollision/StaticBody2D"]
+[node name="CollisionShape2D27" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(904.566, -593.438)
 shape = SubResource("RectangleShape2D_6el4w")
 debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="ObstacleCollision" type="Node2D" parent="."]
+z_index = 3
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]

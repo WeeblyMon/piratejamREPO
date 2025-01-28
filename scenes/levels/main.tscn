@@ -23,6 +23,7 @@ z_index = 1
 position = Vector2(559, 302)
 floor_stop_on_slope = false
 floor_block_on_wall = false
+max_cover_distance = 400.0
 
 [node name="Camera2D" type="Camera2D" parent="Wielder"]
 position = Vector2(96.6666, 26.6667)
