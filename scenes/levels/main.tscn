@@ -29,9 +29,8 @@ position = Vector2(96.6666, 26.6667)
 scale = Vector2(3.33333, 3.33333)
 zoom = Vector2(0.925, 0.925)
 
-[node name="Cover" parent="." node_paths=PackedStringArray("nav_region") instance=ExtResource("7_hca71")]
+[node name="Cover" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1657, 409)
-nav_region = NodePath("../NavigationRegion2D")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -82,16 +81,14 @@ polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
 position = Vector2(502, 463)
 polygon = PackedVector2Array(1228, -342, 1228, -273, 1277, -273, 1279, -343)
 
-[node name="Cover3" parent="." node_paths=PackedStringArray("nav_region") instance=ExtResource("7_hca71")]
+[node name="Cover3" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1457, 34)
 sprite_index = 0
 radius = 100.0
-nav_region = NodePath("../NavigationRegion2D")
 
-[node name="Cover2" parent="." node_paths=PackedStringArray("nav_region") instance=ExtResource("7_hca71")]
+[node name="Cover2" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1157, -53)
 sprite_index = 0
-nav_region = NodePath("../NavigationRegion2D")
 
 [node name="Civilian" parent="." instance=ExtResource("8_v41f2")]
 position = Vector2(1290, -141)

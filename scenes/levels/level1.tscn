@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://bo787ao6qyh0d"]
+[gd_scene load_steps=26 format=4 uid="uid://bo787ao6qyh0d"]
 
 [ext_resource type="Script" path="res://scripts/levels/mainlevel.gd" id="1_7l1m2"]
 [ext_resource type="Texture2D" uid="uid://8xadxm3b4j17" path="res://resources/tilesets/road and pavements.png" id="3_x6eni"]
@@ -10,8 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://vkatmye03xqt" path="res://scenes/characters/Wielder.tscn" id="9_tj2ga"]
 [ext_resource type="PackedScene" uid="uid://08x8y8x8nwe2" path="res://scenes/levels/Checkpoint.tscn" id="11_r2sgb"]
 [ext_resource type="PackedScene" uid="uid://dqxnur4yr7de8" path="res://scenes/characters/PoliceMen.tscn" id="12_0ugyk"]
-[ext_resource type="PackedScene" uid="uid://do1w35vjf874s" path="res://scenes/props/cover.tscn" id="13_akbd0"]
+[ext_resource type="Script" path="res://scripts/levels/cover.gd" id="12_k8rnm"]
+[ext_resource type="Texture2D" uid="uid://c0w7bpvecaqn5" path="res://assets/art/props/barrel.png" id="13_6f3qi"]
 [ext_resource type="PackedScene" uid="uid://b3n50h3s6bshv" path="res://scenes/UI/HUD.tscn" id="13_eoydk"]
+[ext_resource type="Texture2D" uid="uid://b02m3e8c0ia1l" path="res://assets/art/props/crate.png" id="14_ubyr4"]
+[ext_resource type="PackedScene" uid="uid://bd51mkvfe5l4" path="res://scenes/UI/Explosion.tscn" id="15_16cwl"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1lkl0"]
 vertices = PackedVector2Array(-2001.23, -6127.75, -2009.42, -6105.54, -2008.87, -6128.1, -2965.04, -7975.71, -3034.47, -7969.42, -3034.26, -7978.34, -3135.93, -6353, -2813, -6279, -3175.62, -6279, -3655.07, -6353, -2451.86, -6236.13, -2037.96, -6133.26, -2673.5, -6142.15, -2713, -6232.87, -3827.79, -6973.22, -3716.2, -7060.89, -3521.85, -7062.89, -3517.86, -6787.06, -3652.93, -6671.9, -2359.92, -6851.22, -2048.91, -7794.96, -2455.15, -6470.68, -2364.08, -7382.3, -2583.95, -7791.94, -2566.58, -7376.28, -2574.57, -7514.1, -3525.45, -7773, -3539.45, -7526.71, -3764, -7684, -3764, -7834.21, -3925.77, -7684, -3865.84, -7516.7, -3979.75, -7527.15, -2745.92, -6136.19, -2658.48, -5832.76, -2747.08, -5994, -2520, -6863.22, -2520, -6752.29, -2880, -6741.7, -2713, -6453.35, -3138.07, -6677.1, -3178.11, -7506.58, -3182.15, -7773, -3071.58, -7946, -3055, -7947.49, -3064.24, -7558.89, -3094.22, -7482.61, -2657.28, -7563.1, -2649.3, -7845.03, -2584.18, -7838.91, -2979.75, -7509.9, -3087.71, -7261.42, -2986.25, -7252.38, -3142.13, -6784.94, -4108.06, -6967.21, -4109.93, -7264.5, -3986.25, -7258.52, -3712.2, -7263, -3870.17, -7263, -2813, -5994, -2787, -5829.77, -2813, -5967.04, -2813, -6134.95, -2787, -5375.12, -3279.65, -5381.04, -3299.47, -5791, -3294.24, -5892, -3292.46, -5965.06, -3417.67, -5892, -3530.32, -5791, -3542.32, -6161.02, -3422.23, -6028.67, -2880, -7248.37, -3178.62, -6202, -3315.95, -6202, -3136.11, -7259.4, -4112.62, -6160.01, -4120.62, -6284, -4041.01, -6356.9, -3840.2, -6359.11, -4278, -6490.91, -4055.01, -6492.91, -4424.09, -6284, -3973.23, -7950.94, -3929.23, -7830.79, -3977.24, -7787, -4278, -7522.86, -4437.82, -7787, -3316.55, -6071.12)
@@ -31837,6 +31840,9 @@ sources/3 = SubResource("TileSetAtlasSource_3auke")
 sources/4 = SubResource("TileSetAtlasSource_rs885")
 sources/5 = SubResource("TileSetAtlasSource_tpxf2")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rtbjk"]
+size = Vector2(30, 44)
+
 [sub_resource type="Environment" id="Environment_a0sw1"]
 background_mode = 3
 glow_enabled = true
@@ -31906,7 +31912,7 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
-position = Vector2(563, 177)
+position = Vector2(570, 343)
 detection_range = 600.0
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
@@ -31917,6 +31923,7 @@ target_desired_distance = 5.0
 zoom = Vector2(0.68, 0.68)
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+visible = false
 position = Vector2(326, 98)
 
 [node name="RouteA-1" parent="RouteA" groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
@@ -31957,6 +31964,7 @@ checkpoint_id = 10
 is_final = true
 
 [node name="RouteB" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+visible = false
 position = Vector2(552, 74)
 path_label = "bravo"
 
@@ -32007,6 +32015,7 @@ path_label = "bravo"
 is_final = true
 
 [node name="RouteC" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+visible = false
 position = Vector2(566, 138)
 path_label = "charlie"
 
@@ -32051,6 +32060,7 @@ checkpoint_id = 9
 path_label = "charlie"
 
 [node name="RouteD" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
+visible = false
 position = Vector2(829, 46)
 path_label = "delta"
 
@@ -32164,7 +32174,251 @@ position = Vector2(859, -392)
 detection_radius = 500.0
 
 [node name="PoliceMen11" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(211, -299)
+position = Vector2(156, -263)
+detection_radius = 500.0
+
+[node name="PoliceMen18" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(229, -267)
+detection_radius = 500.0
+
+[node name="PoliceMen19" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-167, -787)
+detection_radius = 500.0
+
+[node name="PoliceMen20" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-74, -783)
+detection_radius = 500.0
+
+[node name="PoliceMen21" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-168, -947)
+detection_radius = 500.0
+
+[node name="PoliceMen22" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-77, -901)
+detection_radius = 500.0
+
+[node name="PoliceMen23" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-717, -578)
+detection_radius = 500.0
+
+[node name="PoliceMen24" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-724, -517)
+detection_radius = 500.0
+
+[node name="PoliceMen25" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-776, -544)
+detection_radius = 500.0
+
+[node name="PoliceMen41" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-392, -1283)
+detection_radius = 500.0
+
+[node name="PoliceMen42" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-228, -1270)
+detection_radius = 500.0
+
+[node name="PoliceMen43" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-394, -1194)
+detection_radius = 500.0
+
+[node name="PoliceMen44" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-232, -1207)
+detection_radius = 500.0
+
+[node name="PoliceMen45" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-311, -1254)
+detection_radius = 500.0
+
+[node name="PoliceMen46" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-311, -1122)
+detection_radius = 500.0
+
+[node name="PoliceMen47" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-450, -1104)
+detection_radius = 500.0
+
+[node name="PoliceMen48" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-154, -1122)
+detection_radius = 500.0
+
+[node name="PoliceMen49" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(528, -983)
+detection_radius = 500.0
+
+[node name="PoliceMen50" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(671, -788)
+detection_radius = 500.0
+
+[node name="PoliceMen51" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(334, -821)
+detection_radius = 500.0
+
+[node name="PoliceMen52" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(989, -764)
+detection_radius = 500.0
+
+[node name="PoliceMen53" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(588, -616)
+detection_radius = 500.0
+
+[node name="PoliceMen54" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1371, -710)
+detection_radius = 500.0
+
+[node name="PoliceMen55" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1218, -672)
+detection_radius = 500.0
+
+[node name="PoliceMen56" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1467, -533)
+detection_radius = 500.0
+
+[node name="PoliceMen57" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1231, -502)
+detection_radius = 500.0
+
+[node name="PoliceMen58" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1370, -923)
+detection_radius = 500.0
+
+[node name="PoliceMen59" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1538, -930)
+detection_radius = 500.0
+
+[node name="PoliceMen60" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1467, -1098)
+detection_radius = 500.0
+
+[node name="PoliceMen61" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1294, -1147)
+detection_radius = 500.0
+
+[node name="PoliceMen62" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1471, -1309)
+detection_radius = 500.0
+
+[node name="PoliceMen63" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1316, -1266)
+detection_radius = 500.0
+
+[node name="PoliceMen64" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(1379, -368)
+detection_radius = 500.0
+
+[node name="PoliceMen65" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(177, -782)
+detection_radius = 500.0
+
+[node name="PoliceMen66" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(513, -785)
+detection_radius = 500.0
+
+[node name="PoliceMen67" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(513, -443)
+detection_radius = 500.0
+
+[node name="PoliceMen68" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-281, -326)
+detection_radius = 500.0
+
+[node name="PoliceMen69" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-74, -305)
+detection_radius = 500.0
+
+[node name="PoliceMen70" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-203, -242)
+detection_radius = 500.0
+
+[node name="PoliceMen71" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-455, -365)
+detection_radius = 500.0
+
+[node name="PoliceMen77" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(825, -47)
+detection_radius = 500.0
+
+[node name="PoliceMen78" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(928, 16)
+detection_radius = 500.0
+
+[node name="PoliceMen72" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-350, -275)
+detection_radius = 500.0
+
+[node name="PoliceMen73" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-515, -506)
+detection_radius = 500.0
+
+[node name="PoliceMen74" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-663, -471)
+detection_radius = 500.0
+
+[node name="PoliceMen76" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-778, -791)
+detection_radius = 500.0
+
+[node name="PoliceMen75" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-581, -413)
+detection_radius = 500.0
+
+[node name="PoliceMen26" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-742, -457)
+detection_radius = 500.0
+
+[node name="PoliceMen27" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-769, -1184)
+detection_radius = 500.0
+
+[node name="PoliceMen28" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-693, -933)
+detection_radius = 500.0
+
+[node name="PoliceMen29" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-778, -1061)
+detection_radius = 500.0
+
+[node name="PoliceMen30" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-690, -1395)
+detection_radius = 500.0
+
+[node name="PoliceMen31" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-782, -1617)
+detection_radius = 500.0
+
+[node name="PoliceMen32" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-421, -1801)
+detection_radius = 500.0
+
+[node name="PoliceMen33" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-443, -1689)
+detection_radius = 500.0
+
+[node name="PoliceMen34" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-93, -1660)
+detection_radius = 500.0
+
+[node name="PoliceMen35" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(-214, -1972)
+detection_radius = 500.0
+
+[node name="PoliceMen36" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(35, -1824)
+detection_radius = 500.0
+
+[node name="PoliceMen37" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(325, -1952)
+detection_radius = 500.0
+
+[node name="PoliceMen38" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(487, -1878)
+detection_radius = 500.0
+
+[node name="PoliceMen39" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(516, -1743)
+detection_radius = 500.0
+
+[node name="PoliceMen40" parent="Enemies" instance=ExtResource("12_0ugyk")]
+position = Vector2(709, -1608)
 detection_radius = 500.0
 
 [node name="TileMapParent" type="TileMapLayer" parent="."]
@@ -32204,69 +32458,186 @@ navigation_enabled = false
 position = Vector2(250, -24)
 scale = Vector2(1.51, 1.51)
 
-[node name="Cover" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Cover" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(13.245, 11.9205)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+radius = 25.0
+health_bar = NodePath("HealthBar")
 
-[node name="Cover2" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-305.96, -680.795)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover"]
 
-[node name="Cover3" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(371.523, -72.8477)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover"]
+shape = SubResource("RectangleShape2D_rtbjk")
 
-[node name="Cover5" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-492.715, -233.775)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 
-[node name="Cover6" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-198.676, -394.702)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Position1" type="Node2D" parent="Covers/Cover"]
+position = Vector2(0.877155, 40.3491)
 
-[node name="Cover7" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(158.278, -585.43)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Position2" type="Node2D" parent="Covers/Cover"]
+position = Vector2(28.0689, 23.6832)
 
-[node name="Cover8" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-230.464, -772.185)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Position3" type="Node2D" parent="Covers/Cover"]
+position = Vector2(21.4903, 36.8405)
 
-[node name="Cover9" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(666.225, -833.775)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Cover2" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-211.921, -319.205)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+radius = 25.0
+health_bar = NodePath("HealthBar")
 
-[node name="Cover10" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(479.47, -1096.03)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover2"]
 
-[node name="Cover11" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(862.252, -903.311)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover2"]
+shape = SubResource("RectangleShape2D_rtbjk")
 
-[node name="Cover12" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-413.907, -1195.36)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover2"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 
-[node name="Cover14" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-604.636, -969.536)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Position1" type="Node2D" parent="Covers/Cover2"]
+position = Vector2(-0.877154, 34.6476)
 
-[node name="Cover15" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
-position = Vector2(-602.649, -576.821)
-scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
+[node name="Position2" type="Node2D" parent="Covers/Cover2"]
+position = Vector2(-1.31573, 46.9278)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover2"]
+position = Vector2(-10.9644, 32.0161)
+
+[node name="Cover3" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(356.954, 95.3643)
+rotation = -0.523273
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 25
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+radius = 25.0
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover3"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover3"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover3"]
+position = Vector2(-26.6654, -10.8267)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover3"]
+position = Vector2(-29.3975, 5.31861)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover3"]
+position = Vector2(-36.3377, 26.1249)
+
+[node name="Cover4" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(450.331, -81.4569)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 25
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+radius = 25.0
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover4"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover4"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover4"]
+position = Vector2(-1.31573, 35.0862)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover4"]
+position = Vector2(-42.1034, 14.0345)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover4"]
+position = Vector2(-29.8233, 41.2263)
+
+[node name="Cover5" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(614.57, -235.762)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 25
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+radius = 25.0
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover5"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover5"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover5"]
+position = Vector2(13.1573, 43.8577)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover5"]
+position = Vector2(-4.38578, 45.612)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover5"]
+position = Vector2(-18.4203, 52.1907)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a0sw1")

@@ -434,31 +434,64 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	if covers.is_empty():
 		return ai_pos
 
-	var best_cover: Node2D = covers[0]
-	var best_dist = ai_pos.distance_to(best_cover.global_position)
-	for c in covers:
-		var d = ai_pos.distance_to(c.global_position)
-		if d < best_dist:
-			best_cover = c
-			best_dist = d
+	# Determine AI's facing direction
+	var facing_dir = Vector2(cos(rotation), sin(rotation)).normalized()
 
-	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
-		locked_cover_node.disconnect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
-	locked_cover_node = best_cover
-	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
-		locked_cover_node.connect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
 	var best_spot: Node2D = null
 	var best_spot_dist = -INF
-	for child in best_cover.get_children():
-		if child is Node2D and child.name.begins_with("Position"):
-			var dist_to_enemy = child.global_position.distance_to(enemy_pos)
-			if dist_to_enemy > best_spot_dist:
-				best_spot_dist = dist_to_enemy
-				best_spot = child
+
+	# First Pass: Look for cover spots in front or to the sides
+	for cover in covers:
+		for child in cover.get_children():
+			if child is Node2D and child.name.begins_with("Position"):
+				var cover_pos = child.global_position
+				var dir_to_cover = (cover_pos - ai_pos).normalized()
+				var dot = facing_dir.dot(dir_to_cover)
+				
+				# Prefer cover spots in front or to the sides (dot >= 0)
+				if dot < 0:
+					continue  # Skip cover spots behind the AI
+
+				var dist_to_enemy = cover_pos.distance_to(enemy_pos)
+				
+				# Select the cover spot with the maximum distance to the enemy
+				if dist_to_enemy > best_spot_dist:
+					best_spot_dist = dist_to_enemy
+					best_spot = child
+
+	# If a suitable cover spot is found in front or sides
 	if best_spot:
+		_lock_cover_node(best_spot.get_parent())
 		return best_spot.global_position
-	else:
-		return best_cover.global_position
+
+	# Second Pass: Fallback to any cover spot if none are in front or sides
+	best_spot_dist = -INF  # Reset for fallback
+	for cover in covers:
+		for child in cover.get_children():
+			if child is Node2D and child.name.begins_with("Position"):
+				var cover_pos = child.global_position
+				var dist_to_enemy = cover_pos.distance_to(enemy_pos)
+				
+				if dist_to_enemy > best_spot_dist:
+					best_spot_dist = dist_to_enemy
+					best_spot = child
+
+	if best_spot:
+		_lock_cover_node(best_spot.get_parent())
+		return best_spot.global_position
+
+	# If no cover spots are available, stay in current position
+	return ai_pos
+
+# Helper function to lock onto the selected cover node
+func _lock_cover_node(cover_node: Node2D) -> void:
+	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
+		locked_cover_node.disconnect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
+	
+	locked_cover_node = cover_node
+	
+	if locked_cover_node and locked_cover_node.has_signal("cover_destroyed"):
+		locked_cover_node.connect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
 
 func _on_cover_destroyed() -> void:
 	print("Cover destroyed, AI must pick a new one.")
@@ -579,6 +612,8 @@ func die() -> void:
 	print("Wielder died!")
 	AudioManager.play_sfx("death_1")
 	queue_free()
+	if AudioManager.is_music_playing("level_music"):
+		AudioManager.stop_all_music()
 
 # ---------------------------------------------
 # DETECTION AREA
