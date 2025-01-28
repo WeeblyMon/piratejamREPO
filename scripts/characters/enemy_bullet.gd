@@ -12,18 +12,12 @@ var time_alive: float = 0.0
 func _ready() -> void:
 	# Add to enemy bullets group
 	add_to_group("enemy_bullets")
-	print("Enemy Bullet initialized. Groups: ", get_groups())
-	
-
 	area.collision_layer = 4  
 	area.collision_mask = (1 << 0) | (1 << 2) | (1 << 4)  # Layers 1, 3, and 5 => 1 | 4 | 16 = 21
 	
 	# Connect collision signal using Callable syntax for Area2D
 	if not area.is_connected("area_entered", Callable(self, "_on_area_entered")):
 		area.connect("area_entered", Callable(self, "_on_area_entered"))
-		print("Connected 'area_entered' signal to _on_area_entered")
-	else:
-		print("'area_entered' signal already connected")
 
 func _process(delta: float) -> void:
 	# Move the bullet forward manually
@@ -35,10 +29,15 @@ func _process(delta: float) -> void:
 		queue_free()
 
 func _on_area_entered(area_other: Area2D) -> void:
-	print("Enemy Bullet collided with: ", area_other.get_groups())
 	if area_other.is_in_group("controlled_bullets") or area_other.is_in_group("bullet"):
-		print("Enemy bullet blocked by controlled bullet!")
 		queue_free()  # Destroy enemy bullet
 	elif area_other.has_method("take_damage"):
 		area_other.take_damage(damage)
 		queue_free()  # Destroy enemy bullet
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+		if body.is_in_group("wielder"):
+			if body.has_method("take_damage"):
+				body.take_damage(damage)  # Apply damage to the enemy
+			queue_free()  # Destroy th

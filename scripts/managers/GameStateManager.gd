@@ -30,7 +30,7 @@ var is_tv_static_playing: bool = false
 var weapon_data = {
 	"handgun": {"fire_rate": 0.5, "position": Vector2(163, 44), "direction": Vector2(1, 0)},  # 120 BPM
 	"rifle": {"fire_rate": 0.1, "position": Vector2(181, 36), "direction": Vector2(1, 0)},    # 600 BPM
-	"shotgun": {"fire_rate": 1.0, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
+	"shotgun": {"fire_rate": 0.8, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
 }
 
 var weapon_ammo = {
