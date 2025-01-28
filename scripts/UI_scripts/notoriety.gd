@@ -17,6 +17,5 @@ func _update_notoriety(current_notoriety: int, max_stars: int) -> void:
 	progress_bar.value = current_notoriety
 	progress_bar.max_value = GameStateManager.max_progress
 
-	# Update star visibility based on max_stars
 	for i in range(len(stars)):
 		stars[i].visible = i < max_stars  # Show stars up to the current max_stars count
