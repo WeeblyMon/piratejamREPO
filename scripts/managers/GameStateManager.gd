@@ -429,6 +429,7 @@ func add_notoriety(amount: int) -> void:
 		emit_signal("notoriety_changed", notoriety, max_stars)
 
 func add_star() -> void:
+	AudioManager.play_sfx("siren_passing_by_1", -0.5)
 	if notoriety >= max_progress:
 		notoriety -= max_progress  # Reset progression bar
 		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD

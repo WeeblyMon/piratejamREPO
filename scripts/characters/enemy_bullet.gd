@@ -37,7 +37,7 @@ func _on_area_entered(area_other: Area2D) -> void:
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-		if body.is_in_group("wielder"):
+		if body.is_in_group("wielder") or body.is_in_group("cover"):
 			if body.has_method("take_damage"):
 				body.take_damage(damage)  # Apply damage to the enemy
 			queue_free()  # Destroy th

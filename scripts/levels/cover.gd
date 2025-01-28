@@ -35,7 +35,12 @@ func take_damage(amount: int) -> void:
 
 func destroy_cover() -> void:
 	emit_signal("cover_destroyed")
-	AudioManager.play_sfx("explosion_2")
+
+	if sprite_index == 1:
+		AudioManager.play_sfx("wood_break_1")
+	else:
+		AudioManager.play_sfx("explosion_2")
+
 	spawn_explosion()
 	queue_free()
 

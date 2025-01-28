@@ -101,6 +101,10 @@ position = Vector2(1457, 34)
 sprite_index = 0
 radius = 100.0
 
+[node name="Cover4" parent="." instance=ExtResource("7_hca71")]
+position = Vector2(873, 60)
+radius = 100.0
+
 [node name="Cover2" parent="." instance=ExtResource("7_hca71")]
 position = Vector2(1157, -53)
 sprite_index = 0
