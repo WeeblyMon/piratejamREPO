@@ -37,6 +37,7 @@ offset_top = 5.0
 offset_right = 78.0
 offset_bottom = 32.0
 scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 
 [node name="Position1" type="Node2D" parent="."]
 position = Vector2(0, 86.755)
@@ -46,18 +47,3 @@ position = Vector2(-84.7682, 7.10543e-15)
 
 [node name="Position3" type="Node2D" parent="."]
 position = Vector2(89.404, 6.46235e-27)
-
-[node name="Position4" type="Node2D" parent="."]
-position = Vector2(6.46235e-27, -88.0795)
-
-[node name="Position5" type="Node2D" parent="."]
-position = Vector2(72.1854, -67.5497)
-
-[node name="Position6" type="Node2D" parent="."]
-position = Vector2(-68.8742, -66.2252)
-
-[node name="Position7" type="Node2D" parent="."]
-position = Vector2(-60.9272, 66.2252)
-
-[node name="Position8" type="Node2D" parent="."]
-position = Vector2(69.5364, 60.9272)

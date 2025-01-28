@@ -32204,69 +32204,56 @@ navigation_enabled = false
 position = Vector2(250, -24)
 scale = Vector2(1.51, 1.51)
 
-[node name="Cover" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover" parent="Covers" instance=ExtResource("13_akbd0")]
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover2" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover2" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-305.96, -680.795)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover3" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover3" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(371.523, -72.8477)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover5" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover5" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-492.715, -233.775)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover6" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover6" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-198.676, -394.702)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover7" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover7" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(158.278, -585.43)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover8" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover8" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-230.464, -772.185)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover9" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover9" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(666.225, -833.775)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover10" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover10" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(479.47, -1096.03)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover11" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover11" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(862.252, -903.311)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover12" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover12" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-413.907, -1195.36)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover14" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover14" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-604.636, -969.536)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
-[node name="Cover15" parent="Covers" node_paths=PackedStringArray("nav_region") instance=ExtResource("13_akbd0")]
+[node name="Cover15" parent="Covers" instance=ExtResource("13_akbd0")]
 position = Vector2(-602.649, -576.821)
 scale = Vector2(1, 1)
-nav_region = NodePath("../../NavigationRegion2D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a0sw1")
