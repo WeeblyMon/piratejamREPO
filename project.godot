@@ -33,6 +33,9 @@ checkpoints=""
 cover=""
 civilian=""
 bullet=""
+wielder=""
+enemy_bullets=""
+obstacle=""
 
 [input]
 
@@ -87,6 +90,18 @@ jam_ability={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Wielder"
+2d_physics/layer_2="Enemy"
+2d_physics/layer_3="Cover"
+2d_physics/layer_4="Enemy Bullet"
+2d_physics/layer_5="Player_bullet"
+2d_physics/layer_6="Obstacles"
+2d_physics/layer_7="Civilian"
+
 [rendering]
 
 occlusion_culling/bvh_build_quality=1
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

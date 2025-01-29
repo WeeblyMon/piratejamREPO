@@ -16,6 +16,8 @@ var base_shell_time: float = 0.5
 
 func _ready() -> void:
 	current_weapon = GameStateManager.get_weapon()
+	GameStateManager.connect("weapon_changed", Callable(self, "_on_weapon_changed"))
+	_on_weapon_changed(GameStateManager.get_weapon())
 	GameStateManager.connect("jam_state_changed", Callable(self, "_on_jam_state_changed"))
 	fire_rate = GameStateManager.get_fire_rate()
 	update_raycast(current_weapon)
@@ -23,13 +25,22 @@ func _ready() -> void:
 	muzzle_handgun.visible = false
 	muzzle_rifle.visible = false
 	muzzle_shotgun.visible = false
-
+	
+func _on_weapon_changed(new_weapon: String) -> void:
+	current_weapon = new_weapon
+	fire_rate = GameStateManager.get_fire_rate()
+	update_raycast(new_weapon)
+	update_weapon(new_weapon)
+	print("GunController updated to:", new_weapon, "Fire rate:", fire_rate)
+	
 func get_sanity_fraction() -> float:
 	var fraction = float(GameStateManager.current_sanity) / float(GameStateManager.max_sanity)
 	return clamp(fraction, 0.0, 1.0)
 
 func _process(delta: float) -> void:
-	time_since_last_shot += delta
+	# Increment with unscaled delta to ensure consistent behavior in slow motion
+	var unscaled_delta = delta / Engine.time_scale
+	time_since_last_shot += unscaled_delta
 
 	var controlled_bullets = get_tree().get_nodes_in_group("controlled_bullets")
 
@@ -42,31 +53,58 @@ func _process(delta: float) -> void:
 		if is_instance_valid(last_fired_bullet):
 			last_fired_bullet.disable_player_control()
 
+
 func fire_bullet() -> Node:
+	# Prevent firing if the weapon is jammed
+	AudioManager.play_sfx_varied("casing_drop_1", 1.2, false, 0.9, 1.4)
 	if GameStateManager.is_jammed:
 		print("GunController: Cannot fire while jammed!")
 		return null
-		
-	if bullet_scene and time_since_last_shot >= fire_rate:
-		if GameStateManager.is_reloading:
-			print("Cannot fire while reloading!")
-			return null
-		
-		if GameStateManager.get_current_ammo() > 0:
-			if GameStateManager.consume_ammo():
-				var bullet = bullet_scene.instantiate()
-				bullet.global_position = raycast.global_position
-				bullet.rotation = raycast.global_rotation
-				get_tree().current_scene.add_child(bullet)
-				last_fired_bullet = bullet
-				time_since_last_shot = 0.0
-				fire_sfx()
-				_show_muzzle_flash(current_weapon)
-				return bullet
-		else:
-			print("No ammo left! Starting reload...")
-			reload_weapon()
+
+	# Use unscaled delta to account for slow motion
+	var unscaled_delta = 1.0 / Engine.time_scale
+	if time_since_last_shot < fire_rate * unscaled_delta:
+		return null
+
+	# Prevent firing if reloading
+	if GameStateManager.is_reloading:
+		print("Cannot fire while reloading!")
+		return null
+
+	# Handle shotgun logic (fires multiple pellets)
+	if current_weapon == "shotgun":
+		fire_shotgun_volley()
+		time_since_last_shot = 0.0
+		return null
+
+	# Standard bullet logic
+	if bullet_scene and GameStateManager.get_current_ammo() > 0:
+		# Consume ammo before firing
+		if GameStateManager.consume_ammo():
+			# Instantiate and configure the bullet
+			var bullet = bullet_scene.instantiate()
+			bullet.global_position = raycast.global_position
+			bullet.rotation = raycast.global_rotation
+			get_tree().current_scene.add_child(bullet)
+
+			# Update state for the last fired bullet
+			last_fired_bullet = bullet
+			time_since_last_shot = 0.0
+
+			# Play firing effects
+			fire_sfx()
+			_show_muzzle_flash(current_weapon)
+
+			return bullet
+	else:
+		# If out of ammo, initiate a reload
+		print("No ammo left! Starting reload...")
+		reload_weapon()
+
 	return null
+
+
+
 	
 func fire_shotgun_volley() -> void:
 	# Check jam/reload states
@@ -172,13 +210,16 @@ func fire_sfx() -> void:
 		"handgun":
 			AudioManager.play_sfx("handgun_shot")
 		"rifle":
-			AudioManager.play_sfx_varied("rifle_shot", 0.0, false, 0.90, 1.1)
+			AudioManager.play_sfx_varied("rifle_shot", 0.0, false, 0.9, 1.1)
+			await get_tree().create_timer(fire_rate).timeout  # Sync sound to fire rate
 		"shotgun":
 			AudioManager.play_sfx("shotgun_shot")
 		_:
 			AudioManager.play_sfx("gunshot_1")
 
+
 func _show_muzzle_flash(weapon_name: String) -> void:
+	# Reset all muzzle flashes
 	muzzle_handgun.visible = false
 	muzzle_rifle.visible = false
 	muzzle_shotgun.visible = false
@@ -186,13 +227,13 @@ func _show_muzzle_flash(weapon_name: String) -> void:
 	match weapon_name:
 		"handgun":
 			muzzle_handgun.visible = true
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(fire_rate * 0.5).timeout
 			muzzle_handgun.visible = false
 
 		"rifle":
 			muzzle_rifle.visible = true
 			muzzle_rifle.play("flash")
-			await muzzle_rifle.animation_finished
+			await get_tree().create_timer(fire_rate).timeout  # Keep flash visible for the fire rate duration
 			muzzle_rifle.visible = false
 
 		"shotgun":
@@ -200,6 +241,7 @@ func _show_muzzle_flash(weapon_name: String) -> void:
 			muzzle_shotgun.play("flash")
 			await muzzle_shotgun.animation_finished
 			muzzle_shotgun.visible = false
+
 
 func switch_weapon(new_weapon: String) -> void:
 	GameStateManager.set_weapon(new_weapon)

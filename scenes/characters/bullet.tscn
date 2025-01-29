@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bj5ieasrb3u4b"]
+[gd_scene load_steps=9 format=3 uid="uid://bj5ieasrb3u4b"]
 
 [ext_resource type="Script" path="res://scripts/characters/Bullet.gd" id="1_2rjgs"]
 [ext_resource type="Texture2D" uid="uid://3u71teacyipk" path="res://assets/art/props/blue1.png" id="2_80fba"]
 [ext_resource type="Texture2D" uid="uid://bo8260rw2hpg5" path="res://assets/art/props/yellow1.png" id="3_gdtgq"]
 [ext_resource type="Texture2D" uid="uid://crhlbmq1fykj8" path="res://assets/art/props/red1.png" id="4_cgy6a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_82ksc"]
 
 [sub_resource type="Curve" id="Curve_retox"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.582888, 0.428571), -0.895745, -0.895745, 0, 0, Vector2(1, 0.835165), 0.0, 0.0, 0, 0]
@@ -17,12 +19,16 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [node name="Bullet" type="Area2D" groups=["bullet"]]
 z_index = 2
+collision_layer = 16
+collision_mask = 74
 script = ExtResource("1_2rjgs")
 speed = 1500.0
+damage = 2
 point_spacing = 10.0
+max_turn_rate = 1200.0
 
 [node name="PistolP" type="Sprite2D" parent="."]
-visible = false
+material = SubResource("ShaderMaterial_82ksc")
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("2_80fba")
@@ -36,7 +42,9 @@ width_curve = SubResource("Curve_retox")
 gradient = SubResource("Gradient_kys51")
 antialiased = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["bullet"]]
+collision_layer = 16
+collision_mask = 74
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_5mo5d")
@@ -52,3 +60,6 @@ visible = false
 rotation = 0.00872665
 scale = Vector2(0.505, 0.669)
 texture = ExtResource("4_cgy6a")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]

@@ -1,16 +1,20 @@
 extends Node
 
-signal game_loaded
-signal game_saved
+
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
+signal checkpoint_reached(checkpoint_id: int, is_final: bool)
 signal weapon_changed(new_weapon: String)
 signal jam_state_changed(is_jammed: bool)
 signal notoriety_changed(current_notoriety: int, max_stars: int)
+signal health_changed(new_health: int, max_health: int)
+
+var max_health: int = 100
+var current_health: int = max_health
 
 var notoriety: int = 0
-var max_stars: int = 4
+var max_stars: int = 0
 var max_progress: int = 25
 var is_jammed: bool = false
 var reload_timer: Timer = null
@@ -21,15 +25,15 @@ var current_scene: Node
 var max_resource: float = 100.0
 var resource_regen_rate: float = 10.0  # Resource regenerated per second
 var current_resource: float = max_resource
-var current_weapon: String = "rifle"
+var current_weapon: String = "handgun"
 var max_sanity: int = 100
 var current_sanity: int = max_sanity
 var fire_rate: float = 0.0  # Default fire rate in seconds per shot (600 BPM)
-
+var is_tv_static_playing: bool = false
 var weapon_data = {
 	"handgun": {"fire_rate": 0.5, "position": Vector2(163, 44), "direction": Vector2(1, 0)},  # 120 BPM
 	"rifle": {"fire_rate": 0.1, "position": Vector2(181, 36), "direction": Vector2(1, 0)},    # 600 BPM
-	"shotgun": {"fire_rate": 1.0, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
+	"shotgun": {"fire_rate": 0.8, "position": Vector2(186, 37), "direction": Vector2(1, 0)}   # 60 BPM
 }
 
 var weapon_ammo = {
@@ -58,25 +62,35 @@ var current_save: Dictionary = {
 
 func _process(delta: float) -> void:
 	current_resource = min(max_resource, current_resource + resource_regen_rate * delta)
-
+	check_sanity()
 # ---------------------------------------
 # WEAPON GET/SET
 # ---------------------------------------
 func set_weapon(weapon_name: String) -> void:
 	if weapon_data.has(weapon_name):
+		# Update weapon and related properties
 		current_weapon = weapon_name
 		fire_rate = weapon_data[weapon_name]["fire_rate"]
+
+		# Update ammunition for the new weapon
+		if weapon_ammo.has(current_weapon):
+			emit_signal("ammo_changed", weapon_ammo[current_weapon]["current"], weapon_ammo[current_weapon]["max"])
+		else:
+			print("Warning: No ammo data for weapon:", current_weapon)
+
+		# Emit signal for weapon change
+		emit_signal("weapon_changed", current_weapon)
+
 		print("Weapon switched to:", current_weapon, "Fire rate:", fire_rate, "Seconds per shot")
 	else:
 		push_warning("Invalid weapon: %s".format(weapon_name))
-
-
 
 func get_weapon() -> String:
 	return current_weapon
 	
 func get_fire_rate() -> float:
-	return fire_rate
+	return fire_rate / Engine.time_scale
+
 
 func set_jam_state(state: bool) -> void:
 	is_jammed = state
@@ -104,29 +118,64 @@ func switch_scene(new_scene_path: String) -> void:
 # ---------------------------------------
 # SANITY / HEALTH 
 # ---------------------------------------
-func set_sanity(sanity_amount: int, operation: String) -> void:
-	var new_sanity = current_sanity
-	if operation == "add":
-		new_sanity = clamp(current_sanity + sanity_amount, 0, max_sanity)
-	elif operation == "sub":
-		new_sanity = clamp(current_sanity - sanity_amount, 0, max_sanity)
+func set_sanity(sanity_amount: int, operation: String = "set") -> void:
+	match operation:
+		"add":
+			current_sanity = clamp(current_sanity + sanity_amount, 0, max_sanity)
+		"sub":
+			current_sanity = clamp(current_sanity - sanity_amount, 0, max_sanity)
+		"set":
+			current_sanity = clamp(sanity_amount, 0, max_sanity)
+		_:
+			push_warning("Invalid operation for set_sanity: %s".format(operation))
+
+	emit_signal("sanity_changed", current_sanity)
+	AudioManager.play_sfx("sanity_heartbeat_1")
+
+	# Update the SanityBar if it exists
+	if sanity_bar:
+		sanity_bar.update_sanity_bar(current_sanity, max_sanity)
+
+			
+func check_sanity() -> void:
+	if current_sanity < 30:
+		if not is_tv_static_playing:
+			AudioManager.play_sfx("tv_static_1", 0.3, true)
+			is_tv_static_playing = true
 	else:
-		push_warning("Invalid operation for set_sanity: %s".format(operation))
-	if new_sanity != current_sanity:
-		current_sanity = new_sanity
-		emit_signal("sanity_changed", current_sanity)
-		if sanity_bar:
-			sanity_bar.update_sanity_bar(current_sanity, max_sanity)
+		if is_tv_static_playing:
+			AudioManager.stop_sfx("tv_static_1")  # Stop the sound if sanity recovers
+			is_tv_static_playing = false
 
 
-func set_health(health_amount: int, operation) -> void:
-	current_save = _update_dict_int_value(Constants.HEALTH, health_amount, operation)
-	health_bar.update_bar(operation, health_amount)
-	print(JSON.stringify(current_save))
+func set_health(health_amount: int, operation: String = "set") -> void:
+	match operation:
+		"add":
+			current_health = clamp(current_health + health_amount, 0, max_health)
+		"sub":
+			current_health = clamp(current_health - health_amount, 0, max_health)
+		"set":
+			current_health = clamp(health_amount, 0, max_health)
+		_:
+			push_warning("Invalid operation for set_health: %s".format(operation))
+
+	emit_signal("health_changed", current_health, max_health)  # Update health bar
+
+func take_damage(amount: int) -> void:
+	set_health(amount, "sub")
+	if current_health <= 0:
+		die()
+
+func heal(amount: int) -> void:
+	set_health(amount, "add")
+
+func die() -> void:
+	emit_signal("player_died")
 	
 func adjust_sanity(amount: int) -> void:
 	current_sanity = clamp(current_sanity + amount, 0, max_sanity)
 	emit_signal("sanity_changed", current_sanity)
+	
 
 func _update_dict_int_value(key: String, value, operation) -> Dictionary:
 	var new_save = current_save.duplicate()
@@ -155,7 +204,6 @@ func set_wielder_phase(new_phase: int) -> void:
 	if current_wielder_phase != new_phase:
 		current_wielder_phase = new_phase
 		emit_signal("wielder_phase_changed", new_phase)
-		print("GameStateManager: Phase changed to:", new_phase)
 
 func get_wielder_phase() -> int:
 	return current_wielder_phase
@@ -180,7 +228,6 @@ func init_checkpoints() -> void:
 	if unique_labels.size() > 0:
 		var random_index = randi() % unique_labels.size()
 		chosen_path_label = unique_labels[random_index]
-		print("GameStateManager: chosen path label:", chosen_path_label)
 
 		for cp in all_cp:
 			if cp.path_label == chosen_path_label:
@@ -199,10 +246,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		print("No checkpoints found in the 'checkpoints' group!")
 		return
 
-	# Debugging: Log all checkpoints
-	print("Found checkpoints:")
-	for cp in all_cp:
-		print("- Label:", cp.path_label, "ID:", cp.checkpoint_id, "Position:", cp.global_position)
 
 	# Get unique path labels
 	var unique_labels = []
@@ -210,8 +253,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		if cp.path_label not in unique_labels:
 			unique_labels.append(cp.path_label)
 
-	# Debugging: Log unique labels
-	print("Unique path labels found:", unique_labels)
 
 	# Select a random path label and filter checkpoints by it
 	if unique_labels.size() > 0:
@@ -222,16 +263,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		for cp in all_cp:
 			if cp.path_label == chosen_path_label:
 				path_checkpoints.append(cp)
-
-	# Debugging: Log unsorted checkpoints
-	print("Unsorted checkpoints for label", chosen_path_label, ":")
-	for cp in path_checkpoints:
-		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
-
-	# Debugging: Log sorted checkpoints
-	print("Sorted checkpoints for label", chosen_path_label, ":")
-	for cp in path_checkpoints:
-		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
 
 	# Find the nearest checkpoint to the AI
 	var nearest_index = 0
@@ -254,16 +285,18 @@ func get_current_checkpoint_position() -> Vector2:
 	return cp.global_position
 
 func next_checkpoint() -> void:
+	# If at the last checkpoint, trigger mission complete
+	if current_checkpoint_index >= path_checkpoints.size() - 1:
+		emit_signal("checkpoint_reached", current_checkpoint_index, true)  # ✅ Ensure final checkpoint triggers!
+		return
+
 	# Increment the checkpoint index
 	current_checkpoint_index += 1
-
-	# Check if there are more checkpoints
-	if current_checkpoint_index >= path_checkpoints.size():
-		print("GameStateManager: All checkpoints visited.")
-	else:
-		print("GameStateManager: Moving to checkpoint index =", current_checkpoint_index,
+	if current_checkpoint_index < path_checkpoints.size():
+		print("Moving to checkpoint index =", current_checkpoint_index,
 			  "Position =", path_checkpoints[current_checkpoint_index].global_position)
-
+	else:
+		print("All checkpoints visited. No more movement required.")
 
 # ---------------------------------------
 # COMBAT HELPERS (stubs)
@@ -303,17 +336,18 @@ func get_current_ammo() -> int:
 func consume_ammo() -> bool:
 	if is_reloading:
 		return false
+
 	if weapon_ammo.has(current_weapon):
 		var ammo_data = weapon_ammo[current_weapon]
 		if ammo_data["current"] > 0:
 			ammo_data["current"] -= 1
 			emit_signal("ammo_changed", ammo_data["current"], ammo_data["max"])  # Emit signal
-			print("Ammo consumed. Remaining:", ammo_data["current"])
 			return true
 		else:
-			print("Out of ammo!")
 			return false
-	return false
+	else:
+		return false
+
 
 
 func reload_weapon() -> void:
@@ -367,7 +401,6 @@ func reload_weapon() -> void:
 func _on_shotgun_reload_step() -> void:
 	var ammo_data = weapon_ammo[current_weapon]
 	ammo_data["current"] += 1
-	print("Shotgun reloaded 1 shell. Current ammo:", ammo_data["current"])
 
 	if ammo_data["current"] < ammo_data["max"]:
 		reload_timer.start()  # Continue reloading
@@ -377,12 +410,10 @@ func _on_shotgun_reload_step() -> void:
 		reload_timer.stop()
 		reload_timer.queue_free()
 		reload_timer = null
-		print("Shotgun fully reloaded.")
 
 func _on_full_reload_complete() -> void:
 	var ammo_data = weapon_ammo[current_weapon]
 	ammo_data["current"] = ammo_data["max"] 
-	print("Reloaded", current_weapon, "to max ammo:", ammo_data["max"])
 	is_reloading = false
 	reload_timer.stop()
 	reload_timer.queue_free()
@@ -390,16 +421,27 @@ func _on_full_reload_complete() -> void:
 
 func add_notoriety(amount: int) -> void:
 	notoriety += amount
-	if notoriety >= max_progress:
+	while notoriety >= max_progress and max_stars < 4:
 		notoriety -= max_progress
-		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
 		add_star()
-	else:
-		emit_signal("notoriety_changed", notoriety, max_stars)
+	emit_signal("notoriety_changed", notoriety, max_stars)
+
 
 func add_star() -> void:
-	if max_stars > 0:
-		max_stars -= 1
-		emit_signal("notoriety_changed", notoriety, max_stars)  # Update HUD
+	AudioManager.play_sfx("siren_passing_by_1", -0.5)
+	if max_stars < 4:
+		max_stars += 1
+		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
+		
+		# Assign weapons or handle logic based on the current star count
+		match max_stars:
+			1:
+				set_weapon("rifle")  # Switch to rifle
+			2:
+				set_weapon("shotgun")  # Switch to shotgun
+			3:
+				print("Star 3 earned. No weapon defined yet.")
+			4:
+				print("Star 4 earned. No weapon defined yet.")
 	else:
-		print("Already at maximum stars!")
+		print("Max stars reached. No further weapon upgrades available.")

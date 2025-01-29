@@ -2,6 +2,10 @@ extends Node2D
 
 @export var wielder: CharacterBody2D
 
+func _ready() -> void:
+	AudioManager.play_music("level_music", 0.1, true)
+	AudioManager.play_sfx("crowd_chatter_1", -0.8, true)
+
 func _input(event: InputEvent) -> void:
 	# Check for addSanity input
 	if event.is_action_pressed("addSanity"):

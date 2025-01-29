@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b4hxhxetxxosh"]
+[gd_scene load_steps=28 format=3 uid="uid://8a7t8n2s2go8"]
 
 [ext_resource type="Script" path="res://scripts/managers/audio_manager.gd" id="1_ghkg2"]
 [ext_resource type="AudioStream" uid="uid://dr8n8kuumi4cq" path="res://assets/audio/sfx/Scream_2.mp3" id="2_ugn3a"]
