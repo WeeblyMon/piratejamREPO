@@ -1,0 +1,162 @@
+3ff8122 - WeeblyMon, 11 minutes ago : Update StartMenu.tscn
+4f8e150 - WeeblyMon, 13 minutes ago : Merge branch 'main' into Bullet-Control-
+bd039e8 - WeeblyMon, 20 minutes ago : adjusted notoriety
+0d92cce - WeeblyMon, 23 minutes ago : Enemy Firerate Adjusted
+0ceac7b - WeeblyMon, 39 minutes ago : Fixed Collision Ping Sfx
+da9bcbf - WeeblyMon, 60 minutes ago : Main Menu
+e198b42 - WeeblyMon, 2 hours ago : Merge pull request #29 from WeeblyMon/Bullet-Control-
+d3f39ae - WeeblyMon, 2 hours ago : adjusted notoriety and player detection
+ce5db04 - WeeblyMon, 2 hours ago : Adding In Mission Objective Text
+0172d6c - WeeblyMon, 2 hours ago : Adjusting Navigation Region
+069cda0 - WeeblyMon, 2 hours ago : Civilians Added, Fixed Civ Collision
+4391137 - WeeblyMon, 17 hours ago : Fixed camera glitching
+f7c0c2b - WeeblyMon, 17 hours ago : Enemy AI Retaliation
+e60f595 - WeeblyMon, 17 hours ago : Improving Level 1 (#1)
+064fce8 - WeeblyMon, 17 hours ago : Improving Level 1
+cc2c88d - WeeblyMon, 17 hours ago : Line Of Sight Fixing
+582cd40 - WeeblyMon, 20 hours ago : HP Bar Implementation
+86949a4 - WeeblyMon, 22 hours ago : Mission Complete and Failed Screen
+9b462e3 - WeeblyMon, 23 hours ago : Line Of Sight Implemented
+9844acf - WeeblyMon, 2 days ago : Update level 1
+0fc763a - WeeblyMon, 2 days ago : More cover stuff
+24272d3 - WeeblyMon, 2 days ago : Fixed Enemies not harming cover
+bdc9f54 - WeeblyMon, 2 days ago : Fixed more collision issues
+aeb08b1 - WeeblyMon, 2 days ago : Blockable Bullets
+4d1aae1 - WeeblyMon, 2 days ago : Improved Cover Finding System
+15432a5 - WeeblyMon, 2 days ago : Adding In Enemies
+cb6b517 - WeeblyMon, 2 days ago : SFX Implementation (#3)
+298cf78 - WeeblyMon, 2 days ago : Music Implemented
+1474d4e - WeeblyMon, 2 days ago : Fixed Level 1 Collision Layers
+c7410fe - WeeblyMon, 2 days ago : SFX Implementation (#2) Fixed Player Detection
+006f248 - WeeblyMon, 2 days ago : SFX Implementation (#1)
+6a575e9 - WeeblyMon, 2 days ago : Imported Audio Files
+8ae0e54 - WeeblyMon, 2 days ago : Enemy Collision Fix, Enemy Projectiles
+f4b2e8d - WeeblyMon, 2 days ago : Basic Enemy
+5e8a4fc - WeeblyMon, 2 days ago : Adjusted some bullet stuff
+c1c5995 - WeeblyMon, 2 days ago : Control Bullet With Mouse
+cb51cc2 - WeeblyMon, 2 days ago : Shotgun Spread Works On Notoriety System
+9ab3a83 - WeeblyMon, 3 days ago : Notoriety Gives New Guns
+b269d5c - WeeblyMon, 3 days ago : World Enviroment, AI fixes. Bug Fixes
+fcc0912 - WeeblyMon, 3 days ago : Merge pull request #28 from WeeblyMon/MainMenu
+25eb96f - Chris Rogers, 4 days ago : add in start stuff
+2561340 - WeeblyMon, 4 days ago : Merge pull request #27 from WeeblyMon/Bullet-Control-
+4f290da - WeeblyMon, 4 days ago : Level 1 Stuff
+35c9c48 - WeeblyMon, 4 days ago : Fixed AI stuck when Control Bullet Is used in movement phase
+0a0e81e - WeeblyMon, 4 days ago : Fixed Reload For Handgun
+c4c782d - WeeblyMon, 4 days ago : Prelimanary Sanity Effects
+2b61656 - WeeblyMon, 4 days ago : Fixed Shotgun Spawning New Pellets
+372e40a - WeeblyMon, 4 days ago : Fixed Shotgun Bullet Control
+7aee1b4 - WeeblyMon, 4 days ago : Shotgun Cone Shot
+354b095 - WeeblyMon, 5 days ago : Merge pull request #26 from WeeblyMon/Bullet-Control-
+6f94001 - WeeblyMon, 5 days ago : Notoriety System
+1ee0ba2 - Dev-Trick, 5 days ago : Merge pull request #25 from WeeblyMon/Levels
+34026e6 - Dev-Trick, 5 days ago : level 1 finished?
+fc0ddb5 - Dev-Trick, 5 days ago : Merge pull request #24 from WeeblyMon/Levels
+45c5fe0 - WeeblyMon, 6 days ago : Gun Jamming Feature
+9dcc65b - WeeblyMon, 6 days ago : Merge pull request #23 from WeeblyMon/Bullet-Control-
+3e297b5 - WeeblyMon, 6 days ago : Font Import
+0372272 - WeeblyMon, 6 days ago : Fixed Handgun Projectile
+2c7e079 - WeeblyMon, 6 days ago : Fixed Reload Times
+4c897ff - WeeblyMon, 6 days ago : Ammo Counter
+10a2082 - WeeblyMon, 6 days ago : Reload Time For Handun Adjusted
+ebfc213 - WeeblyMon, 6 days ago : Ammo And Reload System
+10006c4 - WeeblyMon, 6 days ago : Basic Civ Panic Mode
+203bc5c - WeeblyMon, 6 days ago : Merge branch 'main' into Bullet-Control-
+5c44f45 - WeeblyMon, 6 days ago : Basic Civ NPC, Cover fixes
+484ed28 - Dev-Trick, 6 days ago : updated level1 scene
+2baaa4f - WeeblyMon, 6 days ago : Merge pull request #22 from WeeblyMon/Bullet-Control-
+cd361b5 - WeeblyMon, 6 days ago : messing with cover stuff
+9eaf056 - WeeblyMon, 7 days ago : Merge pull request #21 from WeeblyMon/Bullet-Control-
+ca0a9c3 - WeeblyMon, 7 days ago : HUD Responsiveness
+7d39ce1 - WeeblyMon, 7 days ago : Smaller HUD
+f440907 - WeeblyMon, 7 days ago : HUD Placement
+8258672 - WeeblyMon, 7 days ago : Importing HUD
+fb00a73 - WeeblyMon, 7 days ago : Fixed Trails Disappearing In Slow MO
+ea04f23 - WeeblyMon, 7 days ago : Fixed Shotgun Muzzle Flash
+5198ca3 - WeeblyMon, 7 days ago : Fixing Other Weapon Firerates
+0695a4d - WeeblyMon, 7 days ago : Fixed Audio Loop Issue, Fixed Firerates
+ebc4110 - WeeblyMon, 7 days ago : Merge pull request #20 from WeeblyMon/Bullet-Control-
+a652bcf - WeeblyMon, 7 days ago : Fixed Sanity Effect Overlay
+d32dd86 - WeeblyMon, 7 days ago : Merge pull request #19 from WeeblyMon/Bullet-Control-
+d1cb7df - WeeblyMon, 7 days ago : Sanity Overlay Effects, + Audio Manager Fixes
+8fbbebc - WeeblyMon, 7 days ago : Merge pull request #18 from WeeblyMon/Bullet-Control-
+9e6f2a1 - WeeblyMon, 7 days ago : Added Audio Manager Functions
+f3d2472 - Dev-Trick, 7 days ago : Merge pull request #17 from WeeblyMon/AudioManager
+b86b134 - Dev-Trick, 7 days ago : Created Audio Manager and added SFX to assets
+5182764 - WeeblyMon, 8 days ago : Merge pull request #16 from WeeblyMon/Bullet-Control-
+0b4b167 - WeeblyMon, 8 days ago : ControlBulletMetered Bar Implemented
+66c1136 - WeeblyMon, 8 days ago : Added Different Bullet Sprites
+eb5c32f - WeeblyMon, 8 days ago : Adjusted Policemen Sprite
+ef49ead - WeeblyMon, 8 days ago : Enemy Turns Red When Hit
+d6e34e9 - WeeblyMon, 8 days ago : Muzzle Flashes Integrated
+7b7a0be - WeeblyMon, 8 days ago : AI will no longer go miles to find cover
+4acc3cf - WeeblyMon, 8 days ago : Added Bullet Trail
+9f351f9 - WeeblyMon, 8 days ago : Merge pull request #15 from WeeblyMon/Bullet-Control-
+4d91ca7 - WeeblyMon, 8 days ago : Bullet Sprite Update
+c979acb - WeeblyMon, 8 days ago : Merge pull request #14 from WeeblyMon/Levels
+71579c4 - Dev-Trick, 8 days ago : level 1 core floor/map done
+4db6671 - WeeblyMon, 8 days ago : Merge pull request #13 from WeeblyMon/Bullet-Control-
+1987bd7 - WeeblyMon, 8 days ago : Rubble Tileset
+96099d7 - WeeblyMon, 8 days ago : Cover exploding
+9e0de21 - WeeblyMon, 8 days ago : Basic Cover, Explosion Effect
+3e14122 - Dev-Trick, 8 days ago : Merge branch 'main' of https://github.com/WeeblyMon/piratejamREPO
+c695cba - Dev-Trick, 8 days ago : dialogue manager tool added
+d2acc15 - WeeblyMon, 9 days ago : Merge pull request #12 from WeeblyMon/TestBranch
+8ee5d58 - WeeblyMon, 9 days ago : test commit
+6b64083 - WeeblyMon, 9 days ago : Saving
+f96f1ec - WeeblyMon, 9 days ago : Merge pull request #11 from WeeblyMon/Bullet-Control-
+54c52a9 - WeeblyMon, 9 days ago : Restored Bullet Control
+a22b9fd - WeeblyMon, 9 days ago : Bullet Collision
+de3176d - WeeblyMon, 9 days ago : Movement to Action Phase
+8670ccb - WeeblyMon, 9 days ago : Basic Enemy Sprite
+48ace45 - WeeblyMon, 9 days ago : Merge branch 'main' into Bullet-Control-
+2cd8370 - WeeblyMon, 9 days ago : Merge pull request #10 from WeeblyMon/Bullet-Control-
+795eafb - WeeblyMon, 9 days ago : debugging ai paths
+35bc219 - WeeblyMon, 9 days ago : Debugging AI
+869ea45 - WeeblyMon, 9 days ago : Merge pull request #9 from WeeblyMon/mainMenu
+6579cbb - Chris Rogers, 9 days ago : main menu, basic functionality
+975aed2 - WeeblyMon, 10 days ago : Increase bullet turn
+d8580f2 - WeeblyMon, 10 days ago : Merge pull request #8 from WeeblyMon/Levels
+561e7eb - WeeblyMon, 10 days ago : Fixed Control Bullet
+bc0eada - WeeblyMon, 10 days ago : change to level 1
+be5b064 - WeeblyMon, 10 days ago : Merge pull request #7 from WeeblyMon/Levels
+8c8e88f - WeeblyMon, 10 days ago : New Building In Level 1
+78c3593 - WeeblyMon, 10 days ago : Merge pull request #6 from WeeblyMon/Levels
+9dedd94 - WeeblyMon, 10 days ago : Fixed issue with wielder move
+c84f046 - WeeblyMon, 10 days ago : Merge pull request #5 from WeeblyMon/Levels
+89fac11 - WeeblyMon, 10 days ago : Fixing Wielder AI, Attempt on Level 1
+6f8a5a3 - WeeblyMon, 10 days ago : Door import, Progress on level 1
+0e44bbe - WeeblyMon, 10 days ago : Level 1 Attempt
+5714795 - WeeblyMon, 10 days ago : levels tileset import
+f09bafc - WeeblyMon, 10 days ago : Merge pull request #4 from WeeblyMon/Wielder-AI,-Bullet-Control
+9c31279 - WeeblyMon, 10 days ago : Importing some Ref Images
+583df66 - WeeblyMon, 11 days ago : Merge pull request #3 from WeeblyMon/Wielder-AI,-Bullet-Control
+181ec64 - WeeblyMon, 11 days ago : input keys
+51416cc - WeeblyMon, 11 days ago : current weapons integrated to statemanager
+f2c194f - WeeblyMon, 11 days ago : Prelimenary Animation Import
+d0cdc2d - WeeblyMon, 11 days ago : Fixing bullets firing sideways
+81efa46 - WeeblyMon, 11 days ago : Turning the Wielder
+931493a - WeeblyMon, 11 days ago : fixed path_debug lines
+226e6fd - WeeblyMon, 11 days ago : remove camera2d
+6e94fa0 - WeeblyMon, 11 days ago : Merge pull request #2 from WeeblyMon/ProgressBars
+460b5e4 - WeeblyMon, 11 days ago : Merge branch 'main' into ProgressBars
+3aad493 - WeeblyMon, 11 days ago : Debugging Click to Move
+f486134 - Chris Rogers, 11 days ago : made updatable bars
+d921af1 - WeeblyMon, 11 days ago : Click To Move, Rudimentary Navigation Region
+74be90e - WeeblyMon, 11 days ago : Camera Over Wielder
+644e15e - WeeblyMon, 11 days ago : debugging
+8ceffc7 - WeeblyMon, 11 days ago : Merge branch 'main' of https://github.com/WeeblyMon/piratejamREPO
+20a1075 - WeeblyMon, 11 days ago : just some stuff to save
+f5e0cf6 - WeeblyMon, 11 days ago : Merge pull request #1 from WeeblyMon/gameStateMachine
+879d9e5 - Chris Rogers, 11 days ago : adding in a quick progress bar scene
+bc1ef66 - Chris Rogers, 11 days ago : fix some rebase issues
+6629d90 - Chris Rogers, 11 days ago : add in testing remove and add of sanity, scene switcher
+03fc1a9 - Chris Rogers, 12 days ago : Basic state manager kinda, bones for saving
+be7e769 - WeeblyMon, 12 days ago : More Bullet Control Progress
+e39c9c3 - WeeblyMon, 12 days ago : Converted current scripts to fit style guide
+aec8505 - WeeblyMon, 12 days ago : Rudimentary Bullet Control
+545532e - WeeblyMon, 12 days ago : Rudimentary Script Work
+92fddc8 - WeeblyMon, 12 days ago : Some temp assets, Working on start of scripts
+6aa5f35 - WeeblyMon, 2 weeks ago : Mainlevel.gd
+b6c5de0 - WeeblyMon, 2 weeks ago : Create player.gd
+03df755 - WeeblyMon, 2 weeks ago : Godot Project Intialisation, Folder Setup
