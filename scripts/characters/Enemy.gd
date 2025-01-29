@@ -4,12 +4,14 @@ extends Node2D
 @export var detection_radius: float = 300.0
 @export var fire_rate: float = 1.0  # Seconds per shot
 @export var bullet_scene: PackedScene  # Assign your bullet scene here
+@export var shoot_on_sight: bool = true  # NEW: Toggle to determine if police AI shoots first
 
 @onready var sprite: Sprite2D = $PoliceEnemy
 @onready var detection_area: Area2D = Area2D.new()
 
 var target: Node = null
 var fire_timer: Timer = null
+var is_retaliating: bool = false  # NEW: Track whether AI is in retaliation mode
 
 func _ready() -> void:
 	add_to_group("enemy")  # Add to the enemy group
@@ -21,11 +23,19 @@ func _ready() -> void:
 # ---------------------------------------------
 
 func take_damage(damage: int) -> void:
+	"""Handles damage taken by the police AI."""
 	health -= damage
 	sprite.modulate = Color(1, 0, 0)  # Flash red when damaged
 	flash_color()
+
 	if health <= 0:
 		die()
+	else:
+		# NEW: If shot, enter retaliation mode and start firing back
+		if not is_retaliating:
+			is_retaliating = true
+			fire_timer.start()
+			print("🚨 Police AI is now retaliating!")
 
 func flash_color() -> void:
 	var flash_timer = Timer.new()
@@ -39,6 +49,7 @@ func flash_color() -> void:
 	flash_timer.queue_free()
 
 func die() -> void:
+	"""Handles enemy death."""
 	GameStateManager.add_notoriety(40)
 	AudioManager.play_sfx("enemy_hit_and_blood_1", +10.0)
 	remove_from_group("enemy")  # Remove from group upon death
@@ -52,7 +63,7 @@ func is_dead() -> bool:
 # ---------------------------------------------
 
 func _create_detection_area() -> void:
-	# Set up detection radius
+	"""Sets up an area for detecting the Wielder AI."""
 	detection_area.name = "DetectionArea"
 
 	# Add a collision shape for detection
@@ -69,6 +80,7 @@ func _create_detection_area() -> void:
 	add_child(detection_area)
 
 func _setup_fire_timer() -> void:
+	"""Prepares the shooting timer."""
 	fire_timer = Timer.new()
 	fire_timer.one_shot = false
 	fire_timer.wait_time = fire_rate
@@ -76,16 +88,25 @@ func _setup_fire_timer() -> void:
 	add_child(fire_timer)
 
 func _on_body_entered(body: Node) -> void:
+	"""Handles AI detecting an enemy (Wielder AI)."""
 	if body.is_in_group("wielder"):
 		target = body
-		fire_timer.start()
+
+		if shoot_on_sight:  # NEW: Start shooting immediately if enabled
+			print("🔫 Police AI is shooting immediately!")
+			fire_timer.start()
+		else:
+			print("👀 Police AI is watching but won't shoot unless attacked!")
 
 func _on_body_exited(body: Node) -> void:
+	"""Stops shooting when the target leaves detection range."""
 	if body == target:
 		target = null
 		fire_timer.stop()
+		is_retaliating = false  # NEW: Reset retaliation mode
 
 func _fire_bullet() -> void:
+	"""Fires a bullet at the Wielder AI."""
 	if not target or is_dead():
 		return
 
@@ -97,9 +118,9 @@ func _fire_bullet() -> void:
 	bullet.global_position = global_position
 	bullet.rotation = (target.global_position - global_position).angle()
 
-	# Add a property to the bullet to exclude enemies from collision
+	# Exclude police bullets from hitting other police
 	if bullet.has_method("set_owner_group"):
-		bullet.set_owner_group("enemy")  # This assumes your bullet has this logic implemented
+		bullet.set_owner_group("enemy")  # Ensure bullets don't hurt friendly units
 
 	get_tree().current_scene.add_child(bullet)
 
