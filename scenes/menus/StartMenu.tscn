@@ -28,7 +28,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 3.0
+"speed": 4.0
 }]
 
 [node name="StartMenu" type="Control"]
@@ -36,17 +36,16 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 2.0
-offset_right = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k1r3i")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 14
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -527.0
 offset_top = 15.0
@@ -55,14 +54,8 @@ offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-columns = 3
-
-[node name="Button3" type="Button" parent="MarginContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Options"
 
 [node name="Start" type="Control" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -72,7 +65,7 @@ texture_filter = 1
 position = Vector2(209, 7)
 scale = Vector2(1.01608, 1)
 sprite_frames = SubResource("SpriteFrames_wwdp0")
-frame_progress = 0.730297
+frame_progress = 0.848138
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/Start"]
 texture_filter = 1
@@ -93,7 +86,7 @@ texture_normal = ExtResource("6_k58b2")
 texture_hover = ExtResource("7_1vj6r")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Start/TextureButton"]
-texture_filter = 3
+texture_filter = 1
 layout_mode = 0
 offset_left = 156.338
 offset_top = 2.39968
@@ -115,17 +108,20 @@ position = Vector2(672, 256)
 scale = Vector2(1.56484, 1.70212)
 texture = ExtResource("8_26d8q")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="Parallax2D"]
+layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 725.0
+offset_top = 78.0
+offset_right = 765.0
+offset_bottom = 118.0
 
-[node name="Label" type="Label" parent="Control"]
+[node name="Label" type="Label" parent="Parallax2D/Control"]
 layout_mode = 0
-offset_left = 867.0
-offset_top = 514.0
-offset_right = 1029.0
-offset_bottom = 563.0
+offset_left = 284.0
+offset_top = 511.0
+offset_right = 446.0
+offset_bottom = 560.0
 scale = Vector2(2.10939, 2.47285)
 theme_override_fonts/font = ExtResource("7_meiyd")
 text = "C - CONTROL BULLET
