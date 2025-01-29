@@ -1,6 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://cexxjq0h6viq0"]
+[gd_scene load_steps=12 format=3 uid="uid://cexxjq0h6viq0"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/StartMenu.gd" id="1_k1r3i"]
+[ext_resource type="Texture2D" uid="uid://cxoy54el31stu" path="res://assets/art/UI/Menu_Frame_1_86x490.png" id="2_5864x"]
+[ext_resource type="Texture2D" uid="uid://c0apfaup6xtw7" path="res://assets/art/UI/Menu_Frame_2_86x473.png" id="3_1n86n"]
+[ext_resource type="Texture2D" uid="uid://bqw7kq4qoqq2x" path="res://assets/art/UI/Menu_Frame_3_88x505.png" id="4_xone4"]
+[ext_resource type="Texture2D" uid="uid://cxulcak88ok70" path="res://assets/art/UI/Menu_Frame_4_86x470.png" id="5_ox6el"]
+[ext_resource type="Texture2D" uid="uid://3h5boal0d6tt" path="res://assets/art/UI/Menu_Button_45x397.png" id="6_k58b2"]
+[ext_resource type="Texture2D" uid="uid://mc6ihnbt1148" path="res://assets/art/UI/Menu_Glowing_Button_57x407.png" id="7_1vj6r"]
+[ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="7_meiyd"]
+[ext_resource type="Texture2D" uid="uid://cfvm03r5i8gfv" path="res://assets/art/UI/Screenshot 2025-01-29 155502.png" id="8_26d8q"]
+[ext_resource type="Script" path="res://scripts/UI_scripts/parallax_2d.gd" id="9_shipe"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wwdp0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5864x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1n86n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xone4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ox6el")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
@@ -18,36 +47,65 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -105.5
-offset_top = -68.0
-offset_right = 105.5
-offset_bottom = 68.0
+offset_left = -527.0
+offset_top = 15.0
+offset_right = -316.0
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Start" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Start" type="Control" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Start"
 
-[node name="Test" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test Ground"
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/Start"]
+texture_filter = 1
+position = Vector2(209, 7)
+scale = Vector2(1.01608, 1)
+sprite_frames = SubResource("SpriteFrames_wwdp0")
+frame_progress = 0.701245
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Load"
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/Start"]
+texture_filter = 1
+position = Vector2(209, 7)
+scale = Vector2(1.01608, 1)
+sprite_frames = SubResource("SpriteFrames_wwdp0")
+frame_progress = 0.758735
 
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Options"
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Start"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -19.0
+offset_top = -22.0
+offset_right = 378.0
+offset_bottom = 23.0
+scale = Vector2(1.13216, 1.25017)
+texture_normal = ExtResource("6_k58b2")
+texture_hover = ExtResource("7_1vj6r")
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Quit"
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Start/TextureButton"]
+texture_filter = 3
+layout_mode = 0
+offset_left = 156.338
+offset_top = 2.39968
+offset_right = 204.338
+offset_bottom = 25.3997
+scale = Vector2(2.76485, 2.22649)
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("7_meiyd")
+text = "START"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Start" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Test" to="." method="_on_test_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_button_pressed"]
+[node name="Parallax2D" type="Parallax2D" parent="."]
+z_index = -1
+scroll_offset = Vector2(-205, -78)
+repeat_times = 2
+script = ExtResource("9_shipe")
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(672, 256)
+scale = Vector2(1.56484, 1.70212)
+texture = ExtResource("8_26d8q")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Start/TextureButton" to="." method="_on_start_button_pressed"]

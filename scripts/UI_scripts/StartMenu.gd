@@ -5,8 +5,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
-
+	AudioManager.play_music("main menu")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -15,7 +14,8 @@ func _process(delta: float) -> void:
 
 func _on_start_button_pressed() -> void:
 	get_tree().change_scene_to_packed(level_1_scene)
-
+	AudioManager.play_sfx("menu_navigation_confirm_1")
+	
 func _on_test_button_pressed() -> void:
 	get_tree().change_scene_to_packed(test_scene)
 
