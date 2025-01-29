@@ -421,35 +421,27 @@ func _on_full_reload_complete() -> void:
 
 func add_notoriety(amount: int) -> void:
 	notoriety += amount
-	if notoriety >= max_progress:
+	while notoriety >= max_progress and max_stars < 4:
 		notoriety -= max_progress
-		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
 		add_star()
-	else:
-		emit_signal("notoriety_changed", notoriety, max_stars)
+	emit_signal("notoriety_changed", notoriety, max_stars)
+
 
 func add_star() -> void:
 	AudioManager.play_sfx("siren_passing_by_1", -0.5)
-	if notoriety >= max_progress:
-		notoriety -= max_progress  # Reset progression bar
+	if max_stars < 4:
+		max_stars += 1
 		emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD
-
-		# Cap stars at 4
-		if max_stars < 4:
-			max_stars += 1  # Increment stars
-			emit_signal("notoriety_changed", notoriety, max_stars)  # Notify HUD again for star change
-
-			# Assign weapons or handle logic based on the current star count
-			match max_stars:
-				1:
-					set_weapon("rifle")  # Switch to rifle
-				2:
-					set_weapon("shotgun")  # Switch to shotgun
-				3:
-					print("Star 3 earned. No weapon defined yet.")
-				4:
-					print("Star 4 earned. No weapon defined yet.")
-		else:
-			print("Max stars reached. No further weapon upgrades available.")
+		
+		# Assign weapons or handle logic based on the current star count
+		match max_stars:
+			1:
+				set_weapon("rifle")  # Switch to rifle
+			2:
+				set_weapon("shotgun")  # Switch to shotgun
+			3:
+				print("Star 3 earned. No weapon defined yet.")
+			4:
+				print("Star 4 earned. No weapon defined yet.")
 	else:
-		emit_signal("notoriety_changed", notoriety, max_stars)  # Partial progress updates
+		print("Max stars reached. No further weapon upgrades available.")

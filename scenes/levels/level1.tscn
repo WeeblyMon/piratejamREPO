@@ -31937,6 +31937,7 @@ script = ExtResource("1_7l1m2")
 wielder = NodePath("Wielder")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 z_index = 6
 position = Vector2(3615, 5928)
 navigation_polygon = SubResource("NavigationPolygon_1lkl0")
@@ -31955,6 +31956,7 @@ polygon = PackedVector2Array(-3643, -6662, -3645, -6363, -3146, -6363, -3148, -6
 
 [node name="Polygon2D5" type="Polygon2D" parent="NavigationRegion2D"]
 polygon = PackedVector2Array(-4268, -7513, -4268, -6501, -4046, -6503, -4032, -6367, -3850, -6369, -3838, -6963, -4118, -6957, -4120, -7275, -3996, -7269, -3990, -7517)
+metadata/_edit_lock_ = true
 
 [node name="Polygon2D6" type="Polygon2D" parent="NavigationRegion2D"]
 polygon = PackedVector2Array(-3856, -7507, -3860, -7273, -3702, -7273, -3706, -7071, -3512, -7073, -3508, -6797, -3152, -6795, -3146, -7269, -3098, -7271, -3104, -7475, -3188, -7499, -3192, -7763, -3516, -7763, -3530, -7517)
@@ -32069,7 +32071,7 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
 position = Vector2(570, 343)
-detection_range = 300.0
+detection_range = 360.0
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
@@ -32291,6 +32293,7 @@ shoot_on_sight = false
 [node name="PoliceMen6" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-310, -1332)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen7" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-76, -1894)
@@ -32372,34 +32375,42 @@ detection_radius = 500.0
 [node name="PoliceMen41" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-392, -1283)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen42" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-228, -1270)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen43" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-394, -1194)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen44" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-232, -1207)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen45" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-311, -1254)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen46" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-311, -1122)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen47" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-450, -1104)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen48" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-154, -1122)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen49" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(522, -1034)
@@ -32417,6 +32428,7 @@ shoot_on_sight = false
 [node name="PoliceMen52" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(989, -764)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen53" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(615, -983)
@@ -32469,6 +32481,7 @@ detection_radius = 500.0
 [node name="PoliceMen65" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(20, -970)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen66" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(513, -785)
@@ -33421,6 +33434,24 @@ z_index = 2
 
 [node name="Civilian" parent="Civilians" instance=ExtResource("16_mx6jj")]
 position = Vector2(524, 86)
+
+[node name="Civilian2" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(-98, -774)
+
+[node name="Civilian3" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(635, -869)
+
+[node name="Civilian4" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(1410, -1507)
+
+[node name="Civilian5" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(-727, -1742)
+
+[node name="Civilian6" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(-727, -682)
+
+[node name="Civilian7" parent="Civilians" instance=ExtResource("16_mx6jj")]
+position = Vector2(1412, -332)
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
