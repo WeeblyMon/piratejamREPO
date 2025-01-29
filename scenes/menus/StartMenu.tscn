@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cexxjq0h6viq0"]
+[gd_scene load_steps=13 format=3 uid="uid://cexxjq0h6viq0"]
 
 [ext_resource type="Script" path="res://scripts/UI_scripts/StartMenu.gd" id="1_k1r3i"]
 [ext_resource type="Texture2D" uid="uid://cxoy54el31stu" path="res://assets/art/UI/Menu_Frame_1_86x490.png" id="2_5864x"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="7_meiyd"]
 [ext_resource type="Texture2D" uid="uid://cfvm03r5i8gfv" path="res://assets/art/UI/Screenshot 2025-01-29 155502.png" id="8_26d8q"]
 [ext_resource type="Script" path="res://scripts/UI_scripts/parallax_2d.gd" id="9_shipe"]
+[ext_resource type="Texture2D" uid="uid://chf15qp87wf3v" path="res://assets/art/Logo.png" id="11_u83lq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wwdp0"]
 animations = [{
@@ -65,7 +66,7 @@ texture_filter = 1
 position = Vector2(209, 7)
 scale = Vector2(1.01608, 1)
 sprite_frames = SubResource("SpriteFrames_wwdp0")
-frame_progress = 0.848138
+frame_progress = 0.515707
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/Start"]
 texture_filter = 1
@@ -126,5 +127,10 @@ scale = Vector2(2.10939, 2.47285)
 theme_override_fonts/font = ExtResource("7_meiyd")
 text = "C - CONTROL BULLET
 J - JAM "
+
+[node name="Logo" type="Sprite2D" parent="."]
+position = Vector2(259, 126)
+scale = Vector2(0.415, 0.415)
+texture = ExtResource("11_u83lq")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Start/TextureButton" to="." method="_on_start_button_pressed"]
