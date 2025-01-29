@@ -105,7 +105,6 @@ func _check_for_nearby_enemies() -> void:
 			if distance <= detection_range:
 				# Check if AI has a clear LoS to the enemy
 				if _has_line_of_sight(enemy.global_position):
-					print("AI detected enemy:", enemy.name)
 					target = enemy
 					break  # Stop at the first valid enemy
 

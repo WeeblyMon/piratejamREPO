@@ -32492,10 +32492,12 @@ detection_radius = 500.0
 [node name="PoliceMen77" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(825, -47)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen78" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(928, 16)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen72" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(-350, -275)
@@ -32620,6 +32622,12 @@ metadata/_edit_lock_ = true
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("13_eoydk")]
+
+[node name="endscreen" parent="CanvasLayer/Hud" index="7"]
+visible = false
+
+[node name="BlackScreen" parent="CanvasLayer/Hud/endscreen" index="0"]
+visible = false
 
 [node name="Covers" type="Node2D" parent="."]
 position = Vector2(250, -24)
