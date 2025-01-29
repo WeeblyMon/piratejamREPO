@@ -50,7 +50,7 @@ func flash_color() -> void:
 
 func die() -> void:
 	"""Handles enemy death."""
-	GameStateManager.add_notoriety(2)
+	GameStateManager.add_notoriety(5)
 	AudioManager.play_sfx("enemy_hit_and_blood_1", +10.0)
 	remove_from_group("enemy")  # Remove from group upon death
 	queue_free()
