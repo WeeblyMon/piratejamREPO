@@ -177,11 +177,30 @@ offset_right = 178.0
 offset_bottom = 16.0
 script = ExtResource("4_yp0bx")
 
-[node name="MissionBox" type="Sprite2D" parent="."]
+[node name="Missions" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 105.0
+offset_top = 492.0
+offset_right = 145.0
+offset_bottom = 532.0
+
+[node name="MissionBox" type="Sprite2D" parent="Missions"]
 use_parent_material = true
-position = Vector2(105, 492)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("17_hmx5i")
+
+[node name="Label" type="Label" parent="Missions"]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 77.0
+offset_bottom = -9.0
+theme_override_fonts/font = ExtResource("19_x7h6s")
+text = "OBJECTIVES:
+-GET TO THE END OF THE LEVEL
+-AVOID SHOOTING CIVILIANS
+"
 
 [node name="Sanity" type="TextureProgressBar" parent="."]
 use_parent_material = true
@@ -243,6 +262,7 @@ scale = Vector2(0.985361, 0.991214)
 texture = ExtResource("18_ya70m")
 
 [node name="endscreen" type="Control" parent="."]
+visible = false
 z_index = 1
 anchors_preset = 0
 offset_right = 40.0
