@@ -4,23 +4,22 @@
 [ext_resource type="Texture2D" uid="uid://ce5om4pyh2ev7" path="res://assets/art/characters/Goblin.png" id="1_l2a7d"]
 [ext_resource type="FontFile" uid="uid://c1pe5uf5owrs8" path="res://assets/fonts/AGENCYR.TTF" id="3_1r1ka"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_iu3vw"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_63jvy"]
+radius = 90.6765
 
 [node name="Civilian" type="CharacterBody2D" groups=["civilian"]]
 scale = Vector2(0.3, 0.3)
+collision_layer = 64
+collision_mask = 20
 script = ExtResource("1_efw5o")
-health = 5
+health = 2
+detection_radius = 500.0
 panic_speed_multiplier = 3.0
 panic_duration = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708
 texture = ExtResource("1_l2a7d")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(5.475, 5.475)
-shape = SubResource("CircleShape2D_iu3vw")
-disabled = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
@@ -41,3 +40,6 @@ scale = Vector2(3.59, 3.59)
 theme_override_fonts/font = ExtResource("3_1r1ka")
 text = "CIVILIAN"
 horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_63jvy")

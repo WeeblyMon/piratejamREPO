@@ -34,7 +34,6 @@ func take_damage(damage: int) -> void:
 		# NEW: If shot, enter retaliation mode and start firing back
 		if not is_retaliating:
 			is_retaliating = true
-			print("🚨 Police AI is now retaliating!")
 			fire_timer.start()  # Start shooting only when hit
 
 func flash_color() -> void:
@@ -93,10 +92,7 @@ func _on_body_entered(body: Node) -> void:
 		target = body
 
 		if shoot_on_sight:
-			print("🔫 Police AI is shooting immediately!")
 			fire_timer.start()
-		else:
-			print("👀 Police AI is watching but won't shoot unless attacked!")
 
 func _on_body_exited(body: Node) -> void:
 	"""Stops shooting when the target leaves detection range."""

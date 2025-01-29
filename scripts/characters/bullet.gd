@@ -27,12 +27,15 @@ func _ready() -> void:
 
 	# Set Collision Layer and Mask
 	area.collision_layer = 5  # Layer 5: Player Bullet
-	area.collision_mask = 2 | 4  # Layers 2 (Enemy) and 4 (Enemy Bullet)
-	
+	area.collision_mask = (1 << 1) | (1 << 3) | (1 << 6) # Layers 2 (Enemy) and 4 (Enemy Bullet) (7 is civilian)
 	# Connect collision signal using Callable syntax for Area2D
 	if not area.is_connected("area_entered", Callable(self, "_on_area_entered")):
 		area.connect("area_entered", Callable(self, "_on_area_entered"))
-
+	
+		# **Connect the body_entered signal**
+	if not area.is_connected("body_entered", Callable(self, "_on_body_entered")):
+		area.connect("body_entered", Callable(self, "_on_body_entered"))
+		
 	# Clear trail points
 	if local_line2d:
 		local_line2d.clear_points()
@@ -129,7 +132,7 @@ func enable_player_control() -> void:
 	if not is_controlled:
 		is_controlled = true
 		add_to_group("controlled_bullets")
-		area.collision_mask = 2 | 4 | 3  # Layer 4
+		area.collision_mask = (1 << 1) | (1 << 3) | (1 << 6)  # Layer 4
 
 		Engine.time_scale = 0.2  # Slow down time for control
 
@@ -182,10 +185,9 @@ func _on_area_entered(area_other: Area2D) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	AudioManager.play_sfx("enemy_hit_1_1")  # Play ding sound
-	if body.is_in_group("enemy"):
-		if body.has_method("take_damage"):
-			body.take_damage(damage)  # Apply damage to the enemy
-		queue_free()  # Destroy the player bullet after hitting the enemy
+	if body.has_method("take_damage"):
+		body.take_damage(damage)  # Apply damage to the enemy or civilian
+	queue_free()  # Destroy the player bullet after hitting the enemy or civilian
 
 
 func _reset_flash() -> void:

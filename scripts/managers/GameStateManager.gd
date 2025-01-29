@@ -160,7 +160,6 @@ func set_health(health_amount: int, operation: String = "set") -> void:
 			push_warning("Invalid operation for set_health: %s".format(operation))
 
 	emit_signal("health_changed", current_health, max_health)  # Update health bar
-	print("Health Updated: ", current_health, "/", max_health)
 
 func take_damage(amount: int) -> void:
 	set_health(amount, "sub")
@@ -205,7 +204,6 @@ func set_wielder_phase(new_phase: int) -> void:
 	if current_wielder_phase != new_phase:
 		current_wielder_phase = new_phase
 		emit_signal("wielder_phase_changed", new_phase)
-		print("GameStateManager: Phase changed to:", new_phase)
 
 func get_wielder_phase() -> int:
 	return current_wielder_phase
@@ -230,7 +228,6 @@ func init_checkpoints() -> void:
 	if unique_labels.size() > 0:
 		var random_index = randi() % unique_labels.size()
 		chosen_path_label = unique_labels[random_index]
-		print("GameStateManager: chosen path label:", chosen_path_label)
 
 		for cp in all_cp:
 			if cp.path_label == chosen_path_label:
@@ -249,10 +246,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		print("No checkpoints found in the 'checkpoints' group!")
 		return
 
-	# Debugging: Log all checkpoints
-	print("Found checkpoints:")
-	for cp in all_cp:
-		print("- Label:", cp.path_label, "ID:", cp.checkpoint_id, "Position:", cp.global_position)
 
 	# Get unique path labels
 	var unique_labels = []
@@ -260,8 +253,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		if cp.path_label not in unique_labels:
 			unique_labels.append(cp.path_label)
 
-	# Debugging: Log unique labels
-	print("Unique path labels found:", unique_labels)
 
 	# Select a random path label and filter checkpoints by it
 	if unique_labels.size() > 0:
@@ -272,16 +263,6 @@ func init_checkpoints_for_ai(ai_position: Vector2) -> void:
 		for cp in all_cp:
 			if cp.path_label == chosen_path_label:
 				path_checkpoints.append(cp)
-
-	# Debugging: Log unsorted checkpoints
-	print("Unsorted checkpoints for label", chosen_path_label, ":")
-	for cp in path_checkpoints:
-		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
-
-	# Debugging: Log sorted checkpoints
-	print("Sorted checkpoints for label", chosen_path_label, ":")
-	for cp in path_checkpoints:
-		print("- ID:", cp.checkpoint_id, "Position:", cp.global_position)
 
 	# Find the nearest checkpoint to the AI
 	var nearest_index = 0
@@ -306,7 +287,6 @@ func get_current_checkpoint_position() -> Vector2:
 func next_checkpoint() -> void:
 	# If at the last checkpoint, trigger mission complete
 	if current_checkpoint_index >= path_checkpoints.size() - 1:
-		print("Final checkpoint reached. Mission complete!")
 		emit_signal("checkpoint_reached", current_checkpoint_index, true)  # ✅ Ensure final checkpoint triggers!
 		return
 
@@ -362,13 +342,10 @@ func consume_ammo() -> bool:
 		if ammo_data["current"] > 0:
 			ammo_data["current"] -= 1
 			emit_signal("ammo_changed", ammo_data["current"], ammo_data["max"])  # Emit signal
-			print("Ammo consumed. Remaining:", ammo_data["current"])
 			return true
 		else:
-			print("Out of ammo!")
 			return false
 	else:
-		print("No ammo data for weapon:", current_weapon)
 		return false
 
 
@@ -424,7 +401,6 @@ func reload_weapon() -> void:
 func _on_shotgun_reload_step() -> void:
 	var ammo_data = weapon_ammo[current_weapon]
 	ammo_data["current"] += 1
-	print("Shotgun reloaded 1 shell. Current ammo:", ammo_data["current"])
 
 	if ammo_data["current"] < ammo_data["max"]:
 		reload_timer.start()  # Continue reloading
@@ -434,12 +410,10 @@ func _on_shotgun_reload_step() -> void:
 		reload_timer.stop()
 		reload_timer.queue_free()
 		reload_timer = null
-		print("Shotgun fully reloaded.")
 
 func _on_full_reload_complete() -> void:
 	var ammo_data = weapon_ammo[current_weapon]
 	ammo_data["current"] = ammo_data["max"] 
-	print("Reloaded", current_weapon, "to max ammo:", ammo_data["max"])
 	is_reloading = false
 	reload_timer.stop()
 	reload_timer.queue_free()
