@@ -1,7 +1,6 @@
 extends Node
 
-signal game_loaded
-signal game_saved
+
 signal sanity_changed(sanity: int)
 signal wielder_phase_changed(new_phase: int)
 signal ammo_changed
@@ -305,16 +304,19 @@ func get_current_checkpoint_position() -> Vector2:
 	return cp.global_position
 
 func next_checkpoint() -> void:
+	# If at the last checkpoint, trigger mission complete
+	if current_checkpoint_index >= path_checkpoints.size() - 1:
+		print("Final checkpoint reached. Mission complete!")
+		emit_signal("checkpoint_reached", current_checkpoint_index, true)  # ✅ Ensure final checkpoint triggers!
+		return
+
 	# Increment the checkpoint index
 	current_checkpoint_index += 1
-
-	# Check if there are more checkpoints
-	if current_checkpoint_index >= path_checkpoints.size():
-		print("GameStateManager: All checkpoints visited.")
-	else:
-		print("GameStateManager: Moving to checkpoint index =", current_checkpoint_index,
+	if current_checkpoint_index < path_checkpoints.size():
+		print("Moving to checkpoint index =", current_checkpoint_index,
 			  "Position =", path_checkpoints[current_checkpoint_index].global_position)
-
+	else:
+		print("All checkpoints visited. No more movement required.")
 
 # ---------------------------------------
 # COMBAT HELPERS (stubs)

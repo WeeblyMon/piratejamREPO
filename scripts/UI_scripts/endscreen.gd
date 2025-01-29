@@ -14,11 +14,10 @@ func _ready() -> void:
 	complete_screen.visible = false
 
 	# Connect signals if player exists
-	if player:
-		if not player.is_connected("player_died", Callable(self, "_on_player_died")):
-			player.connect("player_died", Callable(self, "_on_player_died"))
+	if player and not player.is_connected("player_died", Callable(self, "_on_player_died")):
+		player.connect("player_died", Callable(self, "_on_player_died"))
 
-	# Listen for checkpoint completion
+	# Connect checkpoint completion signal
 	if not GameStateManager.is_connected("checkpoint_reached", Callable(self, "_on_checkpoint_reached")):
 		GameStateManager.connect("checkpoint_reached", Callable(self, "_on_checkpoint_reached"))
 
@@ -33,6 +32,7 @@ func _on_player_died() -> void:
 	
 
 func _on_checkpoint_reached(checkpoint_id: int, is_final: bool) -> void:
+	print("Checkpoint reached:", checkpoint_id, "Final:", is_final)  # Debugging log
 	if is_final:  # ✅ Only trigger when reaching the final checkpoint
 		print("Final checkpoint reached. Showing mission complete screen.")
 		endscreen.visible = true

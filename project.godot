@@ -35,6 +35,7 @@ civilian=""
 bullet=""
 wielder=""
 enemy_bullets=""
+obstacle=""
 
 [input]
 

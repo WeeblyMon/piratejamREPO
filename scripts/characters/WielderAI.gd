@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@onready var los_raycast: RayCast2D = $LoSRayCast  # Reference the new RayCast2D
 @export var speed: float = 150.0
 var fire_rate = GameStateManager.get_fire_rate()
 @export var gun: Node2D
@@ -54,6 +55,9 @@ func _ready() -> void:
 		navigation_agent.set_target_position(first_cp_pos)
 
 func _process(delta: float) -> void:
+	# Always check for enemies inside the detection range
+	_check_for_nearby_enemies()
+
 	# Handle bullet control input
 	if Input.is_action_pressed("control_bullet"):
 		if GameStateManager.consume_resource(20 * delta):
@@ -88,6 +92,22 @@ func _process(delta: float) -> void:
 			# Use unscaled delta to ensure AI operates correctly during slow motion
 			var unscaled_delta = delta / Engine.time_scale
 			_process_combat_phase(unscaled_delta)
+			
+func _check_for_nearby_enemies() -> void:
+	# Reset target if previous target is dead or out of range
+	if target and (not is_instance_valid(target) or target.has_method("is_dead") and target.is_dead()):
+		target = null
+	
+	# Check all enemies in detection range
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if is_instance_valid(enemy) and enemy != target:
+			var distance = global_position.distance_to(enemy.global_position)
+			if distance <= detection_range:
+				# Check if AI has a clear LoS to the enemy
+				if _has_line_of_sight(enemy.global_position):
+					print("AI detected enemy:", enemy.name)
+					target = enemy
+					break  # Stop at the first valid enemy
 
 # ---------------------------------------------
 #           MOVEMENT PHASE
@@ -114,7 +134,7 @@ func _process_movement_phase(delta: float) -> void:
 
 	play_animation("move")
 	
-	# Handle footstep sounds based on `is_sfx_playing`
+	# Handle footstep sounds based on is_sfx_playing
 	footstep_timer -= delta
 	if footstep_timer <= 0.0:
 		if not AudioManager.is_sfx_playing("footsteps_asphalt_1_1"):
@@ -569,7 +589,6 @@ func _is_cover_effective(cover_pos: Vector2, ai_pos: Vector2, enemy_pos: Vector2
 		print("Raycast (Cover Effectiveness) hit:", collision.collider.name, "at position:", collision.position)
 		return false  # Obstacle is blocking the cover's effectiveness
 	else:
-		print("No obstacles blocking the cover at:", cover_pos)
 		return true  # Cover is effective
 
 # Helper function to lock onto the selected cover node
@@ -645,16 +664,19 @@ func should_attack_civilians() -> bool:
 	return GameStateManager.current_sanity < 40
 
 func _is_enemy_detected() -> bool:
-	# Check if there is a valid target detected by the Area2D
-	if target and target.is_in_group("enemy"):
-		if target.has_method("is_dead") and target.is_dead():
-			print("Detected enemy is dead:", target.name)
-			return false  # Enemy is dead, no valid target
-		else:
-			print("Enemy detected by Area2D:", target.name)
-			return true  # Valid enemy detected
-	else:
-		return false
+	if target and is_instance_valid(target):
+		var distance = global_position.distance_to(target.global_position)
+		if distance > detection_range:
+			print("Enemy moved out of detection range.")
+			target = null
+			return false
+		elif not _has_line_of_sight(target.global_position):
+			print("Enemy is blocked by an obstacle.")
+			target = null
+			return false
+		print("Enemy detected and visible:", target.name)
+		return true
+	return false
 
 func _reset_navigation_target() -> void:
 	# Get the current checkpoint position
@@ -737,32 +759,34 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy"):
 		print("Enemy entered detection area:", body.name)
 		# Check if there's a clear line of sight
-		if _has_line_of_sight(body.global_position):
+		if los_raycast.is_colliding() == false:
 			target = body
 			print("Enemy detected and visible:", target.name)
 		else:
 			print("Enemy detected but blocked by obstacle:", body.name)
 
 func _has_line_of_sight(target_pos: Vector2) -> bool:
-	var space_state = get_world_2d().direct_space_state
-
-	var ray_params = PhysicsRayQueryParameters2D.new()
-	ray_params.from = global_position
-	ray_params.to = target_pos
-	ray_params.exclude = [self]
-	ray_params.collision_mask = 1 << 5  # Only detect layer 6 (Obstacles)
-	ray_params.collide_with_areas = true
-	ray_params.collide_with_bodies = true
+	# Calculate the direction from AI to the target in global space
+	var direction = (target_pos - global_position).normalized()
 	
-	var collision = space_state.intersect_ray(ray_params)
+	# Convert the global direction to the AI's local space by rotating it inversely to the AI's rotation
+	var local_direction = direction.rotated(-rotation)
+	
+	# Set the RayCast2D's target_position in local space
+	los_raycast.target_position = local_direction * detection_range
+	los_raycast.force_raycast_update()
+	
+	# Check if the RayCast2D is colliding with an obstacle
+	if los_raycast.is_colliding():
+		var hit_object = los_raycast.get_collider()
+		if hit_object and hit_object.is_in_group("obstacle"):
+			print("❌ LOS BLOCKED by:", hit_object.name)
+			return false  # Obstacle blocks view
+	
+	print("✅ LOS CLEAR to:", target_pos)
+	return true  # No obstacles blocking view
 
-	# Debugging: Print collision details
-	if collision:
-		print("Raycast hit:", collision.collider.name, "at position:", collision.position)
-		return false  # Obstacle is blocking the view
-	else:
-		print("No obstacles blocking the view to:", target_pos)
-		return true  # Enemy is visible
+
 
 func _on_body_exited(body: Node) -> void:
 	if body == target:

@@ -32009,6 +32009,7 @@ polygon = PackedVector2Array(-2878, -6118, -2769, -6120, -2770, -5998, -2874, -5
 [node name="Wielder" parent="." instance=ExtResource("9_tj2ga")]
 z_index = 1
 position = Vector2(570, 343)
+detection_range = 500.0
 
 [node name="NavigationAgent2D" parent="Wielder" index="2"]
 path_desired_distance = 5.0
@@ -32153,6 +32154,7 @@ path_label = "charlie"
 position = Vector2(-483, -2143)
 checkpoint_id = 9
 path_label = "charlie"
+is_final = true
 
 [node name="RouteD" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
 visible = false
@@ -32205,7 +32207,7 @@ z_index = 1
 
 [node name="PoliceMen" parent="Enemies" instance=ExtResource("12_0ugyk")]
 z_index = 1
-position = Vector2(209, -190)
+position = Vector2(208, -206)
 detection_radius = 500.0
 
 [node name="PoliceMen2" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32337,7 +32339,7 @@ position = Vector2(-154, -1122)
 detection_radius = 500.0
 
 [node name="PoliceMen49" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(528, -983)
+position = Vector2(522, -1034)
 detection_radius = 500.0
 
 [node name="PoliceMen50" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32413,15 +32415,15 @@ position = Vector2(-281, -326)
 detection_radius = 500.0
 
 [node name="PoliceMen69" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-74, -305)
+position = Vector2(-66, -367)
 detection_radius = 500.0
 
 [node name="PoliceMen70" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-203, -242)
+position = Vector2(-39, -320)
 detection_radius = 500.0
 
 [node name="PoliceMen71" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-455, -365)
+position = Vector2(-585, -485)
 detection_radius = 500.0
 
 [node name="PoliceMen77" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32437,7 +32439,7 @@ position = Vector2(-350, -275)
 detection_radius = 500.0
 
 [node name="PoliceMen73" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-515, -506)
+position = Vector2(-507, -448)
 detection_radius = 500.0
 
 [node name="PoliceMen74" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32545,15 +32547,12 @@ navigation_enabled = false
 
 [node name="Hud" parent="CanvasLayer" instance=ExtResource("13_eoydk")]
 
-[node name="endscreen" parent="CanvasLayer/Hud" index="7" node_paths=PackedStringArray("player")]
-player = NodePath("../../../Wielder")
-
 [node name="Covers" type="Node2D" parent="."]
 position = Vector2(250, -24)
 scale = Vector2(1.51, 1.51)
 
 [node name="Cover2" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
-position = Vector2(-211.921, -319.205)
+position = Vector2(-421.854, -251.656)
 scale = Vector2(1.51, 1.51)
 collision_layer = 4
 collision_mask = 8
@@ -32580,13 +32579,13 @@ scale = Vector2(0.345, 0.345)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 
 [node name="Position1" type="Node2D" parent="Covers/Cover2"]
-position = Vector2(-0.877154, 34.6476)
+position = Vector2(28.5075, -12.2801)
 
 [node name="Position2" type="Node2D" parent="Covers/Cover2"]
-position = Vector2(-1.31573, 46.9278)
+position = Vector2(29.8233, 11.403)
 
 [node name="Position3" type="Node2D" parent="Covers/Cover2"]
-position = Vector2(-10.9644, 32.0161)
+position = Vector2(50.875, -2.63144)
 
 [node name="Cover3" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
 position = Vector2(356.954, 95.3643)
@@ -32805,7 +32804,7 @@ position = Vector2(36.8405, 16.2274)
 position = Vector2(39.472, -14.473)
 
 [node name="Cover8" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
-position = Vector2(289.404, -329.139)
+position = Vector2(229.801, -376.821)
 scale = Vector2(1.51, 1.51)
 collision_layer = 4
 collision_mask = 8
@@ -32866,158 +32865,507 @@ scale = Vector2(0.345, 0.345)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 
 [node name="Position1" type="Node2D" parent="Covers/Cover10"]
-position = Vector2(70.1723, -12.2802)
+position = Vector2(44.7349, -8.33307)
 
 [node name="Position2" type="Node2D" parent="Covers/Cover10"]
-position = Vector2(31.5776, 2.63146)
+position = Vector2(26.7533, 13.1572)
 
 [node name="Position3" type="Node2D" parent="Covers/Cover10"]
-position = Vector2(28.0689, -28.5075)
+position = Vector2(28.069, -12.2803)
+
+[node name="Cover11" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-294.04, -440.397)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 25
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover11"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover11"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover11"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover11"]
+position = Vector2(-5.70151, 34.6476)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover11"]
+position = Vector2(15.7888, 35.9633)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover11"]
+position = Vector2(0.438578, 56.5765)
+
+[node name="Cover12" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-613.245, -531.788)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover12"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover12"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover12"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover12"]
+position = Vector2(-6.14011, 32.0162)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover12"]
+position = Vector2(0.438552, 30.2619)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover12"]
+position = Vector2(-6.57868, 44.2964)
+
+[node name="Cover13" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-684.106, -877.483)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover13"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover13"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover13"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover13"]
+position = Vector2(8.33302, 34.209)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover13"]
+position = Vector2(-0.8771, 57.8922)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover13"]
+position = Vector2(1.31579, 76.751)
+
+[node name="Cover14" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-618.543, -1103.31)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover14"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover14"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover14"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover14"]
+position = Vector2(4.82438, 30.7004)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover14"]
+position = Vector2(-4.38574, 54.3836)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover14"]
+position = Vector2(-2.19286, 73.2424)
+
+[node name="Cover15" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(163.576, -602.649)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover15"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover15"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover15"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover15"]
+position = Vector2(6.14008, 32.8933)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover15"]
+position = Vector2(-3.07004, 56.5765)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover15"]
+position = Vector2(-0.877153, 75.4353)
+
+[node name="Cover16" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(858.278, -486.093)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover16"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover16"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover16"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover16"]
+position = Vector2(5.7015, 34.209)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover16"]
+position = Vector2(-3.50862, 57.8922)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover16"]
+position = Vector2(-1.31573, 76.751)
+
+[node name="Cover17" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(681.457, -651.656)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover17"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover17"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover17"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover17"]
+position = Vector2(4.8244, 36.8405)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover17"]
+position = Vector2(-4.38572, 60.5237)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover17"]
+position = Vector2(-2.19283, 79.3825)
+
+[node name="Cover18" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(676.159, -892.715)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover18"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover18"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover18"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover18"]
+position = Vector2(6.57866, 35.9634)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover18"]
+position = Vector2(-2.63146, 59.6465)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover18"]
+position = Vector2(-0.438576, 78.5053)
+
+[node name="Cover19" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(542.384, -1031.13)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover19"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover19"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover19"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover19"]
+position = Vector2(43.4192, -9.21)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover19"]
+position = Vector2(34.209, 14.4732)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover19"]
+position = Vector2(36.4019, 33.332)
+
+[node name="Cover20" type="StaticBody2D" parent="Covers" node_paths=PackedStringArray("health_bar") groups=["cover"]]
+position = Vector2(-231.126, -664.238)
+scale = Vector2(1.51, 1.51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("12_k8rnm")
+max_health = 50
+sprite_frames = Array[Texture2D]([ExtResource("13_6f3qi"), ExtResource("14_ubyr4")])
+explosion_scene = ExtResource("15_16cwl")
+sprite_index = 1
+health_bar = NodePath("HealthBar")
+
+[node name="Sprite2D" type="Sprite2D" parent="Covers/Cover20"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Covers/Cover20"]
+shape = SubResource("RectangleShape2D_rtbjk")
+
+[node name="HealthBar" type="ProgressBar" parent="Covers/Cover20"]
+visible = false
+offset_left = -17.0
+offset_top = 5.0
+offset_right = 78.0
+offset_bottom = 32.0
+scale = Vector2(0.345, 0.345)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+
+[node name="Position1" type="Node2D" parent="Covers/Cover20"]
+position = Vector2(23.2446, 10.9644)
+
+[node name="Position2" type="Node2D" parent="Covers/Cover20"]
+position = Vector2(14.0345, 34.6476)
+
+[node name="Position3" type="Node2D" parent="Covers/Cover20"]
+position = Vector2(16.2274, 53.5064)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a0sw1")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="ObstacleCollision" type="StaticBody2D" parent="." groups=["obstacle"]]
+visible = false
+z_index = 3
 collision_layer = 32
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-503.375, 171.344)
 shape = SubResource("RectangleShape2D_0idvq")
 debug_color = Color(0, 0.827451, 0.964706, 1)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(182.625, 348.844)
 shape = SubResource("RectangleShape2D_ybv6v")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(382.5, -147)
 shape = SubResource("RectangleShape2D_8c4yo")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(620.875, -186.5)
 shape = SubResource("RectangleShape2D_8be8s")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-783.938, -264)
 shape = SubResource("RectangleShape2D_cbcht")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-1047.47, -1124)
 shape = SubResource("RectangleShape2D_3wxa8")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-308.734, -740)
 shape = SubResource("RectangleShape2D_a2ty0")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-496.133, -798.5)
 shape = SubResource("RectangleShape2D_or4hy")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D9" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-583, -1299.25)
 shape = SubResource("RectangleShape2D_fkqvq")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D10" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-449, -1460)
 shape = SubResource("RectangleShape2D_6t17c")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D11" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(212.5, -580)
 shape = SubResource("RectangleShape2D_hj2hw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D12" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(1026.75, -412.5)
 shape = SubResource("RectangleShape2D_63jp2")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D13" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(1272.88, -38.75)
 shape = SubResource("RectangleShape2D_a8om2")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D14" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(1215.94, 339.625)
 shape = SubResource("RectangleShape2D_hb5ha")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D15" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(897.969, 683.313)
 shape = SubResource("RectangleShape2D_tlhtf")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D16" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(910.984, -1136.66)
 shape = SubResource("RectangleShape2D_hdohn")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D17" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(1158.99, -1184.17)
 shape = SubResource("RectangleShape2D_c80vx")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D18" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(842.496, -1452.59)
 shape = SubResource("RectangleShape2D_ehmam")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D19" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(756, -1868.21)
 shape = SubResource("RectangleShape2D_5t67q")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D20" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(283.248, -1347.1)
 shape = SubResource("RectangleShape2D_u8w0o")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D21" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(136.876, -1460)
 shape = SubResource("RectangleShape2D_13lqn")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D22" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(26.062, -1245)
 shape = SubResource("RectangleShape2D_kles8")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D23" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(95.531, -2384)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D24" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D24" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(-834, -2220)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D25" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D25" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(1383, -2254)
 shape = SubResource("RectangleShape2D_j3mtw")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D26" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D26" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(2056, -687.5)
 shape = SubResource("RectangleShape2D_f5hiq")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="CollisionShape2D27" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D27" type="CollisionShape2D" parent="ObstacleCollision" groups=["obstacle"]]
 position = Vector2(904.566, -593.438)
 shape = SubResource("RectangleShape2D_6el4w")
 debug_color = Color(0, 0.6, 0.701961, 1)
-
-[node name="ObstacleCollision" type="Node2D" parent="."]
-z_index = 3
 
 [editable path="Wielder"]
 [editable path="Wielder/Gun"]
