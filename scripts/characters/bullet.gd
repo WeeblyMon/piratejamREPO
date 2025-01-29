@@ -137,7 +137,7 @@ func enable_player_control() -> void:
 		Engine.time_scale = 0.2  # Slow down time for control
 
 		if not AudioManager.is_sfx_playing("bullet_slow_mo_1"):
-			AudioManager.play_sfx("bullet_slow_mo_1", 2.0, false)  # Play sound without looping
+			AudioManager.play_sfx("bullet_slow_mo_1", 3.0, false)  # Play sound without looping
 
 		time_alive = 0.0  # Reset time_alive for the controlled phase
 
@@ -146,7 +146,6 @@ func disable_player_control() -> void:
 	if is_controlled:
 		is_controlled = false
 		remove_from_group("controlled_bullets")
-		# Revert collision mask to Layers 2 (Enemy) and 4 (Enemy Bullet)
 		area.collision_mask = (1 << 1) | (1 << 3)  # Layers 2 and 4
 
 		Engine.time_scale = 1.0  # Restore normal time
@@ -161,11 +160,9 @@ func disable_player_control() -> void:
 
 func _on_area_entered(area_other: Area2D) -> void:
 	if is_in_group("controlled_bullets") and area_other.is_in_group("enemy_bullets"):
-		AudioManager.play_sfx("collision_ping_1")  # Play ding sound
+		AudioManager.play_sfx("collision_ping_1", 10.0)  # Play ding sound
 		area_other.queue_free()  # Destroy enemy bullet
-		
 
-		# Provide visual feedback by flashing the controlled bullet
 		if sprite:
 			sprite.modulate = Color(1, 1, 0)  # Yellow flash
 			var flash_timer = Timer.new()
@@ -177,7 +174,6 @@ func _on_area_entered(area_other: Area2D) -> void:
 		else:
 			push_warning("Sprite is not assigned!")
 
-		# Do not destroy player bullet to allow multiple blocks
 		return  # Exit to prevent further processing
 	elif area_other.has_method("take_damage"):
 		area_other.take_damage(damage)

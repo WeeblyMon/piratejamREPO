@@ -65,7 +65,7 @@ texture_filter = 1
 position = Vector2(209, 7)
 scale = Vector2(1.01608, 1)
 sprite_frames = SubResource("SpriteFrames_wwdp0")
-frame_progress = 0.701245
+frame_progress = 0.730297
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/Start"]
 texture_filter = 1
@@ -78,10 +78,10 @@ frame_progress = 0.758735
 texture_filter = 1
 layout_mode = 0
 offset_left = -19.0
-offset_top = -22.0
-offset_right = 378.0
-offset_bottom = 23.0
-scale = Vector2(1.13216, 1.25017)
+offset_top = -26.385
+offset_right = 378.205
+offset_bottom = 18.615
+scale = Vector2(1.132, 1.46)
 texture_normal = ExtResource("6_k58b2")
 texture_hover = ExtResource("7_1vj6r")
 
@@ -107,5 +107,21 @@ script = ExtResource("9_shipe")
 position = Vector2(672, 256)
 scale = Vector2(1.56484, 1.70212)
 texture = ExtResource("8_26d8q")
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 867.0
+offset_top = 514.0
+offset_right = 1029.0
+offset_bottom = 563.0
+scale = Vector2(2.10939, 2.47285)
+theme_override_fonts/font = ExtResource("7_meiyd")
+text = "C - CONTROL BULLET
+J - JAM "
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Start/TextureButton" to="." method="_on_start_button_pressed"]
