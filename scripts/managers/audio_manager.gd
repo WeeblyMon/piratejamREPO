@@ -54,7 +54,7 @@ var music_tracks: Dictionary = {}
 	"music": {
 		"music_track_1": "res://assets/audio/music/Normal_Theme_Sketch_1.1.mp3",
 		"level_music": "res://assets/audio/music/Mission_Theme_V2.mp3",
-		"main menu": "res://assets/audio/music/Mission_Theme_V2.mp3"
+		"main menu": "res://assets/audio/music/Normal_Theme_V2.mp3"
 	}
 }
 func _ready() -> void:

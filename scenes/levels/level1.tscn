@@ -32272,6 +32272,7 @@ z_index = 1
 z_index = 1
 position = Vector2(208, -206)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen2" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(831, -289)
@@ -32331,18 +32332,22 @@ detection_radius = 500.0
 [node name="PoliceMen9" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(917, -258)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen10" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(859, -392)
+position = Vector2(840, -379)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen11" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(156, -263)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen18" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(229, -267)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen19" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(674, -1117)
@@ -32437,18 +32442,22 @@ detection_radius = 500.0
 [node name="PoliceMen54" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1371, -710)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen55" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1218, -672)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen56" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1467, -533)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen57" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1231, -502)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen58" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1370, -923)
@@ -32477,6 +32486,7 @@ detection_radius = 500.0
 [node name="PoliceMen64" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(1327, -609)
 detection_radius = 500.0
+shoot_on_sight = false
 
 [node name="PoliceMen65" parent="Enemies" instance=ExtResource("12_0ugyk")]
 position = Vector2(20, -970)

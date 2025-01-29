@@ -35,7 +35,7 @@ func take_damage(damage: int) -> void:
 	health -= damage
 	sprite.modulate = Color(1, 0, 0)  # Flash red when hit
 	flash_color()
-	
+	AudioManager.play_sfx("scream_2")
 	if health <= 0:
 		die()
 		GameStateManager.set_sanity(1, "sub")
