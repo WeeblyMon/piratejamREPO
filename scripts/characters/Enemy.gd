@@ -27,6 +27,7 @@ func take_damage(damage: int) -> void:
 	health -= damage
 	sprite.modulate = Color(1, 0, 0)  # Flash red when damaged
 	flash_color()
+	AudioManager.play_sfx("pain_1")
 
 	if health <= 0:
 		die()
@@ -49,7 +50,7 @@ func flash_color() -> void:
 
 func die() -> void:
 	"""Handles enemy death."""
-	GameStateManager.add_notoriety(10)
+	GameStateManager.add_notoriety(2)
 	AudioManager.play_sfx("enemy_hit_and_blood_1", +10.0)
 	remove_from_group("enemy")  # Remove from group upon death
 	queue_free()

@@ -27,7 +27,7 @@ func _ready() -> void:
 
 	# Set Collision Layer and Mask
 	area.collision_layer = 5  # Layer 5: Player Bullet
-	area.collision_mask = (1 << 1) | (1 << 3) | (1 << 6) # Layers 2 (Enemy) and 4 (Enemy Bullet) (7 is civilian)
+	area.collision_mask = (1 << 1) | (1 << 6) # Layers 2 (Enemy) and 4 (Enemy Bullet) (7 is civilian)
 	# Connect collision signal using Callable syntax for Area2D
 	if not area.is_connected("area_entered", Callable(self, "_on_area_entered")):
 		area.connect("area_entered", Callable(self, "_on_area_entered"))
@@ -160,7 +160,6 @@ func disable_player_control() -> void:
 
 func _on_area_entered(area_other: Area2D) -> void:
 	if is_in_group("controlled_bullets") and area_other.is_in_group("enemy_bullets"):
-		AudioManager.play_sfx("collision_ping_1", 10.0)  # Play ding sound
 		area_other.queue_free()  # Destroy enemy bullet
 
 		if sprite:
@@ -171,6 +170,7 @@ func _on_area_entered(area_other: Area2D) -> void:
 			add_child(flash_timer)
 			flash_timer.connect("timeout", Callable(self, "_reset_flash"), CONNECT_DEFERRED)
 			flash_timer.start()
+			AudioManager.play_sfx("enemy_hit_1_1")
 		else:
 			push_warning("Sprite is not assigned!")
 

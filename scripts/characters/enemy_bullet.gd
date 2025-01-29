@@ -29,10 +29,8 @@ func _process(delta: float) -> void:
 		queue_free()
 
 func _on_area_entered(area_other: Area2D) -> void:
-	if area_other.is_in_group("controlled_bullets"):
-		AudioManager.play_sfx("collision_ping_1") 
-		queue_free()
-	elif area_other.is_in_group("bullet"):
+	if area_other.is_in_group("controlled_bullets") or area_other.is_in_group("bullet"):
+		AudioManager.play_sfx("collision_ping_1")
 		queue_free()  # Destroy enemy bullet
 	elif area_other.has_method("take_damage"):
 		area_other.take_damage(damage)
