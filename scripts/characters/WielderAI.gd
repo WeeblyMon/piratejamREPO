@@ -121,7 +121,6 @@ func _process_movement_phase(delta: float) -> void:
 		_reset_navigation_target()
 
 	var next_pos = navigation_agent.get_next_path_position()
-	print("AI Next Path Position:", next_pos)
 	if next_pos == Vector2.ZERO:
 		velocity = Vector2.ZERO
 		play_animation("idle")
@@ -269,36 +268,29 @@ func _go_to_cover_and_shoot(cover_pos: Vector2, enemy: Node, delta: float) -> vo
 	cover_timer += delta
 
 	if cover_timer > cover_timeout:
-		print("Cover timeout reached. Resetting cover lock.")
 		_reset_cover_lock()
 		cover_timer = 0.0
 		return
 
 	var dist_to_cover = cover_pos.distance_to(global_position)
-	print("Distance to cover:", dist_to_cover)
 	if dist_to_cover > 50.0:
 		# Move closer to cover
 		if not navigation_agent.is_navigation_finished():
 			navigation_agent.set_target_position(cover_pos)  # Ensure target is set
-			print("AI moving towards cover at:", cover_pos)
 		
 		var next_pos = navigation_agent.get_next_path_position()
-		print("AI's next path position:", next_pos)
 		if next_pos != Vector2.ZERO:
 			var dir = (next_pos - global_position).normalized()
 			velocity = dir * speed
 			rotation = lerp_angle(rotation, dir.angle(), 10.0 * delta)
 			play_animation("move")
-			print("AI moving towards:", next_pos)
 		else:
 			velocity = Vector2.ZERO
 			play_animation("idle")
-			print("AI has reached the cover position.")
 	else:
 		velocity = Vector2.ZERO
 		play_animation("idle")
 		cover_timer = 0.0  # Reset timer once cover is reached
-		print("AI is within threshold distance of cover.")
 
 # ---------------------------------------------
 #           SHOOTING & WEAPON
@@ -381,7 +373,7 @@ func _enable_bullet_control() -> void:
 	if GameStateManager.get_wielder_phase() == GameStateManager.WielderPhase.MOVEMENT and not has_saved_path:
 		saved_path_target = navigation_agent.get_target_position()
 		has_saved_path = true
-		print("Saved path target:", saved_path_target)
+
 
 	Engine.time_scale = 0.2
 	pause_shooting()
@@ -393,7 +385,7 @@ func _enable_bullet_control() -> void:
 				last_fired_bullet = gun.fire_bullet()
 				if last_fired_bullet:
 					time_since_last_shot = 0.0
-					print("AI fired bullet in slow motion")
+
 
 	# Enable control if bullet exists
 	if last_fired_bullet and is_instance_valid(last_fired_bullet):
@@ -414,7 +406,7 @@ func _disable_bullet_control() -> void:
 	if has_saved_path and GameStateManager.get_wielder_phase() == GameStateManager.WielderPhase.MOVEMENT:
 		if saved_path_target != Vector2.ZERO:
 			navigation_agent.set_target_position(saved_path_target)
-			print("Restored path:", saved_path_target)
+
 
 	# Clear bullet control
 	if last_fired_bullet and is_instance_valid(last_fired_bullet):
@@ -454,18 +446,12 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 # ---------------------------------------------
 func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 	var covers = get_tree().get_nodes_in_group("cover")
-	print("AI searching for covers. Total covers found:", covers.size())
 	if covers.size() == 0:
-		print("No covers available.")
 		return ai_pos
-
 	# Determine AI's facing direction
 	var facing_dir = Vector2(cos(rotation), sin(rotation)).normalized()
-	print("AI facing direction (degrees):", rad_to_deg(facing_dir.angle()))
-
 	var best_spot: Node2D = null
 	var best_score = -INF
-
 	# Define weights for scoring
 	var enemy_weight = 2.5  # Adjusted weight
 	var ai_weight = 0.5     # Adjusted weight
@@ -477,11 +463,9 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 				var cover_pos = child.global_position
 				var dir_to_cover = (cover_pos - ai_pos).normalized()
 				var dot = facing_dir.dot(dir_to_cover)
-				print("Evaluating cover at:", cover_pos, "Dot Product:", dot)
 
 				# Prefer cover spots in front or to the sides (dot >= 0)
 				if dot < 0:
-					print("Skipping cover behind the AI.")
 					continue  # Skip cover spots behind the AI
 
 				var dist_to_enemy = cover_pos.distance_to(enemy_pos)
@@ -492,36 +476,30 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 				var max_ai_distance = 200.0    # Increased from 200.0
 
 				if dist_to_enemy < min_enemy_distance:
-					print("Cover too close to enemy. Skipping.")
 					continue  # Skip covers too close to the enemy
 
 				if dist_to_ai > max_ai_distance:
-					print("Cover too far from AI. Skipping.")
 					continue  # Skip covers too far from the AI
 
 				# Scoring Mechanism
 				var score = (dist_to_enemy * enemy_weight) - (dist_to_ai * ai_weight) + cover_score
-				print("Cover score (weighted):", score)
 
 				# Check if cover effectively blocks LoS
 				if _is_cover_effective(cover_pos, ai_pos, enemy_pos):
-					print("Cover at", cover_pos, "is effective.")
+
 					if score > best_score:
 						best_score = score
 						best_spot = child
-						print("New best cover found:", cover_pos)
 				else:
 					print("Cover at", cover_pos, "does not block LoS.")
 
 	if best_spot:
-		print("Selected cover at:", best_spot.global_position)
 		_lock_cover_node(best_spot.get_parent())
 		return best_spot.global_position
 
 	# Second Pass: Fallback to any cover spot with LoS check
 	best_spot = null
 	best_score = -INF
-	print("No suitable cover found in front. Performing fallback search.")
 
 	for cover in covers:
 		for child in cover.get_children():
@@ -532,19 +510,18 @@ func find_best_cover_position(ai_pos: Vector2, enemy_pos: Vector2) -> Vector2:
 				var score = (dist_to_enemy * enemy_weight) - (dist_to_ai * ai_weight) + cover_score
 
 				if _is_cover_effective(cover_pos, ai_pos, enemy_pos):
-					print("Fallback cover at", cover_pos, "is effective.")
+
 					if score > best_score:
 						best_score = score
 						best_spot = child
-						print("New best fallback cover found:", cover_pos)
+					
 
 	if best_spot:
-		print("Selected fallback cover at:", best_spot.global_position)
+
 		_lock_cover_node(best_spot.get_parent())
 		return best_spot.global_position
 
-	# If no cover spots are effective, stay in current position
-	print("No effective covers found. Staying in current position.")
+
 	return ai_pos
 
 
@@ -586,7 +563,6 @@ func _is_cover_effective(cover_pos: Vector2, ai_pos: Vector2, enemy_pos: Vector2
 
 	# Debugging: Print collision details
 	if collision:
-		print("Raycast (Cover Effectiveness) hit:", collision.collider.name, "at position:", collision.position)
 		return false  # Obstacle is blocking the cover's effectiveness
 	else:
 		return true  # Cover is effective
@@ -602,7 +578,6 @@ func _lock_cover_node(cover_node: Node2D) -> void:
 		locked_cover_node.connect("cover_destroyed", Callable(self, "_on_cover_destroyed"))
 
 func _on_cover_destroyed() -> void:
-	print("Cover destroyed, AI must pick a new one.")
 	_reset_cover_lock()
 	locked_cover_node = null
 
@@ -667,14 +642,11 @@ func _is_enemy_detected() -> bool:
 	if target and is_instance_valid(target):
 		var distance = global_position.distance_to(target.global_position)
 		if distance > detection_range:
-			print("Enemy moved out of detection range.")
 			target = null
 			return false
 		elif not _has_line_of_sight(target.global_position):
-			print("Enemy is blocked by an obstacle.")
 			target = null
 			return false
-		print("Enemy detected and visible:", target.name)
 		return true
 	return false
 
@@ -684,11 +656,9 @@ func _reset_navigation_target() -> void:
 
 	# If the checkpoint position is valid, set it as the target
 	if cp_pos != Vector2.ZERO:
-		print("Resetting navigation target to checkpoint:", cp_pos)
 		navigation_agent.set_target_position(cp_pos)
 	else:
 		# If no checkpoint is available, stop the agent
-		print("No checkpoint available. Stopping navigation.")
 		navigation_agent.set_target_position(global_position)  # Prevent unintended movement
 
 # ---------------------------------------------
@@ -696,7 +666,6 @@ func _reset_navigation_target() -> void:
 # ---------------------------------------------
 func take_damage(damage: int) -> void:
 	health = max(0, health - damage)  # Prevent negative HP
-	print("Wielder took damage! Health:", health)
 	
 	# Update health bar
 	GameStateManager.emit_signal("health_changed", health, GameStateManager.max_health)
@@ -711,7 +680,6 @@ func take_damage(damage: int) -> void:
 func heal(amount: int) -> void:
 	health = min(GameStateManager.max_health, health + amount)  # Prevent over-healing
 	GameStateManager.emit_signal("health_changed", health, GameStateManager.max_health)
-	print("Wielder healed. Current Health:", health)
 
 func _flash_color() -> void:
 	var flash_timer = Timer.new()
@@ -725,7 +693,6 @@ func _flash_color() -> void:
 	AudioManager.play_sfx("pain_1")
 
 func die() -> void:
-	print("Wielder has died!")
 	AudioManager.play_sfx("death_1")
 	
 	# Update health bar to reflect 0 HP
@@ -757,13 +724,11 @@ func _create_detection_area() -> void:
 	
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy"):
-		print("Enemy entered detection area:", body.name)
 		# Check if there's a clear line of sight
 		if los_raycast.is_colliding() == false:
 			target = body
-			print("Enemy detected and visible:", target.name)
-		else:
-			print("Enemy detected but blocked by obstacle:", body.name)
+
+
 
 func _has_line_of_sight(target_pos: Vector2) -> bool:
 	# Calculate the direction from AI to the target in global space
@@ -780,10 +745,8 @@ func _has_line_of_sight(target_pos: Vector2) -> bool:
 	if los_raycast.is_colliding():
 		var hit_object = los_raycast.get_collider()
 		if hit_object and hit_object.is_in_group("obstacle"):
-			print("❌ LOS BLOCKED by:", hit_object.name)
 			return false  # Obstacle blocks view
 	
-	print("✅ LOS CLEAR to:", target_pos)
 	return true  # No obstacles blocking view
 
 
@@ -791,7 +754,6 @@ func _has_line_of_sight(target_pos: Vector2) -> bool:
 func _on_body_exited(body: Node) -> void:
 	if body == target:
 		target = null
-		print("Enemy moved out of range.")
 
 # ---------------------------------------------
 #           Utility Functions

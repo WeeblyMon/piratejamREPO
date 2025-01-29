@@ -32016,6 +32016,7 @@ path_desired_distance = 5.0
 target_desired_distance = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="Wielder"]
+position = Vector2(20, -463.333)
 zoom = Vector2(0.68, 0.68)
 
 [node name="RouteA" parent="." groups=["checkpoints"] instance=ExtResource("11_r2sgb")]
@@ -32219,11 +32220,11 @@ position = Vector2(587, -1078)
 detection_radius = 500.0
 
 [node name="PoliceMen4" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-134, -848)
+position = Vector2(-184, -1038)
 detection_radius = 500.0
 
 [node name="PoliceMen5" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-686, -1133)
+position = Vector2(-779, -936)
 detection_radius = 500.0
 
 [node name="PoliceMen6" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32279,11 +32280,11 @@ position = Vector2(229, -267)
 detection_radius = 500.0
 
 [node name="PoliceMen19" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-167, -787)
+position = Vector2(674, -1117)
 detection_radius = 500.0
 
 [node name="PoliceMen20" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-74, -783)
+position = Vector2(-194, -890)
 detection_radius = 500.0
 
 [node name="PoliceMen21" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32403,7 +32404,7 @@ position = Vector2(1327, -609)
 detection_radius = 500.0
 
 [node name="PoliceMen65" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(177, -782)
+position = Vector2(20, -970)
 detection_radius = 500.0
 
 [node name="PoliceMen66" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32459,7 +32460,7 @@ position = Vector2(-742, -457)
 detection_radius = 500.0
 
 [node name="PoliceMen27" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-769, -1184)
+position = Vector2(-742, -987)
 detection_radius = 500.0
 
 [node name="PoliceMen28" parent="Enemies" instance=ExtResource("12_0ugyk")]
@@ -32471,7 +32472,7 @@ position = Vector2(-778, -1061)
 detection_radius = 500.0
 
 [node name="PoliceMen30" parent="Enemies" instance=ExtResource("12_0ugyk")]
-position = Vector2(-690, -1395)
+position = Vector2(-768, -1692)
 detection_radius = 500.0
 
 [node name="PoliceMen31" parent="Enemies" instance=ExtResource("12_0ugyk")]
